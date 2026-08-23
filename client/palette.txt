@@ -1,0 +1,3 @@
+orange: #ff6b00
+#f2f2f2
+#B1B2B5
