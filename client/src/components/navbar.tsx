@@ -5,9 +5,9 @@ import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
 function NavBar () {
     
     return (
-        <section className="flex w-full items-center justify-between h-[4rem] px-[12rem] border-b border-b-[#272727]/25">
+        <section className="flex w-full items-center justify-between h-[4rem] px-[16rem] border-b border-b-[#272727]/25">
             <div className="flex items-center h-full gap-[1rem]">
-                <Link to="/" className="font-bold">PRINT SHOP</Link>
+                <Link to="/" className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
 
                 <div className="group relative flex h-full">
                     <div className="flex h-full items-center cursor-pointer">
@@ -17,18 +17,18 @@ function NavBar () {
                         </div>
                     </div>
 
-                    <div className="absolute top-[4rem] left-1/2 -translate-x-1/2 p-[0.5rem] hidden group-hover:flex flex flex-col items-start shadow-lg bg-[#FFF] rounded-[5px] ">
+                    <div className="absolute top-[3.5rem] left-1/2 -translate-x-1/2 p-[0.5rem] hidden group-hover:flex flex flex-col items-start shadow-lg bg-[#FFF] rounded-[5px] border border-[#272727]/10">
                         <Link to="/" className="whitespace-nowrap py-[0.5rem] px-[1rem] hover:bg-[#B1B2B5]/25 active:bg-[#B1B2B5]/35 rounded-[5px]">Document Print</Link>
                     </div>
                 </div>
             </div>
 
             <div className="flex items-center h-full gap-[0.2rem]">
-                <button className="hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/35 px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
-                    <span className="px-[1rem] font-bold">Login</span>
+                <button className="bg-[#B1B2B5]/25 hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/35 px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
+                    <span className="px-[1rem] font-bold text-[14px]">Login</span>
                 </button>
                 <button className="bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
-                    <span className="text-[#FFF] font-bold">Get Started</span>
+                    <span className="text-[#FFF] font-bold text-[14px]">Get Started</span>
                 </button>
             </div>
         </section>
