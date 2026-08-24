@@ -5,7 +5,7 @@ import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
 function NavBar () {
     
     return (
-        <section className="flex w-full items-center justify-between h-[4rem] px-[16rem] border-b border-b-[#272727]/25">
+        <section className="flex w-full items-center justify-between h-[4rem] px-[16rem] bg-[#f2f2f2] border-b border-b-[#272727]/25">
             <div className="flex items-center h-full gap-[1rem]">
                 <Link to="/" className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
 
