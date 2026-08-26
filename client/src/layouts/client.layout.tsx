@@ -4,7 +4,7 @@ import NavBar from "../components/navbar"
 function ClientLayout () {
 
     return (
-        <div className="relative flex flex-col w-full h-screen items-center px-[16rem]">
+        <div className="relative flex flex-col w-full h-screen items-center bg-[#fafafa]">
             <NavBar />
             <Outlet />
         </div>

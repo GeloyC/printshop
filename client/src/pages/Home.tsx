@@ -31,7 +31,7 @@ function Home () {
     }
 
     return (
-        <div className="flex flex-col w-full h-full items-center justify-center gap-[2rem]">
+        <div className="mt-[4rem] flex flex-col w-full h-full items-center justify-center gap-[2rem] px-[16rem]">
             
             <div className='flex flex-col items-center w-full gap-[2rem]'>
                 <span className='text-[14px] text-[#ff6b00] font-bold bg-[#ff6b00]/15 rounded-[15px] px-[1rem] py-[0.5rem]'>DOCUMENT PRINT</span>

@@ -5,7 +5,7 @@ import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
 function NavBar () {
     
     return (
-        <section className="mt-[1rem] flex w-full items-center justify-between h-[4rem] px-[0.75rem] bg-[#fff] border border-[#272727]/15 rounded-[15px]">
+        <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] px-[0.75rem]">
             <div className="flex items-center h-full gap-[1rem]">
                 <Link to="/" className="text-[#ff6b00] font-bold pl-[1rem]">PRINT SHOP</Link>
 
@@ -24,10 +24,10 @@ function NavBar () {
             </div>
 
             <div className="flex items-center h-full gap-[0.2rem]">
-                <button className="bg-[#B1B2B5]/25 hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/35 px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
+                <button className="border border-[#272727]/10 hover:border-[#272727]/50 active:border-[#272727] px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
                     <span className="px-[1rem] font-bold text-[14px]">Login</span>
                 </button>
-                <button className="bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
+                <button className="border border-[#ff6b00] bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
                     <span className="text-[#FFF] font-bold text-[14px]">Get Started</span>
                 </button>
             </div>

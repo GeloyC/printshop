@@ -4,3 +4,28 @@
 body {
     font-family: "Arimo", sans-serif;
 }
+
+
+@keyframes fadeUp {
+    from { 
+        transform: translateY(5%); 
+        opacity: 25%; 
+    }
+    to { 
+        transform: translateY(0%); 
+        opacity: 100%; 
+    }
+}
+
+@keyframes loadProgress {
+    from { width:0% }
+    to { width: 100% }
+}
+
+.fade-up {
+    animation: fadeUp 0.1s ease-in forwards
+}
+
+.load-progress {
+    animation: loadProgress 0.75s ease-in-out forwards
+}
