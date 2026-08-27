@@ -2,7 +2,7 @@ import { useState } from "react";
 
 
 // context
-import { useFileContext } from "../context/documentPrintContext";
+import { useFileContext } from "../../context/documentPrintContext";
 
 // icons
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
@@ -10,10 +10,10 @@ import Check from '/src/assets/icon/check.svg?react'
 import Document from '/src/assets/icon/document.svg?react'
 
 // wrapper
-import ModalWrapper from "../components/wrapper/ModalWrapper";
+import ModalWrapper from "../../components/wrapper/ModalWrapper";
 
 // modal
-import DocumentPrintFileSetupModal from "../components/modal/DocumentPrintFileSetupModal";
+import DocumentPrintFileSetupModal from "../../components/modal/DocumentPrintFileSetupModal";
 
 
 

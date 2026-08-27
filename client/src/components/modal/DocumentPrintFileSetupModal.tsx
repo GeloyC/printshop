@@ -15,13 +15,16 @@ function DocumentPrintFileSetupModal ({
 
     const [quantity, setQuantity] = useState<number>(1);
 
+    
+
+
     return (
         <div className="fade-up flex flex-col min-w-[600px] rounded-[10px] bg-[#FFF] p-[2rem] gap-[1rem]">
             <span className="text-[24px] text-[#272727] font-bold leading-tight">{selectedFile}</span>
             
             <div className="flex flex-col w-full gap-[0.5rem]">
                 <div className="flex flex-col w-full gap-[0.3rem] pb-[0.5rem] border-b border-dashed border-[#575757]/25">
-                    <span className='text-[14px] font-bold text-[#575757]'>Set variation</span>
+                    <span className='text-[14px] font-bold text-[#575757]'>Variation</span>
 
                     <div className="flex items-center w-full gap-[0.3rem]">
                         <input type="radio" name="variation" id="var_black_&_white" hidden/>
@@ -43,7 +46,7 @@ function DocumentPrintFileSetupModal ({
                 </div>
 
                 <div className="flex flex-col w-full gap-[0.3rem] pb-[0.5rem] border-b border-dashed border-[#575757]/25">
-                    <span className='text-[14px] font-bold text-[#575757]'>Set Size</span>
+                    <span className='text-[14px] font-bold text-[#575757]'>Size</span>
 
                     <div className="flex items-center w-full gap-[0.3rem]">
                         <input type="radio" name="size" id="size_short" hidden/>

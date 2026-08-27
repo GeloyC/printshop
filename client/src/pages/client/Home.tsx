@@ -2,8 +2,8 @@
 import { useNavigate } from "react-router-dom"
 
 // components
-import DocumentPrintUpload from "../components/client/DocumentPrintUpload"
-import { useFileContext } from "../context/documentPrintContext";
+import DocumentPrintUpload from "../../components/client/DocumentPrintUpload"
+import { useFileContext } from "../../context/documentPrintContext";
 
 function Home () {
 
