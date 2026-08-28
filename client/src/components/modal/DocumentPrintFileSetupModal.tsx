@@ -15,9 +15,6 @@ function DocumentPrintFileSetupModal ({
 
     const [quantity, setQuantity] = useState<number>(1);
 
-    
-
-
     return (
         <div className="fade-up flex flex-col min-w-[600px] rounded-[10px] bg-[#FFF] p-[2rem] gap-[1rem]">
             <span className="text-[24px] text-[#272727] font-bold leading-tight">{selectedFile}</span>

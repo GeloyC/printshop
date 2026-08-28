@@ -6,14 +6,18 @@ function NavbarAdmin () {
     const location = useLocation();
 
     return (
-        <div className="flex flex-col w-full items-start justify-between h-full p-[1rem]">
+        <div className="relative flex flex-col w-full h-full min-h-0 items-start justify-between">
         
-            <div className="flex flex-col items-start w-full gap-[1rem]">
-                <span className="font-bold text-[18px] text-[#ff6b00] leading-none">Admin Logo</span>
+            <div className="sticky top-0 flex flex-col items-start w-full gap-[2rem] py-[1rem]">
+                <span className="font-bold text-[24px] text-[#272727] leading-none">Admin Logo</span>
 
                 <div className="flex flex-col w-full gap-[0.3rem]">
-                    <Link to="/admin/service" className={`py-[0.3rem] ${location.pathname === '/admin/service' && 'bg-[#ffc36d]'} hover:bg-[#ff9e32] active:bg-[#ff9e32]/75 rounded-[5px] transition-all duration-100`}>
-                        <span className="text-[14px] text-[#82330c] font-bold px-[1rem]">Service</span>
+                    <Link to="/admin/service" className={`py-[0.3rem] ${location.pathname === '/admin/service' && 'bg-[#B1B2B5]/75'} hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/75 rounded-[5px] transition-all duration-100`}>
+                        <span className="text-[16px] text-[#292929] font-bold px-[1rem]">Service</span>
+                    </Link>
+
+                    <Link to="/admin/service" className={`py-[0.3rem] ${location.pathname === '/admin/orders' && 'bg-[#B1B2B5]/75'} hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/75 rounded-[5px] transition-all duration-100`}>
+                        <span className="text-[16px] text-[#292929] font-bold px-[1rem]">Orders</span>
                     </Link>
 
 

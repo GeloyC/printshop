@@ -24,7 +24,7 @@ function NavBar () {
             </div>
 
             <div className="flex items-center h-full gap-[0.2rem]">
-                <Link to="/admin/services">Temporary admin button</Link>
+                <Link to="/admin/service">Temporary admin button</Link>
                 <button className="border border-[#272727]/10 hover:border-[#272727]/50 active:border-[#272727] px-[1rem] py-[0.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
                     <span className="px-[1rem] font-bold text-[14px]">Login</span>
                 </button>
