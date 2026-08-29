@@ -13,7 +13,7 @@ import Document from '/src/assets/icon/document.svg?react'
 import ModalWrapper from "../../components/wrapper/ModalWrapper";
 
 // modal
-import DocumentPrintFileSetupModal from "../../components/modal/DocumentPrintFileSetupModal";
+import DocumentPrintFileSetupModal from "../../components/modal/client/DocumentPrintFileSetupModal";
 
 
 
