@@ -6,6 +6,7 @@ import Home from './pages/client/Home'
 import DocumentPrintSetup from './pages/client/DocumentPrintSetup'
 import AdminLayout from './layouts/admin.layout'
 import Service from './pages/admin/Service'
+import CreateService from './pages/admin/CreateService'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
 
         <Route element={<AdminLayout />}>
           <Route path="/admin/service" element={<Service />}/>
+          <Route path='/admin/service/create' element={<CreateService />} />
         </Route>
       </Routes>
     </BrowserRouter>

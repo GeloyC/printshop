@@ -1,5 +1,8 @@
-import { useEffect, useState, type SetStateAction } from "react";
+import { useState, type SetStateAction } from "react";
 
+// icons
+import Cancel from '/src/assets/icon/close.svg?react'
+import Check from '/src/assets/icon/save-check.svg?react'
 
 // types
 import type { Configuration, ConfigurationOptions, ConfigurationType } from "./CreateServiceModal";
@@ -17,7 +20,6 @@ function ConfigurationFields ({
     setNewConfig,
     setConfigs,
     newConfig,
-    configs,
     closeFields
 }: ConfigurationProps) {
 
@@ -55,32 +57,35 @@ function ConfigurationFields ({
 
     const handleAddNewConfig = (value: Configuration) => {
         setConfigs(config => [...config, value]);
+        setNewConfig({
+            id: new Date,
+            key: '',
+            label: '',
+            options: []
+        })
         closeFields();
     }
 
-    useEffect(()=> {
-        console.log('Configs: ', configs);
-    }, []);
 
     return (
-        <div className="flex flex-col items-center w-full gap-[0.5rem] p-[0.75rem] border border-dashed border-[#ff6b00] bg-[#ffdca5] rounded-[10px]">
-            <div className="grid grid-cols-3 w-full gap-[0.5rem]">
-                <div className="flex flex-col w-full">
+        <div className="flex flex-col items-center w-full gap-[0.5rem] rounded-[10px]">
+            <div className="flex flex-col w-full gap-[0.5rem]">
+                <div className="grid grid-cols-[1fr_8fr] items-center w-full">
                     <span className="text-[14px] font-bold">Key</span>
                     <input type="text" name="key" id="service_key" value={newConfig.key} onChange={handleKeyChange}
-                    className="p-[0.5rem] text-[#292929] font-bold border border-[#292929]/50 bg-[#fff] rounded-[5px]"/>
+                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/25 bg-[#fff] rounded-[10px]"/>
                 </div>
 
-                <div className="flex flex-col w-full">
+                <div className="grid grid-cols-[1fr_8fr] items-center w-full">
                     <span className="text-[14px] font-bold">Label</span>
                     <input type="text" name="label" id="service_label" value={newConfig.label} onChange={handleLabelChange}
-                    className="p-[0.5rem] text-[#292929] font-bold border border-[#292929]/50 bg-[#fff] rounded-[5px]"/>
+                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/25 bg-[#fff] rounded-[10px]"/>
                 </div>
 
-                <div className="flex flex-col w-full">
+                <div className="grid grid-cols-[1fr_8fr] items-center w-full">
                     <span className="text-[14px] font-bold">Type</span>
                     <select name="type" id="type" value={newConfig.type} onChange={handleTypeChange}
-                    className="p-[0.5rem] text-[#292929] font-bold border border-[#292929]/50 bg-[#fff] rounded-[5px]">
+                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/25 bg-[#fff] rounded-[10px]">
                         <option value="select">Dropdown Selection</option>
                         <option value="text">Text Field</option>
                         <option value="number">Number Field</option>
@@ -88,42 +93,47 @@ function ConfigurationFields ({
                         <option value="radio">Radio</option>
                     </select>
                 </div>
+                <div className="grid grid-cols-[1fr_8fr] w-full items-start">
+                    <span className="text-[14px] font-bold pt-[0.5rem]">Options</span>
+
+                    <div className="flex flex-col gap-[0.2rem] w-full">
+                        {options.map(opt => (
+                            <span className="bg-[#ffdca5]/75 text-[14px] font-bold p-[0.5rem] px-[0.75rem] rounded-[10px]">{opt.option}</span>
+                        ))}
+
+                        {isOptionFieldOpen && (
+                            <div className="flex items-center w-full px-[0.5rem] bg-[#fff] border-2 border-[#ff6b00] border-dashed focus-within:border-solid rounded-[10px]">
+                                <input type="text" name="option" id="option_new" value={newOption} onChange={(e)=>setNewOption(e.target.value)}
+                                className="w-full text-[14px] font-bold p-[0.5rem]  focus:outline-none"/>
+
+                                <button onClick={()=>handleAddOptions({ option: newOption })} className="p-[0.3rem] cursor-pointer hover:bg-[#f2f2f2] rounded-full">
+                                    <Check className="size-4"/>
+                                </button>
+                                <button onClick={()=>setIsOptionFieldOpen(false)} className="p-[0.3rem] cursor-pointer hover:bg-[#f2f2f2] rounded-full">
+                                    <Cancel className="size-5"/>
+                                </button>
+                            </div>
+                        )}
+
+                        <button onClick={()=>setIsOptionFieldOpen(true)} className="w-full bg-[#272727] active:bg-[#272727]/75 py-[0.3rem] rounded-[10px] cursor-pointer transition-all duration-100">
+                            <span className="text-[14px] text-[#fff] px-[0.5rem]">+ Add options</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div className="flex flex-col w-full border border-dashed border-[#cc4c02] p-[0.5rem] gap-[0.5rem] rounded-[5px]">
-                <div className="flex items-center gap-[0.5rem]">
-                    <span className="text-[14px] font-bold">Options</span>
-                    <button onClick={()=>setIsOptionFieldOpen(true)} className="bg-[#ff6b00] active:bg-[#cc4c02] py-[0.2rem] rounded-[5px] cursor-pointer transition-all duration-100">
-                        <span className="text-[14px] text-[#fff] px-[0.5rem] font-bold leading-none">+ Add</span>
-                    </button>
-                </div>
 
-                <div className="flex flex-wrap items-center gap-[0.2rem] w-full">
-                    {options.map(opt => (
-                        <span className="bg-[#fff] text-[14px] font-bold p-[0.3rem] px-[0.5rem] rounded-[5px] border border-[#292929]/75">{opt.option}</span>
-                    ))}
-
-                    {isOptionFieldOpen && (
-                        <div className="flex items-center gap-[0.3rem]">
-                            <input type="text" name="option" id="option_new" value={newOption} onChange={(e)=>setNewOption(e.target.value)}
-                            className="bg-[#fff] text-[14px] font-bold p-[0.3rem] rounded-[5px] border border-[#292929]/75"/>
-                            <button onClick={()=>handleAddOptions({ option: newOption })} className="bg-[#292929] border border-[#292929] rounded-[5px] text-[#fff] text-[14px] p-[0.5rem] leading-none">Save</button>
-                            <button onClick={()=>setIsOptionFieldOpen(false)} className="bg-[#404040] border border-[#292929] rounded-[5px] text-[#fff] text-[14px] p-[0.5rem] leading-none">Cancel</button>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            <div className="flex w-full items-center justify-end gap-[0.2rem]">
+            <div className="flex w-full items-center gap-[0.2rem] pt-[0.3rem] border-t border-dashed border-t-[#292929]/25">
                 <button onClick={() => handleAddNewConfig({
                     id: newConfig.id,
                     key: newConfig.key,
                     label: newConfig.label,
                     type: newConfig.type,
                     options: options
-                })} className="bg-[#292929] p-[0.5rem] px-[1rem] text-[#fff] rounded-[5px] cursor-pointer">Save</button>
-                <button onClick={closeFields} className="bg-transparent p-[0.5rem] px-[1rem] text-[#292929] font-bold rounded-[5px] cursor-pointer">Cancel</button>
+                })} className="w-full hover:bg-[#ff6b00] active:bg-[#ff6b00]/50 py-[0.3rem] text-[#292929] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Save</button>
+                <button onClick={closeFields} className="w-full hover:bg-[#f2f2f2] bg-transparent py-[0.3rem] text-[#292929] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Cancel</button>
             </div>
+
         </div>
     )
 }

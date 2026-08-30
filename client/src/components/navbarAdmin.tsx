@@ -20,7 +20,7 @@ function NavbarAdmin ({
     const location = useLocation();
 
     return (
-        <div className={`relative flex flex-col ${isExpanded ? 'w-[2.5rem]' : 'w-[20rem]'} h-full min-h-0 items-center justify-between pb-[1rem]`}>
+        <div className={`relative flex flex-col ${isExpanded ? 'w-[2.5rem]' : 'w-[15rem]'} h-full min-h-0 items-center justify-between pb-[1rem]`}>
             
             <div className={`sticky top-0 flex flex-col ${isExpanded && 'items-center'} w-full gap-[2rem] py-[1rem]`}>
                 <div className={`flex ${isExpanded ? 'justify-center' : 'pl-[0.5rem] gap-[0.5rem]'} items-center`}>
