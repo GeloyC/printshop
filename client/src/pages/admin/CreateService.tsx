@@ -2,11 +2,11 @@ import { useState } from "react";
 
 // component
 import ConfigurationFields from "../../components/modal/admin/ConfigurationFields";
+import ConfigurationItem from "./ConfigurationItem";
 
 export type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
 export type ConfigurationOptions = { option: string }
 export type Configuration = {
-    id: Date,
     key: string,
     label: string,
     type?: ConfigurationType,   
@@ -18,7 +18,6 @@ function CreateService () {
     const [isStatusSelected, setIsStatusSelected] = useState<string>('inactive');
 
     const [newConfig, setNewConfig] = useState<Configuration>({
-        id: new Date(),
         key: '',
         label: '',
         options: []
@@ -67,10 +66,17 @@ function CreateService () {
                         <p className="text-[14px] opacity-75">Add a short description or instruction here about the configuration</p>
                     </div>
 
-                    <div className="flex flex-col gap-[0.5rem] w-[700px] border border-dashed border-[#292929]/25 p-[1rem] rounded-[10px]">
+                    {configs.map(config=>(
+                        <ConfigurationItem 
+                            config={config}
+                        />
+                    ))}
+                    
+                    <div className="flex flex-col gap-[0.5rem] w-[700px] border border-dashed border-[#292929]/25 p-[0.5rem] rounded-[10px]">
+
                         {!isConfigFieldOpen && (
                             <button onClick={()=>setIsConfigFieldOpen(true)} className="bg-[#292929] hover:bg-[#404040] active:bg-[#292929] w-full py-[0.5rem] rounded-[5px] cursor-pointer">
-                                <span className="text-[#fff]">+ Create configuration</span>
+                                <span className="text-[#fff]">+ Add configuration</span>
                             </button>
                         )}
 

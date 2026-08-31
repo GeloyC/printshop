@@ -6,10 +6,9 @@ interface ModalProp {
     close: () => void;
 }
 
-export type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
-export type ConfigurationOptions = { option: string }
-export type Configuration = {
-    id: Date,
+type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
+type ConfigurationOptions = { option: string }
+type Configuration = {
     key: string,
     label: string,
     type?: ConfigurationType,   
@@ -25,7 +24,6 @@ function CreateServiceModal ({
 
 
     const [newConfig, setNewConfig] = useState<Configuration>({
-        id: new Date(),
         key: '',
         label: '',
         options: []
