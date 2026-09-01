@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 // component
-import ConfigurationFields from "../../components/modal/admin/ConfigurationFields";
+import ConfigurationFields from "../../components/admin/ConfigurationFields";
 import ConfigurationItem from "./ConfigurationItem";
+import ModalWrapper from "../../components/wrapper/ModalWrapper";
 
 export type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
 export type ConfigurationOptions = { option: string }
@@ -15,7 +16,7 @@ export type Configuration = {
 
 function CreateService () {
 
-    const [isStatusSelected, setIsStatusSelected] = useState<string>('inactive');
+    // const [isStatusSelected, setIsStatusSelected] = useState<string>('inactive'); 
 
     const [newConfig, setNewConfig] = useState<Configuration>({
         key: '',
@@ -24,6 +25,18 @@ function CreateService () {
     });
     const [isConfigFieldOpen, setIsConfigFieldOpen] = useState<boolean>(false);
     const [configs, setConfigs] = useState<Configuration[]>([])
+
+    const [editingKey, setEditingKey] = useState<string|null>(null)
+
+    const handleDeleteConfig = (key: string) => {
+        setConfigs(config => config.filter(item => item.key !== key));
+    }
+
+    const selectConfigToEdit = (key: string) => {
+        setEditingKey(key)
+    }
+
+
 
     return (
         <div className="flex flex-col w-full h-full bg-[#fff] rounded-t-[15px] p-[2rem] gap-[1rem] border border-[#404040]/25">
@@ -66,11 +79,20 @@ function CreateService () {
                         <p className="text-[14px] opacity-75">Add a short description or instruction here about the configuration</p>
                     </div>
 
-                    {configs.map(config=>(
-                        <ConfigurationItem 
-                            config={config}
-                        />
-                    ))}
+                    {configs?.length > 0 && (
+                        <div className="flex flex-col w-[700px] gap-[0.5rem]">
+                            {configs.map(config=>(
+                                <ConfigurationItem key={config.key}
+                                    config={config}
+                                    handleDeleteConfig={handleDeleteConfig}
+                                    selectConfigToEdit={()=>selectConfigToEdit(config.key)}
+                                    isEditing={editingKey === config.key}
+                                    close={()=>setEditingKey(null)}
+                                />
+                            ))}
+                        </div>
+                    )}
+
                     
                     <div className="flex flex-col gap-[0.5rem] w-[700px] border border-dashed border-[#292929]/25 p-[0.5rem] rounded-[10px]">
 
@@ -92,7 +114,6 @@ function CreateService () {
                     </div>
                 </div>
             </div>
-
         </div>
     )
 }

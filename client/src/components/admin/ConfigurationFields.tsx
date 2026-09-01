@@ -5,7 +5,7 @@ import Cancel from '/src/assets/icon/close.svg?react'
 import Check from '/src/assets/icon/save-check.svg?react'
 
 // types
-import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService";
+import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../pages/admin/CreateService";
 
 interface ConfigurationProps {
     setNewConfig: React.Dispatch<SetStateAction<Configuration>>
@@ -68,17 +68,23 @@ function ConfigurationFields ({
 
 
     return (
-        <div className="flex flex-col items-center w-full gap-[0.5rem] rounded-[10px]">
+        <form onSubmit={() => handleAddNewConfig({
+                    key: newConfig.key,
+                    label: newConfig.label,
+                    type: newConfig.type,
+                    options: options
+                })} className="flex flex-col items-center w-full gap-[0.5rem] rounded-[10px]">
+            <span className="text-[16px] font-bold">New configuration</span>
             <div className="flex flex-col w-full gap-[0.5rem]">
                 <div className="grid grid-cols-[1fr_8fr] items-center w-full">
                     <span className="text-[14px] font-bold">Key</span>
-                    <input type="text" name="key" id="service_key" value={newConfig.key} onChange={handleKeyChange} placeholder="Enter a unique key ex. 'color' "
+                    <input type="text" name="key" id="service_key" value={newConfig.key} onChange={handleKeyChange} placeholder="Enter a unique key ex. 'color'" required
                     className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/25 bg-[#f2f2f2] rounded-[10px]"/>
                 </div>
 
                 <div className="grid grid-cols-[1fr_8fr] items-center w-full">
                     <span className="text-[14px] font-bold">Label</span>
-                    <input type="text" name="label" id="service_label" value={newConfig.label} onChange={handleLabelChange} placeholder="Enter a label for this configuration ex. 'Size' or 'Color'"
+                    <input type="text" name="label" id="service_label" value={newConfig.label} onChange={handleLabelChange} placeholder="Enter a label for this configuration ex. 'Size' or 'Color'" required
                     className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/25 bg-[#f2f2f2] rounded-[10px]"/>
                 </div>
 
@@ -96,14 +102,14 @@ function ConfigurationFields ({
                 <div className="grid grid-cols-[1fr_8fr] w-full items-start">
                     <span className="text-[14px] font-bold pt-[0.5rem]">Options</span>
 
-                    <div className="flex flex-col gap-[0.2rem] w-full">
+                    <div className="flex flex-col gap-[0.2rem] w-full break-all">
                         {options.map(opt => (
                             <span className="bg-[#ffdca5]/75 text-[14px] font-bold p-[0.5rem] px-[0.75rem] rounded-[10px]">{opt.option}</span>
                         ))}
 
                         {isOptionFieldOpen && (
                             <div className="flex items-center w-full px-[0.5rem] bg-[#f2f2f2] border-2 border-[#ff6b00] border-dashed focus-within:border-solid rounded-[10px]">
-                                <input type="text" name="option" id="option_new" value={newOption} onChange={(e)=>setNewOption(e.target.value)}
+                                <input type="text" name="option" id="option_new" value={newOption} onChange={(e)=>setNewOption(e.target.value)} required
                                 className="w-full text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
 
                                 <button onClick={()=>handleAddOptions({ option: newOption })} className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
@@ -115,7 +121,7 @@ function ConfigurationFields ({
                             </div>
                         )}
 
-                        <button onClick={()=>setIsOptionFieldOpen(true)} className="w-full bg-[#272727] active:bg-[#272727]/75 py-[0.3rem] rounded-[10px] cursor-pointer transition-all duration-100">
+                        <button type="button" onClick={()=>setIsOptionFieldOpen(true)} className="w-full bg-[#272727] active:bg-[#272727]/75 py-[0.3rem] rounded-[10px] cursor-pointer transition-all duration-100">
                             <span className="text-[14px] text-[#fff] px-[0.5rem]">+ Add options</span>
                         </button>
                     </div>
@@ -124,16 +130,11 @@ function ConfigurationFields ({
 
 
             <div className="flex w-full items-center gap-[0.2rem] pt-[0.3rem] border-t border-dashed border-t-[#292929]/25">
-                <button onClick={() => handleAddNewConfig({
-                    key: newConfig.key,
-                    label: newConfig.label,
-                    type: newConfig.type,
-                    options: options
-                })} className="w-full hover:bg-[#ff6b00] active:bg-[#ff6b00]/50 py-[0.3rem] text-[#292929] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Save</button>
-                <button onClick={closeFields} className="w-full hover:bg-[#f2f2f2] bg-transparent py-[0.3rem] text-[#292929] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Cancel</button>
+                <button className="w-full bg-[#B1B2B5]/50 hover:bg-[#B1B2B5] active:bg-[#B1B2B5]/50 py-[0.3rem] text-[#292929] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Save</button>
+                <button type="button" onClick={closeFields} className="w-full hover:bg-[#f2f2f2] bg-transparent py-[0.3rem] text-[#292929] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Cancel</button>
             </div>
 
-        </div>
+        </form>
     )
 }
 
