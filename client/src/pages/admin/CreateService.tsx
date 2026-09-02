@@ -1,16 +1,17 @@
 import { useState } from "react";
 
 // component
-import ConfigurationFields from "../../components/admin/ConfigurationFields";
+import ConfigurationFields from "../../components/modal/admin/ConfigurationFields";
 import ConfigurationItem from "./ConfigurationItem";
 import ModalWrapper from "../../components/wrapper/ModalWrapper";
+import ConfigurationEditModal from "../../components/modal/admin/ConfigurationEditModal";
 
 export type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
-export type ConfigurationOptions = { option: string }
+export type ConfigurationOptions = { option: string, price: number }
 export type Configuration = {
     key: string,
     label: string,
-    type?: ConfigurationType,   
+    type?: ConfigurationType | null,   
     options: ConfigurationOptions[]
 }
 
@@ -24,17 +25,24 @@ function CreateService () {
         options: []
     });
     const [isConfigFieldOpen, setIsConfigFieldOpen] = useState<boolean>(false);
-    const [configs, setConfigs] = useState<Configuration[]>([])
+    const [configs, setConfigs] = useState<Configuration[]>([]);
 
-    const [editingKey, setEditingKey] = useState<string|null>(null)
+    
+
+    const [selectedConfigEdit, setSelectedConfigEdit] = useState<Configuration|undefined>(undefined);
+
+    // const [editingKey, setEditingKey] = useState<string|null>(null);
 
     const handleDeleteConfig = (key: string) => {
         setConfigs(config => config.filter(item => item.key !== key));
     }
 
     const selectConfigToEdit = (key: string) => {
-        setEditingKey(key)
+        const selected = configs.find(item => item.key === key);
+        setSelectedConfigEdit(selected)
     }
+
+
 
 
 
@@ -45,7 +53,7 @@ function CreateService () {
                 <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
             </div>
 
-            <div className="grid grid-cols-[2fr_5fr] w-full h-full gap-[1rem]">
+            <div className="grid grid-cols-[3fr_5fr] w-full h-full gap-[1rem]">
 
                 <div>
                     Thumbnail here
@@ -74,8 +82,15 @@ function CreateService () {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-[0.2rem] w-[500px]">
-                        <span className="text-[16px] text-[#292929] font-bold">Configuration</span>
+                    <div className="flex flex-col gap-[0.2rem] w-[700px]">
+
+                        <div className="flex items-center justify-between w-full">
+                            <span className="text-[16px] text-[#292929] font-bold">Configuration</span> 
+
+                            <button onClick={()=>setIsConfigFieldOpen(true)} className={`bg-[#292929] hover:bg-[#404040] active:bg-[#292929] px-[0.5rem] rounded-[25px]  ${isConfigFieldOpen ? 'opacity-50' : 'cursor-pointer'}`}>
+                                <span className="text-[#fff] text-[14px]">+ Add configuration</span>
+                            </button>
+                        </div>
                         <p className="text-[14px] opacity-75">Add a short description or instruction here about the configuration</p>
                     </div>
 
@@ -86,23 +101,13 @@ function CreateService () {
                                     config={config}
                                     handleDeleteConfig={handleDeleteConfig}
                                     selectConfigToEdit={()=>selectConfigToEdit(config.key)}
-                                    isEditing={editingKey === config.key}
-                                    close={()=>setEditingKey(null)}
                                 />
                             ))}
                         </div>
                     )}
 
-                    
-                    <div className="flex flex-col gap-[0.5rem] w-[700px] border border-dashed border-[#292929]/25 p-[0.5rem] rounded-[10px]">
-
-                        {!isConfigFieldOpen && (
-                            <button onClick={()=>setIsConfigFieldOpen(true)} className="bg-[#292929] hover:bg-[#404040] active:bg-[#292929] w-full py-[0.5rem] rounded-[5px] cursor-pointer">
-                                <span className="text-[#fff]">+ Add configuration</span>
-                            </button>
-                        )}
-
-                        {isConfigFieldOpen && (
+                    {isConfigFieldOpen && (
+                        <ModalWrapper>
                             <ConfigurationFields 
                                 setNewConfig={setNewConfig}
                                 newConfig={newConfig}
@@ -110,8 +115,17 @@ function CreateService () {
                                 configs={configs}
                                 closeFields={()=>setIsConfigFieldOpen(false)}
                             />
-                        )}
-                    </div>
+                        </ModalWrapper>
+                    )}
+
+                    {selectedConfigEdit && (
+                        <ModalWrapper>
+                            <ConfigurationEditModal 
+                                selectedConfig={selectedConfigEdit}
+                                close={()=>setSelectedConfigEdit(undefined)}
+                            />
+                        </ModalWrapper>
+                    )}
                 </div>
             </div>
         </div>

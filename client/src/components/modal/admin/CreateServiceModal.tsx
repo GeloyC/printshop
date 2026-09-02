@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ConfigurationFields from "../../admin/ConfigurationFields";
+import ConfigurationFields from "./ConfigurationFields";
 
 
 interface ModalProp {
