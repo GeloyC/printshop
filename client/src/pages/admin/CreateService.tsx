@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // component
 import ConfigurationFields from "../../components/modal/admin/ConfigurationFields";
@@ -9,6 +9,7 @@ import ConfigurationEditModal from "../../components/modal/admin/ConfigurationEd
 export type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
 export type ConfigurationOptions = { option: string, price: number }
 export type Configuration = {
+    id: string,
     key: string,
     label: string,
     type?: ConfigurationType | null,   
@@ -20,6 +21,7 @@ function CreateService () {
     // const [isStatusSelected, setIsStatusSelected] = useState<string>('inactive'); 
 
     const [newConfig, setNewConfig] = useState<Configuration>({
+        id: crypto.randomUUID(),
         key: '',
         label: '',
         options: []
@@ -28,21 +30,29 @@ function CreateService () {
     const [configs, setConfigs] = useState<Configuration[]>([]);
 
     
+    const [isConfigEditModalOpen, setIsConfigEditModalIsOpen] = useState<boolean>(false);
+    const [selectedConfigEdit, setSelectedConfigEdit] = useState<Configuration>({
+        id: crypto.randomUUID(),
+        key: '',
+        label: '',
+        options: []
+    });
 
-    const [selectedConfigEdit, setSelectedConfigEdit] = useState<Configuration|undefined>(undefined);
-
-    // const [editingKey, setEditingKey] = useState<string|null>(null);
-
-    const handleDeleteConfig = (key: string) => {
-        setConfigs(config => config.filter(item => item.key !== key));
+    const handleDeleteConfig = (id: string) => {
+        setConfigs(config => config.filter(item => item.id !== id));
     }
 
-    const selectConfigToEdit = (key: string) => {
-        const selected = configs.find(item => item.key === key);
+    const selectConfigToEdit = (id: string) => {
+        const selected = configs.find(item => item.id === id);
+
+        if (!selected) return;
         setSelectedConfigEdit(selected)
+        setIsConfigEditModalIsOpen(true);
     }
 
-
+    useEffect(() => {
+        console.log('updated: ', selectedConfigEdit);
+    }, [])
 
 
 
@@ -100,7 +110,7 @@ function CreateService () {
                                 <ConfigurationItem key={config.key}
                                     config={config}
                                     handleDeleteConfig={handleDeleteConfig}
-                                    selectConfigToEdit={()=>selectConfigToEdit(config.key)}
+                                    selectConfigToEdit={()=>selectConfigToEdit(config.id)}
                                 />
                             ))}
                         </div>
@@ -118,11 +128,13 @@ function CreateService () {
                         </ModalWrapper>
                     )}
 
-                    {selectedConfigEdit && (
+                    {isConfigEditModalOpen && (
                         <ModalWrapper>
                             <ConfigurationEditModal 
                                 selectedConfig={selectedConfigEdit}
-                                close={()=>setSelectedConfigEdit(undefined)}
+                                close={()=>setIsConfigEditModalIsOpen(false)}
+                                setSelectedConfigEdit={setSelectedConfigEdit}
+                                setConfigs={setConfigs}
                             />
                         </ModalWrapper>
                     )}

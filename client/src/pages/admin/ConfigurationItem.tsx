@@ -8,7 +8,7 @@ import Folder from '/src/assets/icon/configuration-item.svg?react'
 
 interface ConfigItemProp {
     config: Configuration;
-    handleDeleteConfig: (key: string) => void;
+    handleDeleteConfig: (id: string) => void;
     selectConfigToEdit: () => void;
 }
 
@@ -32,7 +32,7 @@ function ConfigurationItem ({
                         <span className="text-[14px] font-bold leading-none">Edit</span>
                     </button>
 
-                    <button onClick={()=>handleDeleteConfig(config.key)} title="Delete" className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
+                    <button onClick={()=>handleDeleteConfig(config.id)} title="Delete" className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
                         <Delete className="size-4" />
                         <span className="text-[14px] font-bold leading-none">Delete</span>
                     </button>

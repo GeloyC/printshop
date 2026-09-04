@@ -64,6 +64,7 @@ function ConfigurationFields ({
     const handleAddNewConfig = (value: Configuration) => {
         setConfigs(config => [...config, value]);
         setNewConfig({
+            id: crypto.randomUUID(),
             key: '',
             label: '',
             type: 'select',
@@ -75,6 +76,7 @@ function ConfigurationFields ({
 
     return (
         <form onSubmit={() => handleAddNewConfig({
+                    id: crypto.randomUUID(),
                     key: newConfig.key,
                     label: newConfig.label,
                     type: newConfig.type,
