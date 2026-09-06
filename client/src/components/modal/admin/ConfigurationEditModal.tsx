@@ -48,6 +48,13 @@ function ConfigurationEditModal ({
     
     
     const handleAddOptions = ({id, option, price}: ConfigurationOptions) => {
+        if (!option) {
+            return console.log('Option name is empty!');
+        }
+        if (price === 0) {
+            return console.log('Price is not set properly!');
+        }
+
         setSelectedConfigEdit(prev => ({
             ...prev,
             options: [
@@ -114,7 +121,7 @@ function ConfigurationEditModal ({
 
 
     return (
-        <form onSubmit={() => handleSaveForm(selectedConfig)} className="fade-up flex flex-col w-[700px] bg-[#fff] gap-[1rem] p-[2rem] rounded-[20px]">
+        <form onSubmit={() => handleSaveForm(selectedConfig)} className="fade-up flex flex-col w-[700px] bg-[#fff] gap-[1rem] p-[2rem]">
 
             <span className="text-[24px] font-bold">Edit configuration</span>
 
@@ -129,7 +136,7 @@ function ConfigurationEditModal ({
                             key: e.target.value
                         }))}
 
-                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[10px]"/>
+                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75"/>
                     </div>
 
                     <div className="flex flex-col w-full gap-[0.2rem]">
@@ -140,7 +147,7 @@ function ConfigurationEditModal ({
                             ...prev, 
                             label: e.target.value
                         }))}
-                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[10px]"/>
+                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75"/>
                     </div>
                 </div>
 
@@ -153,7 +160,7 @@ function ConfigurationEditModal ({
                         type: e.target.value as ConfigurationType
                     }))}
 
-                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[10px]">
+                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75">
                         <option hidden disabled>-- Select type --</option>
                         <option value="select">Dropdown Selection</option>
                         <option value="text">Text Field</option>
@@ -162,55 +169,68 @@ function ConfigurationEditModal ({
                         <option value="radio">Radio</option>
                     </select>
                 </div>
-                <div className="flex flex-col w-full gap-[0.2rem] border-t border-dashed border-t-[#292929]/10 pt-[0.5rem]">
+                <div className="flex flex-col w-full gap-[0.5rem] border-t border-dashed border-t-[#292929]/10 pt-[0.5rem]">
                     <div className="flex items-center justify-between gap-[0.3rem] w-full">
                         <span className="text-[14px] font-bold">Options</span>
 
-                        <button type="button" onClick={()=>setIsOptionFieldOpen(true)}
-                        className={`bg-[#272727]  rounded-[15px] pb-[0.1rem] transition-all duration-100 active:bg-[#272727]/75 cursor-pointer`}>
-                            <span className="text-[12px] text-[#fff] px-[0.5rem]  leading-none">+ Add</span>
+                        <button type="button" 
+                        onClick={()=>setIsOptionFieldOpen(true)}
+                        disabled={isOptionFieldOpen}
+                        className={`bg-[#272727] py-[0.3rem] ${isOptionFieldOpen ? 'opacity-50 cursor-not-allowed' : 'active:bg-[#272727]/75 cursor-pointer'} transition-all duration-100`}> 
+                            <span className="text-[14px] text-[#fff] px-[0.5rem] leading-none">+ Add</span>
                         </button>
                     </div>
 
                     <div className="flex flex-col gap-[0.5rem] w-full break-all">
-                        <div className="flex flex-wrap items-center w-full gap-[0.2rem]">
+                        <div className="flex flex-col items-start w-full gap-[0.2rem]">
                             {selectedConfig.options.map((opt) => (
                                 optionToEdit.id === opt.id ? (
-                                    <div className="flex items-center px-[0.5rem] bg-[#fff8ec] border-2 border-[#ff6b00]/50 border-dashed w-fit focus-within:border-solid focus-within:border-[#ff6b00]/75 rounded-[10px]">
-                                        <div className="flex items-center gap-[1rem]">
-                                            <div className="flex items-center">
+                                    <div className="flex items-center justify-between w-full px-[0.5rem] bg-[#fff8ec] border-2 border-[#ff6b00]/50 border-dashed focus-within:border-solid focus-within:border-[#ff6b00]/75">
+                                        <div className="flex items-center gap-[1rem] w-full">
+                                            <div className="flex items-center  min-w-0 w-full">
                                                 <span className="text-[14px] font-bold text-nowrap">Name:</span>
                                                 <input type="text" name="option" id="option_name" 
                                                 value={optionToEdit?.option} 
                                                 onChange={(e)=>setOptionToEdit(prev =>({...prev, option:e.target.value}))} 
                                                 required
-                                                className="min-w-[100px] w-[100px] text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
+                                                className="text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
                                             </div>
 
-                                            <div className="flex items-center">
+                                            <div className="flex items-center min-w-0 w-full">
                                                 <span className="text-[14px] font-bold text-nowrap">Price:</span>
-
                                                 <input type="number" name="option" id="option_price" 
                                                 value={optionToEdit?.price}
                                                 onChange={(e)=>setOptionToEdit(prev =>({...prev, price:Number(e.target.value)}))} 
-                                                className="min-w-[100px] w-[100px] text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
+                                                className="text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
                                             </div>
                                         </div>
 
                                         <button type="button"
                                             onClick={
                                                 ()=>handleSaveOption(optionToEdit)} 
-                                            className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
+                                            className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50">
                                             <Check className="size-4"/>
                                         </button>
                                         <button type="button" 
-                                            onClick={closeOptionEditField} className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
+                                            onClick={closeOptionEditField} className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50">
                                             <Cancel className="size-5"/>
                                         </button>
                                     </div>
                                 ) : (
-                                    <div className={`${opt.id === optionToEdit.id ? 'hidden' : 'flex'} flex items-center gap-[1rem] bg-[#ffdca5]/75 border-2 border-[#ffdca5] p-[0.5rem] px-[0.75rem] rounded-[10px]`}>
-                                        <span className="text-[14px] font-bold">{opt.option} | Php {opt.price}</span>
+                                    <div className={`${opt.id === optionToEdit.id ? 'hidden' : 'flex'} flex items-center justify-between w-full gap-[1rem] bg-[#ffdca5]/75 border-2 border-[#ffdca5] p-[0.5rem] px-[0.75rem]`}>
+
+                                        <div className="flex items-center gap-[1rem] w-full">
+                                            <div className="flex items-center gap-[0.3rem] min-w-0 w-full">
+                                                <span className="text-[14px] font-bold text-nowrap opacity-50">Name:</span>
+                                                <span className="text-[14px] font-bold">{opt.option}</span>
+                                            </div>
+
+                                            <div className="flex items-center gap-[0.3rem] min-w-0 w-full">
+                                                <span className="text-[14px] font-bold text-nowrap opacity-50">Price:</span>
+                                                <span className="text-[14px] font-bold">{opt.price}</span>
+                                            </div>
+                                        </div>
+                                        
 
                                         <div className="flex items-center gap-[0.3rem]">
                                             <button type="button" onClick={()=>handleSelectOption(opt.id)} className="opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer">
@@ -228,19 +248,18 @@ function ConfigurationEditModal ({
                         
 
                         {isOptionFieldOpen && (
-                            <div className="flex items-center w-full px-[0.5rem] bg-[#f2f2f2] border border-[#292929]/50 border-dashed focus-within:border-solid focus-within:border-[#292929] rounded-[10px]">
+                            <div className="flex items-center w-full px-[0.5rem] bg-[#f2f2f2] border-2 border-[#292929]/50 border-dashed focus-within:border-solid focus-within:border-[#292929]">
                                 <div className="flex items-center w-full gap-[1rem]">
                                     <div className="flex items-center justify-between w-full">
-                                        <span className="text-[14px] font-bold text-nowrap">Name:</span>
+                                        <span className="text-[14px] font-bold opacity-50 text-nowrap">Name:</span>
                                         <input type="text" name="option" id="option_new" 
                                         value={newOption.option} 
                                         onChange={(e)=>setNewOption(prev =>({...prev, option:e.target.value}))} 
-                                        required
                                         className="w-full text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
                                     </div>
 
                                     <div className="flex items-center justify-between w-full">
-                                        <span className="text-[14px] font-bold text-nowrap">Price:</span>
+                                        <span className="text-[14px] font-bold opacity-50 text-nowrap">Price:</span>
 
                                         <input type="number" name="option" id="option_new" 
                                         value={newOption.price}
@@ -249,17 +268,18 @@ function ConfigurationEditModal ({
                                     </div>
                                 </div>
 
-                                <button 
+                                <button type='button'
                                     onClick={
                                         ()=>handleAddOptions({ 
                                             id: crypto.randomUUID(),
                                             option: newOption.option, 
                                             price: newOption.price 
                                         })} 
-                                    className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
+                                    className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50">
                                     <Check className="size-4"/>
                                 </button>
-                                <button onClick={()=>setIsOptionFieldOpen(false)} className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
+                                <button type='button'
+                                onClick={()=>setIsOptionFieldOpen(false)} className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50">
                                     <Cancel className="size-5"/>
                                 </button>
                             </div>
@@ -270,8 +290,8 @@ function ConfigurationEditModal ({
 
 
             <div className="flex w-full items-center justify-end gap-[0.2rem] pt-[1rem]">
-                <button type="button" onClick={close} className="w-[8rem] hover:bg-[#f2f2f2] bg-transparent py-[0.5rem] px-[1rem] text-[#292929] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Cancel</button>
-                <button className="w-[8rem] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] py-[0.5rem] px-[1rem] text-[#fff] font-bold rounded-[10px] cursor-pointer transition-all duration-100">Save</button>
+                <button type="button" onClick={close} className="w-[8rem] hover:bg-[#f2f2f2] bg-transparent py-[0.5rem] px-[1rem] text-[#292929] font-bold cursor-pointer transition-all duration-100">Cancel</button>
+                <button className="w-[8rem] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] py-[0.5rem] px-[1rem] text-[#fff] font-bold cursor-pointer transition-all duration-100">Save</button>
             </div>
 
         </form>

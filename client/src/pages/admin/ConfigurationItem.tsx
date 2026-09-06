@@ -21,7 +21,7 @@ function ConfigurationItem ({
     console.log('Config options: ', config.options);
 
     return (
-        <div className="group flex flex-col items-start w-full bg-[#f2f2f2]/50 rounded-[10px] p-[1rem]">
+        <div className="group flex flex-col items-start w-full bg-[#e6e6e6] p-[1rem]">
             <div className="flex items-center justify-between gap-[0.5rem] w-full transition-all duration-100">
                 <div className="flex items-center gap-[0.5rem]">
                     <Folder className="size-5" />

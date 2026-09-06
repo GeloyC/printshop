@@ -15,19 +15,20 @@ function Service () {
 
     return (
         <>
-            <div className="flex flex-col w-full h-full bg-[#fff] overflow-y-auto thin-scrollbar rounded-t-[15px] p-[2rem] gap-[1rem] border border-[#404040]/25">
-                <div className="flex items-center justify-between border-b border-[#292929]/10 pb-[0.5rem]">
-                    <span className="text-[20px] text-[#272727] font-bold leading-none">Service</span>
+            <div className="flex flex-col w-full h-full bg-[#fff] overflow-y-auto thin-scrollbar gap-[1rem]">
+
+                <div className="flex items-center justify-between border-b border-[#292929]/10 p-[1rem]">
+                    <span className="text-[20px] text-[#292929] font-bold">Service</span>
                     
-                    <Link to={'/admin/service/create'} className="flex items-center bg-[#ff6b00] hover:bg-[#ff810a] active:bg-[#ff6b00] rounded-[10px] p-[0.5rem] px-[0.75rem] cursor-pointer transition-all duration-100">
+                    <Link to={'/admin/service/create'} className="flex items-center bg-[#ff6b00] hover:bg-[#ff810a] active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] gap-[0.5rem] cursor-pointer transition-all duration-100">
                         <Add className="size-5" fill='#fff'/>
-                        <span className="text-[#fff] leading-none pl-[0.5rem] text-[14px] font-[600]">Create Service</span>
+                        <span className="text-[#fff] leading-none text-[14px] font-bold">Create Service</span>
                     </Link>
                 </div>
 
-                <div className='sticky grid grid-cols-4 w-full gap-[0.5rem]'>
+                <div className='sticky grid grid-cols-4 w-full gap-[0.5rem] p-[2rem]'>
                     <div className='group grid grid-rows-[5fr_2fr] h-[300px] w-full overflow-hidden cursor-pointer'>
-                        <div className='bg-[#ffdca5] rounded-[10px] border border-[#fff] group-hover:border-[#ff6b00]/25' />
+                        <div className='bg-[#ffdca5] border border-[#fff] group-hover:border-[#ff6b00]/25' />
                         <div className='flex flex-col w-full py-[0.5rem] px-[0.2rem]'>
                             <span className='group-hover:underline group-active:text-[#292929]/75 text-[16px] text-[#292929] font-bold'>Service name</span>
                             <span className='text-[14px] text-[#292929]/50'>Created on Aug 28, 2026</span>

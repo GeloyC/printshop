@@ -10,7 +10,7 @@ function AdminLayout () {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
     return (
-        <div className="flex items-start gap-[1rem] w-full h-screen px-[1rem] bg-[#f2f2f2]">
+        <div className="flex items-start w-full h-screen bg-[#d6d6d6]">
             <NavbarAdmin  
                 setIsExpanded={setIsExpanded}
                 isExpanded={isExpanded}
