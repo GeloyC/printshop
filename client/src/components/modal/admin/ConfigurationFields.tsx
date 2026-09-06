@@ -25,15 +25,17 @@ function ConfigurationFields ({
 
     const [isOptionFieldOpen, setIsOptionFieldOpen] = useState<boolean>(false);
     const [newOption, setNewOption] = useState<ConfigurationOptions>({
+        id: '',
         option: '',
         price: 0
     })
     const [options, setOptions] = useState<ConfigurationOptions[]>([]);
 
-    const handleAddOptions = ({option, price}: ConfigurationOptions) => {
-        setOptions((opt) => [...opt, { option, price }]);
+    const handleAddOptions = ({id = crypto.randomUUID(), option, price}: ConfigurationOptions) => {
+        setOptions((opt) => [...opt, {id, option, price }]);
         
-        setNewOption({
+        setNewOption({ 
+            id: "",
             option: '',
             price: 0
         });
@@ -163,9 +165,10 @@ function ConfigurationFields ({
                                 <button 
                                     onClick={
                                         ()=>handleAddOptions({ 
-                                        option: newOption.option, 
-                                        price: newOption.price 
-                                    })} 
+                                            id: crypto.randomUUID(),
+                                            option: newOption.option, 
+                                            price: newOption.price 
+                                        })} 
                                     className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
                                     <Check className="size-4"/>
                                 </button>

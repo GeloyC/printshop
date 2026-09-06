@@ -7,7 +7,7 @@ import ModalWrapper from "../../components/wrapper/ModalWrapper";
 import ConfigurationEditModal from "../../components/modal/admin/ConfigurationEditModal";
 
 export type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
-export type ConfigurationOptions = { option: string, price: number }
+export type ConfigurationOptions = { id: string, option: string, price: number }
 export type Configuration = {
     id: string,
     key: string,

@@ -26,40 +26,45 @@ function ConfigurationEditModal ({
 
     const [isOptionFieldOpen, setIsOptionFieldOpen] = useState<boolean>(false);
     const [newOption, setNewOption] = useState<ConfigurationOptions>({
+        id: '',
         option: '',
         price: 0
     });
 
     const [optionToEdit, setOptionToEdit] = useState<ConfigurationOptions>({
+        id: '',
         option: '',
         price: 0 
     });
-    
 
-    const handleSelectOption = (option_name: string) => {
-        const selected = selectedConfig?.options.find(item => item.option === option_name);
+
+    const handleSelectOption = (id: string) => {
+        const selected = selectedConfig?.options.find(item => item.id === id);
 
         if (!selected) return;
+
         setOptionToEdit(selected)
     } 
     
     
-    const handleAddOptions = ({option, price}: ConfigurationOptions) => {
+    const handleAddOptions = ({id, option, price}: ConfigurationOptions) => {
         setSelectedConfigEdit(prev => ({
             ...prev,
             options: [
                 ...prev.options,
-                {option, price}
+                {id, option, price}
             ]
         }));
 
         setNewOption({
+            id: '',
             option: '',
             price: 0
         });
 
         setIsOptionFieldOpen(false);
     }
+
 
     const handleDeleteOption = (option_name: string) => {
         setSelectedConfigEdit(prev => ({
@@ -69,6 +74,28 @@ function ConfigurationEditModal ({
             )
         }));
     };
+
+    const closeOptionEditField = () => {
+        setOptionToEdit({
+            id: '',
+            option: '',
+            price: 0 
+        })
+    }
+
+    const handleSaveOption = (editedOption: ConfigurationOptions) => {
+        // save the edited option using this function
+        setSelectedConfigEdit(prev => ({
+            ...prev,
+            options: prev.options.map(opt =>
+                opt.id === editedOption.id
+                    ? editedOption
+                    : opt
+            )
+        }));
+
+        closeOptionEditField();
+    }
 
     const handleSaveForm = (editedConfig: Configuration) => {
         console.log('Form Saved');
@@ -83,6 +110,7 @@ function ConfigurationEditModal ({
         )
         close();
     }
+
 
 
     return (
@@ -146,12 +174,46 @@ function ConfigurationEditModal ({
 
                     <div className="flex flex-col gap-[0.5rem] w-full break-all">
                         <div className="flex flex-wrap items-center w-full gap-[0.2rem]">
-                                {selectedConfig.options.map(opt => (
-                                    <div className="flex items-center gap-[1rem] bg-[#ffdca5]/75 p-[0.5rem] px-[0.75rem] rounded-[10px]">
+                            {selectedConfig.options.map((opt) => (
+                                optionToEdit.id === opt.id ? (
+                                    <div className="flex items-center px-[0.5rem] bg-[#fff8ec] border-2 border-[#ff6b00]/50 border-dashed w-fit focus-within:border-solid focus-within:border-[#ff6b00]/75 rounded-[10px]">
+                                        <div className="flex items-center gap-[1rem]">
+                                            <div className="flex items-center">
+                                                <span className="text-[14px] font-bold text-nowrap">Name:</span>
+                                                <input type="text" name="option" id="option_name" 
+                                                value={optionToEdit?.option} 
+                                                onChange={(e)=>setOptionToEdit(prev =>({...prev, option:e.target.value}))} 
+                                                required
+                                                className="min-w-[100px] w-[100px] text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
+                                            </div>
+
+                                            <div className="flex items-center">
+                                                <span className="text-[14px] font-bold text-nowrap">Price:</span>
+
+                                                <input type="number" name="option" id="option_price" 
+                                                value={optionToEdit?.price}
+                                                onChange={(e)=>setOptionToEdit(prev =>({...prev, price:Number(e.target.value)}))} 
+                                                className="min-w-[100px] w-[100px] text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
+                                            </div>
+                                        </div>
+
+                                        <button type="button"
+                                            onClick={
+                                                ()=>handleSaveOption(optionToEdit)} 
+                                            className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
+                                            <Check className="size-4"/>
+                                        </button>
+                                        <button type="button" 
+                                            onClick={closeOptionEditField} className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
+                                            <Cancel className="size-5"/>
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className={`${opt.id === optionToEdit.id ? 'hidden' : 'flex'} flex items-center gap-[1rem] bg-[#ffdca5]/75 border-2 border-[#ffdca5] p-[0.5rem] px-[0.75rem] rounded-[10px]`}>
                                         <span className="text-[14px] font-bold">{opt.option} | Php {opt.price}</span>
 
                                         <div className="flex items-center gap-[0.3rem]">
-                                            <button type="button" onClick={()=>handleSelectOption(opt.option)} className="opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer">
+                                            <button type="button" onClick={()=>handleSelectOption(opt.id)} className="opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer">
                                                 <Edit className="size-4"/>
                                             </button>
                                             <button type="button" onClick={()=>handleDeleteOption(opt.option)} className="opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer">
@@ -159,8 +221,11 @@ function ConfigurationEditModal ({
                                             </button>
                                         </div>
                                     </div>
-                                ))}
+                                )
+                            ))}
                         </div>
+
+                        
 
                         {isOptionFieldOpen && (
                             <div className="flex items-center w-full px-[0.5rem] bg-[#f2f2f2] border border-[#292929]/50 border-dashed focus-within:border-solid focus-within:border-[#292929] rounded-[10px]">
@@ -187,9 +252,10 @@ function ConfigurationEditModal ({
                                 <button 
                                     onClick={
                                         ()=>handleAddOptions({ 
-                                        option: newOption.option, 
-                                        price: newOption.price 
-                                    })} 
+                                            id: crypto.randomUUID(),
+                                            option: newOption.option, 
+                                            price: newOption.price 
+                                        })} 
                                     className="p-[0.3rem] cursor-pointer hover:bg-[#B1B2B5]/50 rounded-full">
                                     <Check className="size-4"/>
                                 </button>
