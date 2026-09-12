@@ -22,10 +22,13 @@ export type Configuration = {
     options: ConfigurationOptions[]
 }
 
+// util 
+
 function CreateService () {
 
+    const [thumbnailBlob, setThumbnailBlob] = useState<File|null>(null);
+    const [thumbnailPrev, setThumbnailPrev] = useState<string>('')
 
-    
     const [newConfig, setNewConfig] = useState<Configuration>({
         id: crypto.randomUUID(),
         key: '',
@@ -71,7 +74,10 @@ function CreateService () {
 
                 <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar gap-[1rem] p-[1rem]">
                     <ThumbnailComp 
-
+                        thumbnailPrev={thumbnailPrev}
+                        thumbnailBlob={thumbnailBlob}
+                        setThumbnailBlob={setThumbnailBlob}
+                        setThumbnailPrev={setThumbnailPrev}
                     />
 
                     <div className="flex flex-col w-[700px] gap-[1.5rem]">
