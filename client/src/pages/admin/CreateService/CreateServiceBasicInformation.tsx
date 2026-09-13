@@ -1,5 +1,6 @@
 import type { SetStateAction } from "react";
-import type { BasicInformationType } from "../../../pages/admin/CreateService"
+// import type { BasicInformationType } from "./CreateService"
+import type { BasicInformationType } from "../../../types/admin/service";
 
 interface BasicInformationProp {
     basicInfo: BasicInformationType;
@@ -7,7 +8,7 @@ interface BasicInformationProp {
 }
 
 
-function BasicInformation ({
+function CreateServiceBasicInformation ({
     basicInfo,
     setBasicInfo
 }:BasicInformationProp) {
@@ -52,4 +53,4 @@ function BasicInformation ({
 
 }
 
-export default BasicInformation
+export default CreateServiceBasicInformation

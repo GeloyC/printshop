@@ -13,13 +13,13 @@ function TopNavAdmin () {
     const [dropDown, setDropDown] = useState<boolean>(false);
 
     return (
-        <div className="flex items-center justify-end w-full min-h-[3rem] max-h-[3rem]">
-            <button className='hover:bg-[#ffc36d] active:bg-[#ffc36d]/50 h-[3rem] px-[1rem] cursor-pointer'>
+        <div className="flex items-center justify-end w-full min-h-[3rem] max-h-[3rem] z-10">
+            <button className='hover:bg-[#ffc36d] active:bg-[#ffc36d]/50 h-[3rem] px-[1rem] cursor-pointer border-r border-dashed border-[#292929]/25 '>
                 <Notification className='size-6' fill='#272727' />
             </button>
 
             <div className='relative flex flex-col'>
-                <button onClick={()=>setDropDown(open=>!open)} title='Account' className={`flex items-center cursor-pointer hover:bg-[#ffc36d] active:bg-[#ffc36d]/50 ${dropDown && 'bg-[#ffc36d]'} gap-[0.5rem] h-[3rem] px-[0.5rem]`}>
+                <button onClick={()=>setDropDown(open=>!open)} title='Account' className={`flex items-center cursor-pointer hover:bg-[#ffc36d] active:bg-[#ffc36d]/50 ${dropDown && 'bg-[#ffc36d]'} gap-[0.5rem] h-[3rem] px-[1rem]`}>
                     <Account className='size-6 rounded-full' fill='#272727'/>
                     <span className='text-[#272727] font-bold leading-tight'>Angelo Cabangal</span>
                 </button>

@@ -1,5 +1,5 @@
 
-import type { Configuration } from "./CreateService";
+import type { Configuration } from "../../../types/admin/service";
 
 // icons
 import Delete from '/src/assets/icon/delete.svg?react'
@@ -8,24 +8,23 @@ import Folder from '/src/assets/icon/configuration-item.svg?react'
 
 interface ConfigItemProp {
     config: Configuration;
-    handleDeleteConfig: (id: string) => void;
+    onDelete: (id: string) => void;
     selectConfigToEdit: () => void;
 }
 
 function ConfigurationItem ({ 
     config, 
-    handleDeleteConfig, 
+    onDelete, 
     selectConfigToEdit,
 }: ConfigItemProp) {
 
-    console.log('Config options: ', config.options);
 
     return (
         <div className="group flex flex-col items-start w-full bg-[#e6e6e6] p-[1rem]">
             <div className="flex items-center justify-between gap-[0.5rem] w-full transition-all duration-100">
                 <div className="flex items-center gap-[0.5rem]">
                     <Folder className="size-5" />
-                    <span className="text-[14px] font-bold leading-none">{config.label}</span>
+                    <span className="text-[14px] font-bold leading-none">{config?.label}</span>
                 </div>
 
                 <div className="opacity-0 group-hover:opacity-100 flex items-center gap-[0.3rem]">
@@ -34,7 +33,7 @@ function ConfigurationItem ({
                         <span className="text-[14px] font-bold leading-none">Edit</span>
                     </button>
 
-                    <button onClick={()=>handleDeleteConfig(config.id)} title="Delete" className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
+                    <button onClick={()=>onDelete(config?.id)} title="Delete" className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
                         <Delete className="size-4" />
                         <span className="text-[14px] font-bold leading-none">Delete</span>
                     </button>
@@ -44,15 +43,15 @@ function ConfigurationItem ({
             <div className="flex items-center w-full gap-[1rem] opacity-50">
                 <div className="flex items-center gap-[0.3rem] border-r border-dashed border-r-[#292929]/25 pr-[1rem]">
                     <span className="text-[14px]">Key: </span>
-                    <span className="text-[14px] font-bold">{config.key}</span>
+                    <span className="text-[14px] font-bold">{config?.key}</span>
                 </div>
 
                 <div className="flex items-center gap-[0.3rem] border-r border-dashed border-r-[#292929]/25 pr-[1rem]">
                     <span className="text-[14px]">type: </span>
-                    <span className="text-[14px] font-bold">{config.type}</span>
+                    <span className="text-[14px] font-bold">{config?.type}</span>
                 </div>
 
-                <span className="text-[14px] font-bold">{config.options.length} options</span>
+                <span className="text-[14px] font-bold">{config?.options.length} options</span>
             </div>
             
         </div>

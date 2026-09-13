@@ -1,40 +1,30 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 // icon
 import Save from '/src/assets/icon/save.svg?react'
-import Arrow from '/src/assets/icon/arrow-no-tail.svg?react' 
 
 
 // component
-import ConfigurationFields from "../../components/modal/admin/ConfigurationFields";
-import ModalWrapper from "../../components/wrapper/ModalWrapper";
-import ConfigurationEditModal from "../../components/modal/admin/ConfigurationEditModal";
-import BasicInformation from "../../components/admin/CreateService/BasicInformation";
-import ConfigurationComp from "../../components/admin/CreateService/ConfigurationComp";
-import ThumbnailComp from "../../components/admin/CreateService/ThumbnailComp";
+import ConfigurationFields from "../../../components/modal/admin/ConfigurationFields";
+import ModalWrapper from "../../../components/wrapper/ModalWrapper";
+import ConfigurationEditModal from "../../../components/modal/admin/ConfigurationEditModal";
+import CreateServiceBasicInformation from "./CreateServiceBasicInformation";
+import CSConfiguration from "./CSConfiguration";
+import ThumbnailComp from "./ThumbnailComp";
+import ReturnButton from "../../../components/ui/ReturnButton";
+
+import type { 
+    BasicInformationType,
+    ConfigurationType,
+    ConfigurationOptions,
+    Configuration 
+} from "../../../types/admin/service";
 
 
-export type BasicInformationType = {
-    name: string,
-    description: string,
-    base_price: number
-}
-export type ConfigurationType = '' | "text" | "select" | "checkbox" | "radio" | "number";
-export type ConfigurationOptions = { id: string, option: string, price: number }
-export type Configuration = {
-    id: string,
-    key: string,
-    label: string,
-    type?: ConfigurationType | null,   
-    options: ConfigurationOptions[]
-}
 
 // util 
 
 function CreateService () {
-
-    const navigate = useNavigate();
 
     const [thumbnailBlob, setThumbnailBlob] = useState<File|null>(null);
     const [thumbnailPrev, setThumbnailPrev] = useState<string>('')
@@ -62,7 +52,7 @@ function CreateService () {
 
 
     const [isConfigFieldOpen, setIsConfigFieldOpen] = useState<boolean>(false);
-    const [isConfigEditModalOpen, setIsConfigEditModalIsOpen] = useState<boolean>(false);
+    const [isConfigEditModalOpen, setIsConfigEditModalOpen] = useState<boolean>(false);
 
 
     const closeConfigModal = () => {
@@ -82,10 +72,7 @@ function CreateService () {
                 <div className="flex items-center justify-between w-full border-b border-[#292929]/10 p-[1rem]">
 
                     <div className="flex items-center gap-[0.5rem]">
-                        <button onClick={()=>navigate(-1)}
-                            className="cursor-pointer rounded-full hover:bg-[#B1B2B5]/50 active:bg-transparent">
-                            <Arrow className="size-6" color="#292929" />
-                        </button>
+                        <ReturnButton/>
                         <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
                     </div>
 
@@ -104,17 +91,17 @@ function CreateService () {
                     />
 
                     <div className="flex flex-col w-[700px] gap-[1.5rem]">
-                        <BasicInformation 
+                        <CreateServiceBasicInformation 
                             basicInfo={basicInfo}
                             setBasicInfo={setBasicInfo}
                         />
-                        <ConfigurationComp 
+                        <CSConfiguration 
                             isConfigFieldOpen={isConfigFieldOpen}
                             setIsConfigFieldOpen={setIsConfigFieldOpen}
                             configs={configs}
                             setConfigs={setConfigs}
                             setSelectedConfigEdit={setSelectedConfigEdit}
-                            openEditModal={()=>setIsConfigEditModalIsOpen(true)}
+                            openEditModal={()=>setIsConfigEditModalOpen(true)}
                         />
                     </div>
                 </div>
@@ -137,7 +124,7 @@ function CreateService () {
                 <ModalWrapper>
                     <ConfigurationEditModal 
                         selectedConfig={selectedConfigEdit}
-                        close={()=>setIsConfigEditModalIsOpen(false)}
+                        close={()=>setIsConfigEditModalOpen(false)}
                         setSelectedConfigEdit={setSelectedConfigEdit}
                         setConfigs={setConfigs}
                     />

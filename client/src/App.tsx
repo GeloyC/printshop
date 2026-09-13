@@ -6,8 +6,8 @@ import Home from './pages/client/Home'
 import DocumentPrintSetup from './pages/client/DocumentPrintSetup'
 import AdminLayout from './layouts/admin.layout'
 import Service from './pages/admin/Service'
-import CreateService from './pages/admin/CreateService'
-import SelectedService from './pages/admin/SelectedService'
+import CreateService from './pages/admin/CreateService/CreateService'
+import SelectedService from './pages/admin/SelectedService/SelectedService'
 
 function App() {
 

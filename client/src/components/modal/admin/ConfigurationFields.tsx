@@ -5,7 +5,7 @@ import Cancel from '/src/assets/icon/close.svg?react'
 import Check from '/src/assets/icon/save-check.svg?react'
 
 // types
-import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService";
+import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService/CreateService";
 
 interface ConfigurationProps {
     setNewConfig: React.Dispatch<SetStateAction<Configuration>>

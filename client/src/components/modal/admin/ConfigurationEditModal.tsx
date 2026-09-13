@@ -1,4 +1,4 @@
-import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService";
+import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService/CreateService";
 
 import { useState, type SetStateAction } from "react";
 

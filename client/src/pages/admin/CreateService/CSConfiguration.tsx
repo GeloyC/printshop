@@ -1,7 +1,7 @@
 import type { SetStateAction } from "react"
-import type { Configuration } from "../../../pages/admin/CreateService"
+import type { Configuration } from "../../../types/admin/service"
 
-import ConfigurationItem from "../../../pages/admin/ConfigurationItem"
+import ConfigurationItem from "../../../components/admin/ServiceConfiguration/ConfigurationItem"
 
 interface ConfigurationProp {
     setIsConfigFieldOpen: React.Dispatch<SetStateAction<boolean>>
@@ -12,7 +12,7 @@ interface ConfigurationProp {
     openEditModal: ()=>void;
 }
 
-function ConfigurationComp ({
+function CSConfiguration ({
     setIsConfigFieldOpen,
     isConfigFieldOpen,
     configs,
@@ -52,7 +52,7 @@ function ConfigurationComp ({
                     {configs.map(config=>(
                         <ConfigurationItem key={config.key}
                             config={config}
-                            handleDeleteConfig={handleDeleteConfig}
+                            onDelete={handleDeleteConfig}
                             selectConfigToEdit={()=>selectConfigToEdit(config.id)}
                         />
                     ))}
@@ -62,4 +62,4 @@ function ConfigurationComp ({
     )
 }
 
-export default ConfigurationComp
+export default CSConfiguration
