@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // icon
 import Save from '/src/assets/icon/save.svg?react'
+import Arrow from '/src/assets/icon/arrow-no-tail.svg?react' 
 
 
 // component
@@ -12,7 +14,13 @@ import BasicInformation from "../../components/admin/CreateService/BasicInformat
 import ConfigurationComp from "../../components/admin/CreateService/ConfigurationComp";
 import ThumbnailComp from "../../components/admin/CreateService/ThumbnailComp";
 
-export type ConfigurationType = "text" | "select" | "checkbox" | "radio" | "number";
+
+export type BasicInformationType = {
+    name: string,
+    description: string,
+    base_price: number
+}
+export type ConfigurationType = '' | "text" | "select" | "checkbox" | "radio" | "number";
 export type ConfigurationOptions = { id: string, option: string, price: number }
 export type Configuration = {
     id: string,
@@ -26,8 +34,16 @@ export type Configuration = {
 
 function CreateService () {
 
+    const navigate = useNavigate();
+
     const [thumbnailBlob, setThumbnailBlob] = useState<File|null>(null);
     const [thumbnailPrev, setThumbnailPrev] = useState<string>('')
+
+    const [basicInfo, setBasicInfo] = useState<BasicInformationType>({
+        name: '',
+        description: '',
+        base_price: 0
+    })
 
     const [newConfig, setNewConfig] = useState<Configuration>({
         id: crypto.randomUUID(),
@@ -64,7 +80,14 @@ function CreateService () {
             <div className="flex flex-col h-full bg-[#fff]">
                 
                 <div className="flex items-center justify-between w-full border-b border-[#292929]/10 p-[1rem]">
-                    <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
+
+                    <div className="flex items-center gap-[0.5rem]">
+                        <button onClick={()=>navigate(-1)}
+                            className="cursor-pointer rounded-full hover:bg-[#B1B2B5]/50 active:bg-transparent">
+                            <Arrow className="size-6" color="#292929" />
+                        </button>
+                        <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
+                    </div>
 
                     <button className="flex items-center gap-[0.3rem] bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] cursor-pointer transition-all duration-100">
                         <span className="text-[#fff] text-[14px] leading-none font-bold">Save</span>
@@ -81,7 +104,10 @@ function CreateService () {
                     />
 
                     <div className="flex flex-col w-[700px] gap-[1.5rem]">
-                        <BasicInformation />
+                        <BasicInformation 
+                            basicInfo={basicInfo}
+                            setBasicInfo={setBasicInfo}
+                        />
                         <ConfigurationComp 
                             isConfigFieldOpen={isConfigFieldOpen}
                             setIsConfigFieldOpen={setIsConfigFieldOpen}

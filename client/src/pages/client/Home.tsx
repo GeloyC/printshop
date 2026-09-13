@@ -12,10 +12,9 @@ function Home () {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
-            if (!e.target.files) return;
 
             const file = e.target.files;
-            console.log(file);
+            if (!file) return;
 
             if (file.length >= 0) {
                 setFiles(Array.from(file).map((file) => ({

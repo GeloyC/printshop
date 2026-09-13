@@ -7,6 +7,7 @@ import DocumentPrintSetup from './pages/client/DocumentPrintSetup'
 import AdminLayout from './layouts/admin.layout'
 import Service from './pages/admin/Service'
 import CreateService from './pages/admin/CreateService'
+import SelectedService from './pages/admin/SelectedService'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
 
         <Route element={<AdminLayout />}>
           <Route path="/admin/service" element={<Service />}/>
+          <Route path='/admin/service/service_name' element={<SelectedService />}/> {/* Change this later to :service_name */}
           <Route path='/admin/service/create' element={<CreateService />} />
         </Route>
       </Routes>
