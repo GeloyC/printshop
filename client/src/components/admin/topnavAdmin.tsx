@@ -27,18 +27,18 @@ function TopNavAdmin () {
                 {dropDown && (
                     <>
                         <div onClick={()=>setDropDown(false)} className='fixed inset-0'/>
-                        <div className={`absolute top-10 right-0 flex flex-col w-full p-[0.5rem] gap-[0.5rem] bg-[#ffc36d] shadow-lg`}>
-                            <button className='flex items-center justify-between w-full gap-[0.5rem] p-[0.5rem] hover:bg-[#fff8ec] active:bg-[#ffdca5]/50 transparent-all duration-100 cursor-pointer'>
+                        <div className={`absolute top-10 right-0 flex flex-col w-full bg-[#ffc36d] shadow-lg`}>
+                            <button className='flex items-center justify-between w-full gap-[0.5rem] p-[0.75rem] px-[1rem] hover:bg-[#fff8ec] active:bg-[#ffdca5]/50 transparent-all duration-100 cursor-pointer'>
                                 <span className='leading-none text-nowrap text-[#272727] text-[14px] font-bold'>Settings</span>
                                 <Settings className='size-5' />
                             </button>
                             
-                            <Link to="/" className='flex items-center justify-between w-full gap-[0.5rem] p-[0.5rem] hover:bg-[#fff8ec] active:bg-[#ffdca5]/50 transparent-all duration-100'>
+                            <Link to="/" className='flex items-center justify-between w-full gap-[0.5rem] p-[0.75rem] px-[1rem] hover:bg-[#fff8ec] active:bg-[#ffdca5]/50 transparent-all duration-100'>
                                 <span className='leading-none text-nowrap text-[#272727] text-[14px] font-bold'>Go to Home</span>
                                 <Home className="size-5" fill='#272727' />
                             </Link>
 
-                            <button className='flex items-center justify-between w-full gap-[0.5rem] p-[0.5rem] hover:bg-[#fff8ec] active:bg-[#ffdca5]/50 transparent-all duration-100 cursor-pointer'>
+                            <button className='flex items-center justify-between w-full gap-[0.5rem] p-[0.75rem] px-[1rem] hover:bg-[#fff8ec] active:bg-[#ffdca5]/50 transparent-all duration-100 cursor-pointer'>
                                 <span className='leading-none text-nowrap text-[#272727] text-[14px] font-bold'>Logout</span>
                                 <Logout className='size-5' />
                             </button>

@@ -15,8 +15,6 @@ import ReturnButton from "../../../components/ui/ReturnButton";
 
 import type { 
     BasicInformationType,
-    ConfigurationType,
-    ConfigurationOptions,
     Configuration 
 } from "../../../types/admin/service";
 

@@ -5,7 +5,12 @@ import Cancel from '/src/assets/icon/close.svg?react'
 import Check from '/src/assets/icon/save-check.svg?react'
 
 // types
-import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService/CreateService";
+// import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService/CreateService";
+import type { 
+    Configuration,
+    ConfigurationOptions,
+    ConfigurationType
+} from "../../../types/admin/service"
 
 interface ConfigurationProps {
     setNewConfig: React.Dispatch<SetStateAction<Configuration>>
@@ -107,11 +112,11 @@ function ConfigurationFields ({
                     <select name="type" id="type" value={newConfig.type as ConfigurationType} onChange={handleTypeChange}
                     className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75">
                         <option hidden defaultValue={''}>-- Select type --</option>
-                        <option value="select">Dropdown Selection</option>
-                        <option value="text">Text Field</option>
-                        <option value="number">Number Field</option>
-                        <option value="checkbox">Checkbox</option>
-                        <option value="radio">Radio</option>
+                        <option value="select">Dropdown Selection (select)</option>
+                        <option value="text">Text Field (text)</option>
+                        <option value="number">Number Field (number)</option>
+                        <option value="checkbox">Checkbox (checkbox)</option>
+                        <option value="radio">Radio (radio)</option>
                     </select>
                 </div>
 
@@ -129,10 +134,13 @@ function ConfigurationFields ({
 
                         <div className="flex flex-col gap-[0.5rem] w-full break-all">
 
-                            <div className="flex flex-wrap items-center w-full gap-[0.2rem]">
+                            <div className="flex flex-col items-start w-full gap-[0.2rem]">
                                 {options.length > 0 ? (
                                     options.map(opt => (
-                                        <span className="bg-[#ffdca5]/75 text-[14px] font-bold p-[0.5rem] px-[0.75rem]">{opt.option} | Php {opt.price}</span>
+                                        <div className="grid grid-cols-2 bg-[#ffdca5]/75 p-[0.5rem] px-[0.75rem] w-full">
+                                            <span className="text-[14px] font-bold">Name: {opt.option}</span>
+                                            <span className="text-[14px] font-bold">Price: Php {opt.price}</span>
+                                        </div>
                                     ))
                                 ): (
                                     !isOptionFieldOpen && (

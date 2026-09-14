@@ -37,18 +37,21 @@ function DocumentPrintSetup () {
             <div className="flex flex-col w-full h-full items-center py-[2rem] px-[16rem] gap-[2rem]">
 
                 <div className="grid grid-cols-4 w-[600px] justify-even gap-[0.3rem]">
-                    <div className="load-progress  w-full h-[5px] bg-[#09de0a] rounded-full" />
-                    <div className="w-full h-[5px] bg-[#a3a3a3] rounded-full opacity-50" />
-                    <div className="w-full h-[5px] bg-[#a3a3a3] rounded-full opacity-50" />
-                    <div className="w-full h-[5px] bg-[#a3a3a3] rounded-full opacity-50" />
+                    <div className="load-progress  w-full h-[5px] bg-[#09de0a]" />
+                    <div className="w-full h-[5px] bg-[#a3a3a3] opacity-50" />
+                    <div className="w-full h-[5px] bg-[#a3a3a3] opacity-50" />
+                    <div className="w-full h-[5px] bg-[#a3a3a3] opacity-50" />
                 </div>
 
-                <span className="text-[28px] font-bold text-[#272727] leading-none">Setup your files</span>
+                <div className="flex flex-col gap-[0.3rem] items-center">
+                    <span className="text-[28px] font-bold text-[#272727] leading-none">Setup your files</span>
+                    <span className="text-[16px] opacity-75">Add a short instruction here, say something that makes sense</span>
+                </div>
 
                 <div className="flex flex-col w-full h-full items-center justify-between">
                     <div className="flex flex-col items-center gap-[0.5rem] w-full">
                         {files.map((f, index) => (
-                            <div key={index} className="group flex items-center justify-between bg-[#fff0d3] w-[600px] hover:w-[620px] p-[1rem] rounded-[5px] transition-all duration-100">
+                            <div key={index} className="group flex items-center justify-between bg-[#fff0d3] w-[600px] hover:w-[620px] p-[1rem]  transition-all duration-100">
                                 <div className="flex items-center justify-between w-full">
                                     <div className="flex items-center gap-[0.5rem]">
                                         <Document className="size-5" color="#a13c0b"/>
@@ -64,7 +67,7 @@ function DocumentPrintSetup () {
                             </div>
                         ))}
 
-                        <div className="group flex items-center justify-between bg-[#8AFF8A] w-[600px] hover:w-[620px] p-[1rem] rounded-[5px] transition-all duration-100">
+                        <div className="group flex items-center justify-between bg-[#8AFF8A] w-[600px] hover:w-[620px] p-[1rem] transition-all duration-100">
                             <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-[0.5rem]">
                                     <Check className="size-5" />
@@ -79,11 +82,11 @@ function DocumentPrintSetup () {
                     </div>
 
                     <div className="flex flex-col items-center justify-center w-full gap-[0.3rem]">
-                        <button className="bg-[#B1B2B5]/25 hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5] w-[600px] py-[1rem] cursor-pointer rounded-[10px]">
+                        <button className="bg-[#B1B2B5]/25 hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5] w-[600px] py-[1rem] cursor-pointer">
                             <span className="text-[#272727] font-[600]">Add file/s</span> 
                         </button>
 
-                        <button className="bg-[#141414] hover:bg-[#272727] active:bg-[#0b0b0b] w-[600px] py-[1rem] cursor-pointer rounded-[10px]">
+                        <button className="bg-[#141414] hover:bg-[#272727] active:bg-[#0b0b0b] w-[600px] py-[1rem] cursor-pointer">
                             <span className="text-[#FFF]">Proceed</span> 
                         </button>
                     </div>
