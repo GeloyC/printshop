@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
-import NavbarAdmin from "../components/navbarAdmin"
-import TopNavAdmin from "../components/topnavAdmin"
+import NavbarAdmin from "../components/admin/navbarAdmin"
+import TopNavAdmin from "../components/admin/topnavAdmin"
 
 import { useState } from "react"
 
