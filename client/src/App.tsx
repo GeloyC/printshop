@@ -5,7 +5,8 @@ import ClientLayout from './layouts/client.layout'
 import Home from './pages/client/Home/Home' 
 import DocumentPrintSetup from './pages/client/DocumentPrintSetup'
 import AdminLayout from './layouts/admin.layout'
-import Service from './pages/admin/Service'
+import ServiceClient from './pages/client/Service/ServiceClient'
+import ServiceAdmin from './pages/admin/ServiceAdmin'
 import CreateService from './pages/admin/CreateService/CreateService'
 import SelectedService from './pages/admin/SelectedService/SelectedService'
 
@@ -16,11 +17,12 @@ function App() {
       <Routes >
         <Route element={<ClientLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path='/service/slug' element={<ServiceClient />} /> {/* change path t0 /service/:slug later*/}
           <Route path="/document-print/setup" element={<DocumentPrintSetup/>} />
         </Route>
 
         <Route element={<AdminLayout />}>
-          <Route path="/admin/service" element={<Service />}/>
+          <Route path="/admin/service" element={<ServiceAdmin />}/>
           <Route path='/admin/service/service_name' element={<SelectedService />}/> {/* Change this later to :service_name */}
           <Route path='/admin/service/create' element={<CreateService />} />
         </Route>

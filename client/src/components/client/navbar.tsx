@@ -13,9 +13,9 @@ function NavBar () {
     
     return (
         <>
-            <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] px-[0.75rem]">
+            <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] px-[12rem] py-[0.75rem]">
                 <div className="flex items-center h-full gap-[1rem]">
-                    <Link to="/" className="text-[#ff6b00] font-bold pl-[1rem]">PRINT SHOP</Link>
+                    <Link to="/" className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
 
                     <div className="group relative flex h-full">
                         <div className="flex h-full items-center cursor-pointer">

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 // icons
-import Check from '/src/assets/icon/check.svg?react'
+import Document from '/src/assets/icon/document.svg?react'
 import CheckboxType from '../../ui/ConfigurationType/CheckboxType';
 import ConfigItemWrapper from '../../wrapper/ConfigItemWrapper';
 import RadioType from '../../ui/ConfigurationType/RadioType';
@@ -26,18 +26,24 @@ function DocumentPrintFileSetupModal ({
 
             <div className='flex flex-col w-full '>
                 <span className='text-[14px] font-bold text-[#575757]'>File</span>
-                <span className="text-[16px] text-[#292929] font-bold leading-none p-[1rem] border border-[#ffdca5] bg-[#fff0d3]">{selectedFile}</span>
+
+                <div className='flex items-center gap-[0.5rem] w-full p-[1rem] border border-dashed border-[#ff9e32] bg-[#fff0d3]'>
+                    <Document className='size-5' />
+                    <span className="text-[16px] text-[#292929] font-bold leading-none ">{selectedFile}</span>
+                </div>
             </div>
 
 
             <div className="flex flex-col w-full gap-[1rem]">
-                <span className='text-[18px] text-[#292929] font-bold leading-none'>Configuration</span>
 
                 <ConfigItemWrapper configLabel='Checkbox'>
+                    <CheckboxType />
+                    <CheckboxType />
                     <CheckboxType />
                 </ConfigItemWrapper>
 
                 <ConfigItemWrapper configLabel='Radio'>
+                    <RadioType />
                     <RadioType />
                 </ConfigItemWrapper>
 

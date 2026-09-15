@@ -8,7 +8,7 @@ import Add from '/src/assets/icon/add-service.svg?react'
 import ModalWrapper from '../../components/wrapper/ModalWrapper';
 import CreateServiceModal from '../../components/modal/admin/CreateServiceModal';
 
-function Service () {
+function ServiceAdmin () {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     
@@ -50,4 +50,4 @@ function Service () {
     )
 }
 
-export default Service;
+export default ServiceAdmin;
