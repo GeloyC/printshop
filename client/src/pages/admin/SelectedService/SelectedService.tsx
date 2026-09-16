@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { 
     BasicInformationType, 
     Configuration 
-} from "../../../types/admin/service";
+} from "../../../types/service/service";
 
 // icons
 

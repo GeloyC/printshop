@@ -13,7 +13,7 @@ function NavBar () {
     
     return (
         <>
-            <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] px-[12rem] py-[0.75rem]">
+            <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] py-[0.75rem]">
                 <div className="flex items-center h-full gap-[1rem]">
                     <Link to="/" className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
 
@@ -25,15 +25,15 @@ function NavBar () {
                             </div>
                         </div>
 
-                        <div className="absolute top-[3rem] left-1/2 -translate-x-1/2 p-[0.5rem] hidden group-hover:flex flex flex-col items-start shadow-lg bg-[#FFF] border border-[#272727]/10">
-                            <Link to="/" className="whitespace-nowrap py-[0.5rem] px-[1rem] hover:bg-[#B1B2B5]/25 active:bg-[#B1B2B5]/35">Document Print</Link>
+                        <div className="fade-up absolute top-[2.5rem] left-1/2 -translate-x-1/2 p-[0.2rem] hidden group-hover:flex flex flex-col items-start shadow-lg bg-[#FFF] border border-[#272727]/10">
+                            <Link to="/service/slug" className="whitespace-nowrap py-[0.5rem] px-[1rem] hover:bg-[#B1B2B5]/25 active:bg-[#B1B2B5]/35">Document Print</Link>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex items-center h-full gap-[0.2rem]">
                     <Link to="/admin/service">Temporary admin button</Link>
-                    <button onClick={()=>setLoginOpen(true)} className="border border-[#272727]/10 hover:border-[#272727]/50 active:border-[#272727] px-[1rem] py-[0.5rem] cursor-pointer transition-all duration-100">
+                    <button onClick={()=>setLoginOpen(true)} className="bg-[#ffdca5] hover:bg-[#ffc36d] active:bg-[#ffdca5] px-[1rem] py-[0.5rem] cursor-pointer transition-all duration-100">
                         <span className="px-[1rem] font-bold text-[14px]">Login</span>
                     </button>
                     <button onClick={()=>setSignupOpen(true)} className="border border-[#ff6b00] bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] cursor-pointer transition-all duration-100">

@@ -1,20 +1,17 @@
 import { createContext, useState, type ReactNode, type Dispatch, type SetStateAction, useContext, } from "react";
 
-type DocumentPrintFile = {
-    filename: string,
-    file: File
-} ;
 
 type FileContextType = {
-    files: DocumentPrintFile[];
-    setFiles: Dispatch<SetStateAction<DocumentPrintFile[]>>;
+    files: File[];
+    setFiles: Dispatch<SetStateAction<File[]>>;
 };
 
 export const FileContext = createContext<FileContextType|undefined>(undefined);
 
+
 export function FileProvider ({ children }:{ children: ReactNode }) {
 
-    const [files, setFiles] = useState<DocumentPrintFile[]>([]);
+    const [files, setFiles] = useState<File[]>([]);
     return (
         <FileContext.Provider value={{ files, setFiles }}> 
             { children } 

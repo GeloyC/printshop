@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import ClientLayout from './layouts/client.layout'
 import Home from './pages/client/Home/Home' 
-import DocumentPrintSetup from './pages/client/DocumentPrintSetup'
 import AdminLayout from './layouts/admin.layout'
 import ServiceClient from './pages/client/Service/ServiceClient'
 import ServiceAdmin from './pages/admin/ServiceAdmin'
@@ -17,8 +16,8 @@ function App() {
       <Routes >
         <Route element={<ClientLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path='/service/slug' element={<ServiceClient />} /> {/* change path t0 /service/:slug later*/}
-          <Route path="/document-print/setup" element={<DocumentPrintSetup/>} />
+          <Route path='/service/slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
+          <Route path='/service/slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
         </Route>
 
         <Route element={<AdminLayout />}>

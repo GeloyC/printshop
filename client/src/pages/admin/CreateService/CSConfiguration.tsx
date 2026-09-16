@@ -1,5 +1,5 @@
 import type { SetStateAction } from "react"
-import type { Configuration } from "../../../types/admin/service"
+import type { Configuration } from "../../../types/service/service"
 
 import ConfigurationItem from "../../../components/admin/ServiceConfiguration/ConfigurationItem"
 

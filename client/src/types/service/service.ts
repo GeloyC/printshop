@@ -27,3 +27,4 @@ export type Configuration = {
     type?: ConfigurationType | null,   
     options: ConfigurationOptions[]
 }
+

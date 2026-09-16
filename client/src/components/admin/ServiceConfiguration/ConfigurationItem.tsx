@@ -1,5 +1,5 @@
 
-import type { Configuration } from "../../../types/admin/service";
+import type { Configuration } from "../../../types/service/service";
 
 // icons
 import Delete from '/src/assets/icon/delete.svg?react'

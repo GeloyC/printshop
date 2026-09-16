@@ -10,7 +10,7 @@ import type {
     Configuration,
     ConfigurationOptions,
     ConfigurationType
-} from "../../../types/admin/service"
+} from "../../../types/service/service"
 
 interface ConfigurationProps {
     setNewConfig: React.Dispatch<SetStateAction<Configuration>>

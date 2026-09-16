@@ -1,6 +1,6 @@
 import type { SetStateAction } from "react";
 // import type { BasicInformationType } from "./CreateService"
-import type { BasicInformationType } from "../../../types/admin/service";
+import type { BasicInformationType } from "../../../types/service/service";
 
 interface BasicInformationProp {
     basicInfo: BasicInformationType;

@@ -30,7 +30,7 @@ function Home () {
     // }
 
     return (
-        <div className="flex flex-col w-full h-full items-center justify-center gap-[2rem] px-[12rem]">
+        <div className="flex flex-col w-full h-full items-center justify-center gap-[2rem]">
             
             <div className='flex flex-col items-center w-full gap-[2rem] pt-[3rem]'>
                 {/* <span className='text-[14px] text-[#ff6b00] font-bold bg-[#ff6b00]/15 px-[1rem] py-[0.5rem]'>DOCUMENT PRINT</span> */}

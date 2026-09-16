@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import type { ConfigurationType } from "../../types/admin/service"
+import type { ConfigurationType } from "../../types/service/service"
 
 interface ConfigItemWrapperProp {
     configLabel: string,
