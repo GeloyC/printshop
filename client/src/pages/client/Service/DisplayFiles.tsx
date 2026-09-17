@@ -1,8 +1,12 @@
 
 
 // components
-import { useEffect, useState, type SetStateAction } from "react";
+import { type SetStateAction } from "react";
 import UploadFileButton from "./UploadFileButton";
+
+// icon
+import DocumentItem from "../../../components/client/DocumentViewer/DocumentItem";
+import AddFileButton from "./AddFileButton";
 
 interface DisplayFilesProp {
     files: File[]
@@ -14,9 +18,6 @@ function DisplayFiles ({
     setFiles
 }:DisplayFilesProp) {
 
-    const [filePreview, setFilePreview] = useState<string[]>();
-
-
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
@@ -24,45 +25,45 @@ function DisplayFiles ({
         if (!files) return;
 
         setFiles(files);
-        
-        const previews = files.map(arr => {
-            const url = URL.createObjectURL(arr);
-            return url;
-        });
-
-        setFilePreview(previews);
-        
-        console.log(typeof files, files);
     }
 
-    useEffect(() => {
+    const handleAddFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        const files = Array.from(e.target.files ?? []);
+        if (!files) return;
 
-    }, [files])
+        setFiles(items => [...Array.from(items), ...files]);
+    }
+
+    const handleRemoveFile  = (index:number) => {
+        setFiles(files => 
+                Array.from(files).filter((item, idx) => idx !== index)
+        )
+    }
+
 
     return (
         <div className="fade-up flex flex-col w-full h-full gap-[1rem]">
-            <div className="flex flex-wrap items-center justify-center w-full h-full bg-[#fff] border border-dashed border-[#ff6b00]/50">
-                <div className="flex flex-col gap-[0.3rem]">
-                    <UploadFileButton 
-                        handleFileChange={handleFileChange}
-                    />
-                    <span>Display the files here</span>
-                    {files.map((file, index) => (
-                        <span key={index}>{file.name}</span>
-                    ))}
-
-                    {filePreview?.map(prev => (
-                        <>
-                            <span>file preview: {prev}</span>
-                            <img src={prev} alt="" />
-                        </>
-                    ))}
-                </div>
+            <div className="flex items-center justify-center w-full h-full bg-[#fff] border border-dashed border-[#ff6b00]/50 px-[1rem]">
+                {files.length < 1 ? (
+                    <UploadFileButton handleFileChange={handleFileChange} />
+                ):(
+                    <div className="flex flex-wrap items-center justify-center gap-[0.5rem] ">
+                        {files.map((file, index) => (
+                            <DocumentItem key={index} 
+                                file={file} 
+                                handleRemoveFile={()=>handleRemoveFile(index)}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
 
             {/* Might make this into a separate component later */}
-            <div className="flex items-center justify-center w-full">
+            <div className="flex items-center justify-center w-full gap-[0.3rem]">
+                <AddFileButton handleAddFiles={handleAddFiles} />
+
                 <button className="bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] px-[2rem] p-[0.75rem] cursor-pointer">
                     <span className="text-[#fff]">Continue</span>
                 </button>
