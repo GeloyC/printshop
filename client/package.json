@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "docx-preview": "^0.4.0",
+    "@zumer/snapdom": "^3.0.0",
     "html2canvas": "^1.4.1",
+    "mammoth": "^1.12.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-pdf": "^11.0.0",

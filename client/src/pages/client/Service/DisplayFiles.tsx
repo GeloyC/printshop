@@ -24,18 +24,38 @@ function DisplayFiles ({
         e.preventDefault();
 
         const files = Array.from(e.target.files ?? []);
-        if (!files) return;
 
         setFiles(files);
     }
+    
 
-    const handleAddFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleAddFiles = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         e.preventDefault();
-        const files = Array.from(e.target.files ?? []);
-        if (!files) return;
 
-        setFiles(items => [...Array.from(items), ...files]);
-    }
+        const selectedFiles = Array.from(
+            e.target.files ?? []
+        );
+
+        setFiles(currentFiles => {
+            const existing = new Set(
+                currentFiles.map(
+                    file =>
+                        `${file.name}-${file.size}-${file.lastModified}`
+                )
+            );
+
+            const newFiles = selectedFiles.filter(file => {
+                const key =
+                    `${file.name}-${file.size}-${file.lastModified}`;
+
+                return !existing.has(key);
+            });
+
+            return [...currentFiles, ...newFiles];
+        });
+    };
 
     const handleRemoveFile = (index:number) => {
         setFiles(files => 
@@ -51,7 +71,7 @@ function DisplayFiles ({
             {files.length > 0 && (
                 <span className="text-center text-[14px] text-[#82330c] font-bold bg-[#ffc36d]/50 w-fit px-[0.5rem] py-[0.3rem] rounded-[5px]">Total files: {files.length}</span>
             )}
-            <div className={`flex ${files.length > 0 ? 'items-start justify-start' : 'items-center justify-center'} w-full h-full overflow-y-auto thin-scrollbar`}>
+            <div className={`flex ${files.length > 0 ? 'items-start justify-center' : 'items-center justify-center'} w-full h-full overflow-y-auto thin-scrollbar`}>
                 {files.length < 1 ? (
                     <UploadFileButton handleFileChange={handleFileChange} />
                 ):(

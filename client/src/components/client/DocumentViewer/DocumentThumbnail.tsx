@@ -8,14 +8,14 @@ export type ThumbnailType = {
 
 function DocumentThumbnail ({ file }:ThumbnailType) {
 
-    const filetype = 'application/pdf';
+    const isPDF = file.type === "application/pdf";
 
     return (
         <div className="flex justify-center items-center h-[200px] w-full scale-100">
-            {file.type !== filetype ? (
-                <ViewDocx file={file} />
-            ):(
+            {isPDF ? (
                 <ViewPDF file={file} />
+            ):(
+                <ViewDocx file={file} />
             )}
         </div>
     )
