@@ -11,7 +11,7 @@ function DocumentThumbnail ({ file }:ThumbnailType) {
     const filetype = 'application/pdf';
 
     return (
-        <div className="flex justify-center items-center h-full w-full scale-120">
+        <div className="flex justify-center items-center h-[200px] w-full scale-100">
             {file.type !== filetype ? (
                 <ViewDocx file={file} />
             ):(

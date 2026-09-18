@@ -1,18 +1,19 @@
 import { useState } from 'react';
 
 // icons
-import Document from '/src/assets/icon/document.svg?react'
+import PDFIcon from '/src/assets/icon/pdf-icon.svg?react'
+import DOCXIcon from '/src/assets/icon/word-icon.svg?react'
 import CheckboxType from '../../ui/ConfigurationType/CheckboxType';
 import ConfigItemWrapper from '../../wrapper/ConfigItemWrapper';
 import RadioType from '../../ui/ConfigurationType/RadioType';
 import DropdownType from '../../ui/ConfigurationType/DropdownType';
 
 interface ModalProp {
-    selectedFile: string | null
+    selectedFile: File | null
     closeModal: () => void;
 }
 
-function DocumentPrintFileSetupModal ({ 
+function ConfigurationSetupModal ({ 
     selectedFile,
     closeModal 
 }: ModalProp ) {
@@ -28,8 +29,8 @@ function DocumentPrintFileSetupModal ({
                 <span className='text-[14px] font-bold text-[#575757]'>File</span>
 
                 <div className='flex items-center gap-[0.5rem] w-full p-[1rem] border border-dashed border-[#ff9e32] bg-[#fff0d3]'>
-                    <Document className='size-5' />
-                    <span className="text-[16px] text-[#292929] font-bold leading-none ">{selectedFile}</span>
+                    {selectedFile?.type === 'application/pdf' ? <PDFIcon className='size-6' /> : <DOCXIcon className='size-6' />}
+                    <span className="text-[16px] text-[#292929] font-bold leading-none ">{selectedFile?.name}</span>
                 </div>
             </div>
 
@@ -76,4 +77,4 @@ function DocumentPrintFileSetupModal ({
     )
 }
 
-export default DocumentPrintFileSetupModal
+export default ConfigurationSetupModal

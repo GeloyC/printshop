@@ -92,26 +92,26 @@ function ViewDocx ({ file }:ThumbnailType) {
 
     if (loading) {
         return (
-            <div className="flex h-48 w-36 shrink-0 items-center justify-center border text-xs text-gray-400">
+            <div className="flex h-full w-[200px] shrink-0 items-center justify-center text-[12px] text-[#292929]/75 font-bold bg-[#ffc36d]/50">
                 Generating...
             </div>
         );
     }
 
-    if (error || !thumbnail) {
+    if (error || !thumbnail || thumbnail === 'data:,') {
         return (
-            <div className="flex h-48 w-36 shrink-0 items-center justify-center border bg-gray-50 text-xs text-gray-500">
+            <div className="flex h-full w-[200px] shrink-0 items-center justify-center text-[12px] bg-[#ffc36d]/50">
                 Preview unavailable
             </div>
         );
     }
 
     return (
-        <div className="h-[150px] w-[150px] overflow-hidden bg-white">
+        <div className="w-[200px] h-full bg-white">
             <img
                 src={thumbnail}
                 alt="DOCX document thumbnail"
-                className="h-full w-full object-cover object-top"
+                className="h-full w-full object-cover"
             />
         </div>
     );

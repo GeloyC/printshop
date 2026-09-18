@@ -11,13 +11,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 function ViewPDF ({ file }: ThumbnailType) {
     
     return (
-        <div>
-            <Document 
-                file={file} className="flex h-[150px] w-[150px] overflow-hidden ">
-                <Page height={200} width={150} pageNumber={1} renderTextLayer={false}
-                    renderAnnotationLayer={false}/>
-            </Document>
-        </div>
+        <Document file={file} className={'flex items-center justify-center'}>
+            <Page width={200} pageNumber={1} renderTextLayer={false}
+                renderAnnotationLayer={false}/>
+        </Document>
     )
 }
 

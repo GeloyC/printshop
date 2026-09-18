@@ -1,4 +1,4 @@
-
+import { useState } from "react";
 /*
 * ServiceClient component is reusable across different services
 * ServiceClient component must require a urlParams 'slug' to identify which service to display
@@ -7,23 +7,38 @@
 
 import DisplayFiles from "./DisplayFiles"
 import { useFileContext } from "../../../context/documentContext"
+import ModalWrapper from "../../../components/wrapper/ModalWrapper";
+import ConfigurationSetupModal from "../../../components/modal/client/ConfigurationSetupModal";
 
 function ServiceClient () {
 
     const { files, setFiles } = useFileContext();
+    const [selectedFile, setSelectedFile] = useState<File|null>(null);
 
     return (
-        <div className="flex flex-col w-full h-full items-center justify-center gap-[1rem] py-[2rem] ">
-            <span className="text-[36px] text-[#292929] font-bold leading-none">Document Print</span>
-            <p>Display the description of the service at this section</p>
+        <>
+            <div className="flex flex-col w-full h-full items-center gap-[1rem] py-[2rem]">
+                <div className="flex flex-col w-full items-center">
+                    <span className="text-[36px] text-[#292929] font-bold leading-none">Document Print</span>
+                    <p>Display the description of the service at this section</p>
+                </div>
 
-            <DisplayFiles 
-                files={files}
-                setFiles={setFiles}
-            />
+                <DisplayFiles 
+                    files={files}
+                    setSelectedFile={setSelectedFile}
+                    setFiles={setFiles}
+                />
+            </div>
 
-
-        </div>
+            {selectedFile && (
+                <ModalWrapper>
+                    <ConfigurationSetupModal 
+                        selectedFile={selectedFile}
+                        closeModal={()=>setSelectedFile(null)}
+                    />
+                </ModalWrapper>
+            )}
+        </>
     )
 }
 
