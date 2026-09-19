@@ -21,11 +21,14 @@ function DisplayFiles ({
 }:DisplayFilesProp) {
 
     const [dragOver, setDragOver] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
         const files = Array.from(e.target.files ?? []);
+        files.forEach(file => console.log(typeof file));
         setFiles(files);
     }
     
@@ -40,19 +43,31 @@ function DisplayFiles ({
 
         const droppedFiles = Array.from(e.dataTransfer.files);
 
-        setFiles(currentFiles => {
-            const existing = new Set(
-                currentFiles.map(
-                    file => `${file.name}-${file.size}-${file.lastModified}`
-                )
-            );
+        const allowedExtension = ['pdf', 'docx'];
+        
+        droppedFiles.forEach(file => {
+            const fileExtension = file?.name.split('.').pop();
 
-            const newFiles = droppedFiles.filter(file => {
+            if(!allowedExtension.includes(String(fileExtension))) {
+                console.log(file.name, ' is not allowed because the extension is ', fileExtension)
+                return;
+            }
+            
+            setFiles(currentFiles => {
+                const existing = new Set(
+                    currentFiles.map(
+                        file => `${file.name}-${file.size}-${file.lastModified}`
+                    )
+                );
+
                 const key = `${file.name}-${file.size}-${file.lastModified}`;
-                return !existing.has(key);
+                
+                if (existing?.has(key)) {
+                    return [...currentFiles];
+                }
+    
+                return [...currentFiles, file];
             });
-
-            return [...currentFiles, ...newFiles];
         });
     }
 
