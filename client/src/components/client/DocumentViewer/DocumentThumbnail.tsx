@@ -2,7 +2,7 @@ import ViewDocx from "./ViewDocx";
 import ViewPDF from "./ViewPDF"
 
 export type ThumbnailType = {
-    file: File
+    file: File,
 }
 
 
@@ -13,9 +13,9 @@ function DocumentThumbnail ({ file }:ThumbnailType) {
     return (
         <div className="flex justify-center items-center h-[200px] w-full scale-100">
             {isPDF ? (
-                <ViewPDF file={file} />
+                <ViewPDF file={file}/>
             ):(
-                <ViewDocx file={file} />
+                <ViewDocx file={file}/>
             )}
         </div>
     )

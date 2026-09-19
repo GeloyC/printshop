@@ -11,10 +11,9 @@ function AddFileButton ({ handleAddFiles }: Prop) {
             <input type="file" name="service_addmore" id="service_addmore" accept={'.doc, .docx, .pdf'} multiple hidden onChange={handleAddFiles} />
 
             <label htmlFor="service_addmore"
-            className="flex items-center justify-center gap-[0.3rem] rounded-[5px] cursor-pointer px-[1rem] p-[0.75rem] bg-[#292929] hover:bg-[#292929]/80 active:bg-[#292929]"
+            className="py-[0.3rem] px-[0.5rem] cursor-pointer hover:bg-[#ffdca5] active:bg-transparent rounded-[5px] transition-all duration-100"
             >
-                <AddIcon className="size-5" color="#fff" />
-                <span className='text-[#fff]'>Add files</span>
+                <span className='text-[14px] text-[#292929] font-bold leading-none'>Add files</span>
             </label>
         </>
     )

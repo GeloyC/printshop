@@ -1,6 +1,7 @@
+import { type SetStateAction } from "react";
+import { useState } from "react";
 
 // components
-import { type SetStateAction } from "react";
 import UploadFileButton from "./UploadFileButton";
 
 // icon
@@ -19,15 +20,41 @@ function DisplayFiles ({
     setSelectedFile
 }:DisplayFilesProp) {
 
+    const [dragOver, setDragOver] = useState<boolean>(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
 
         const files = Array.from(e.target.files ?? []);
-
         setFiles(files);
     }
     
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setDragOver(true);
+    }
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault()
+        setDragOver(false);
+
+        const droppedFiles = Array.from(e.dataTransfer.files);
+
+        setFiles(currentFiles => {
+            const existing = new Set(
+                currentFiles.map(
+                    file => `${file.name}-${file.size}-${file.lastModified}`
+                )
+            );
+
+            const newFiles = droppedFiles.filter(file => {
+                const key = `${file.name}-${file.size}-${file.lastModified}`;
+                return !existing.has(key);
+            });
+
+            return [...currentFiles, ...newFiles];
+        });
+    }
 
     const handleAddFiles = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -41,15 +68,12 @@ function DisplayFiles ({
         setFiles(currentFiles => {
             const existing = new Set(
                 currentFiles.map(
-                    file =>
-                        `${file.name}-${file.size}-${file.lastModified}`
+                    file => `${file.name}-${file.size}-${file.lastModified}`
                 )
             );
 
             const newFiles = selectedFiles.filter(file => {
-                const key =
-                    `${file.name}-${file.size}-${file.lastModified}`;
-
+                const key = `${file.name}-${file.size}-${file.lastModified}`;
                 return !existing.has(key);
             });
 
@@ -67,15 +91,32 @@ function DisplayFiles ({
 
 
     return (
-        <div className={`fade-up flex flex-col w-full h-[600px] gap-[1rem] bg-[#fff8ec] border-2 border-dashed border-[#ffdca5] p-[1rem] rounded-[10px]`}>
+        <div className={`fade-up flex flex-col w-full min-h-[300px] h-fit max-h-[620px] ${dragOver ? 'bg-[#ffdca5]' : 'bg-[#fff8ec]'}   border-2 ${files.length <= 0 && 'border-dashed' } border-[#ffc36d] rounded-[10px] overflow-hidden`}>
             {files.length > 0 && (
-                <span className="text-center text-[14px] text-[#82330c] font-bold bg-[#ffc36d]/50 w-fit px-[0.5rem] py-[0.3rem] rounded-[5px]">Total files: {files.length}</span>
+                <div className="flex items-center justify-between w-full gap-[0.3rem] bg-[#fff0d3] border-b-2 border-dashed border-[#ffc36d] p-[0.5rem]">
+                    <span className="text-center text-[14px] text-[#82330c] font-bold w-fit rounded-[5px]">Total files: {files.length}</span>
+
+                    <div className="flex items-center gap-[0.2rem]">
+                        <AddFileButton handleAddFiles={handleAddFiles} />
+
+                        <button className="py-[0.3rem] px-[0.5rem] cursor-pointer bg-[#ffc36d] hover:bg-[#ff6b00] active:bg-[#ffc36d] rounded-[5px] transition-all duration-100">
+                            <span className="text-[14px] text-[#292929] font-bold leading-none">Proceed</span>
+                        </button>
+                    </div>
+                </div>  
             )}
-            <div className={`flex ${files.length > 0 ? 'items-start justify-center' : 'items-center justify-center'} w-full h-full overflow-y-auto thin-scrollbar`}>
+            
+            <div onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={()=>setDragOver(false)}
+                className={`flex ${files.length > 0 ? 'items-start justify-center' : 'items-center justify-center'} w-full min-h-[300px] h-fit max-h-full p-[1rem]
+                overflow-y-auto thin-scrollbar`}
+            >
                 {files.length < 1 ? (
-                    <UploadFileButton handleFileChange={handleFileChange} />
+                    <div className="flex flex-col items-center gap-[0.5rem]">
+                        <UploadFileButton handleFileChange={handleFileChange} />
+                        <span className="text-[14px] text-[#461704] opacity-75">or drop your files here</span>
+                    </div>
                 ):(
-                    <div className="flex flex-wrap items-center justify-center gap-[0.5rem] ">
+                    <div className="grid grid-cols-2 items-center justify-center gap-[0.5rem] w-full">
                         {files.map((file, index) => (
                             <DocumentItem key={`${file.name}-${file.size}-${file.lastModified}`} 
                                 file={file} 
@@ -84,20 +125,6 @@ function DisplayFiles ({
                             />
                         ))}
                     </div>
-                )}
-            </div>
-
-
-            {/* Might make this into a separate component later */}
-            <div className="flex items-center justify-center w-full gap-[0.3rem]">
-
-                {files.length > 0 && <AddFileButton handleAddFiles={handleAddFiles} /> }
-                
-                {/* Show this button if all the files are configured */}
-                {files.length > 0 && (
-                    <button className={`bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] px-[2rem] p-[0.75rem] cursor-pointer rounded-[5px]`}>
-                        <span className="text-[#fff]">Continue</span>
-                    </button>
                 )}
             </div>
         </div>

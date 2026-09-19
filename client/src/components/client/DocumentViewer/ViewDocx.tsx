@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import mammoth from "mammoth";
-import html2canvas from "html2canvas";
+const { default: html2canvas } = await import("html2canvas");
 
 import type { ThumbnailType } from "./DocumentThumbnail";
 
@@ -11,6 +11,8 @@ function ViewDocx({ file }: ThumbnailType) {
     const [thumbnail, setThumbnail] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+
+    const [isPending, startTransition] = useTransition();
 
     useEffect(() => {
         let cancelled = false;
@@ -133,13 +135,17 @@ function ViewDocx({ file }: ThumbnailType) {
             }
         };
 
-        generateThumbnail();
+        startTransition(()=> {
+            generateThumbnail();
+        });
 
         return () => {
             cancelled = true;
             container?.remove();
         };
     }, [file]);
+
+    console.log(isPending && 'it is pending');
 
     if (loading) {
         return (

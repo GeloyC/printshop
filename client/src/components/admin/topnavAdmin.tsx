@@ -6,7 +6,7 @@ import Account from '/src/assets/icon/account.svg?react'
 import Home from '/src/assets/icon/home.svg?react'
 import Notification from '/src/assets/icon/notification.svg?react'
 import Logout from '/src/assets/icon/logout.svg?react'
-import Settings from '/src/assets/icon/setttings.svg?react'
+import Settings from '/src/assets/icon/settings.svg?react'
 
 function TopNavAdmin () {
 
