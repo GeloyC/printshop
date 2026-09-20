@@ -12,16 +12,17 @@ interface DisplayFilesProp {
     files: File[]
     setFiles: React.Dispatch<SetStateAction<File[]>>
     setSelectedFile: React.Dispatch<SetStateAction<File|null>>
+    setError: React.Dispatch<SetStateAction<string>>
 }
 
 function DisplayFiles ({
     files,
     setFiles,
-    setSelectedFile
+    setSelectedFile,
+    setError
 }:DisplayFilesProp) {
 
     const [dragOver, setDragOver] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +51,9 @@ function DisplayFiles ({
 
             if(!allowedExtension.includes(String(fileExtension))) {
                 console.log(file.name, ' is not allowed because the extension is ', fileExtension)
+
+                setError('Only file with .pdf, .docx allowed');
+                setTimeout(()=>setError(''), 3000);
                 return;
             }
             
@@ -63,6 +67,10 @@ function DisplayFiles ({
                 const key = `${file.name}-${file.size}-${file.lastModified}`;
                 
                 if (existing?.has(key)) {
+
+                    setError('Duplicate file')
+                    setTimeout(()=>setError(''), 3000)
+
                     return [...currentFiles];
                 }
     
@@ -89,6 +97,10 @@ function DisplayFiles ({
 
             const newFiles = selectedFiles.filter(file => {
                 const key = `${file.name}-${file.size}-${file.lastModified}`;
+
+                setError('Duplicate file')
+                setTimeout(()=>setError(''), 3000)
+
                 return !existing.has(key);
             });
 
@@ -142,6 +154,9 @@ function DisplayFiles ({
                     </div>
                 )}
             </div>
+
+
+            
         </div>
     )
 }

@@ -7,28 +7,6 @@ import ServiceList from "./ServiceList";
 
 function Home () {
 
-    // const navigate = useNavigate();
-    // const { setFiles } = useFileContext();
-
-    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     try {
-
-    //         const file = e.target.files;
-    //         if (!file) return;
-
-    //         if (file.length >= 0) {
-    //             setFiles(Array.from(file).map((file) => ({
-    //                 filename: file.name,
-    //                 file: file
-    //             })));
-
-    //             navigate("/document-print/setup");
-    //         }
-    //     } catch (err) {
-    //         throw err;
-    //     }
-    // }
-
     return (
         <div className="flex flex-col w-full h-full items-center justify-center gap-[2rem]">
             

@@ -40,6 +40,28 @@ body {
     to { width: 100% }
 }
 
+@keyframes toastPop {
+    0% {
+        opacity: 0%;
+        transform: scale(50%);
+        transform: translateY(10%);
+    }
+    15% {
+        transform: scale(100%);
+        opacity: 100%;
+    }
+    85% {
+        transform: scale(100%);
+        opacity: 100%;
+    }
+    100% {
+        transform: scale(25%);
+        transform: translateY(20%);
+        opacity: 0%;
+
+    }
+}
+
 .fade-up {
     animation: fadeUp 0.1s ease-in-out forwards
 }
@@ -47,3 +69,9 @@ body {
 .load-progress {
     animation: loadProgress 0.75s ease-in-out forwards
 }
+
+.toast-pop {
+    animation: toastPop 3s ease-in-out forwards
+}
+
+
