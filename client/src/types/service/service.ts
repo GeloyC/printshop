@@ -10,8 +10,7 @@ export type ConfigurationType =
     | "text" 
     | "select" 
     | "checkbox" 
-    | "radio" 
-    | "number";
+    | "radio";
 
 export type ConfigurationOptions = { 
     id: string, 

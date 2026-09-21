@@ -3,7 +3,7 @@
 import PDFIcon from '/src/assets/icon/pdf-icon.svg?react'
 import DOCXIcon from '/src/assets/icon/word-icon.svg?react'
 import Settings from '/src/assets/icon/settings.svg?react'
-import Close from '/src/assets/icon/delete_v2.svg?react'
+import Close from '/src/assets/icon/delete.svg?react'
 
 
 interface DocumentItemProp  {
@@ -19,7 +19,9 @@ function DocumentItem ({
 }:DocumentItemProp) {
 
     return (
-        <div className={`fade-up relative group flex items-start w-full p-[0.5rem] gap-[0.5rem] bg-[#fff] cursor-pointer shadow-lg border border-[#B1B2B5]/50 hover:border-[#292929] rounded-[5px]`}>
+        <div className={`fade-up relative group flex items-end w-full p-[0.5rem] pt-[1rem] gap-[0.5rem] bg-[#fff] cursor-pointer shadow-lg border border-[#292929]/35 hover:border-[#292929] rounded-[5px]`}>
+
+            <span className='absolute -top-2 left-5 px-[0.5rem] py-[0.2rem] text-[10px] text-[#292929]/75 font-bold leading-none border border-[#292929]/50 bg-[#fff] rounded-full text-nowrap'>Not yet configured</span>
 
             {file.type === 'application/pdf' ? <PDFIcon className="size-10 shrink-0" color="#F40F02"/> : <DOCXIcon className="size-10 shrink-0" color="#1B5EBE"/>}
             <div title={file.name} className="flex flex-col items-start w-full gap-[0.1rem]">

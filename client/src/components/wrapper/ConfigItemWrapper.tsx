@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import type { ConfigurationType } from "../../types/service/service"
 
-interface ConfigItemWrapperProp {
+interface ConfigItemWrapperProp { 
     configLabel: string,
     children: React.ReactNode
 }
@@ -11,7 +11,7 @@ interface ConfigItemWrapperProp {
 function ConfigItemWrapper ({ configLabel, children }: ConfigItemWrapperProp) {
     
     const [type, setType] = useState<ConfigurationType>() // the type will be taken from the data collected from created service
-    const ifType = type === 'select' || type === 'number' || type === 'text';
+    const ifType = type === 'select' || type === 'text';
 
 
     return (

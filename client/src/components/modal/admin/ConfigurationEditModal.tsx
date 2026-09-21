@@ -1,4 +1,11 @@
-import type { Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService/CreateService";
+// import type { 
+//     Configuration, ConfigurationOptions, ConfigurationType } from "../../../pages/admin/CreateService/CreateService";
+
+import type { 
+    Configuration,
+    ConfigurationOptions,
+    ConfigurationType
+} from "../../../types/service/service";
 
 import { useState, type SetStateAction } from "react";
 
@@ -55,7 +62,7 @@ function ConfigurationEditModal ({
             return console.log('Price is not set properly!');
         }
 
-        setSelectedConfigEdit(prev => ({
+        setSelectedConfigEdit((prev:Configuration) => ({
             ...prev,
             options: [
                 ...prev.options,
@@ -74,10 +81,10 @@ function ConfigurationEditModal ({
 
 
     const handleDeleteOption = (option_name: string) => {
-        setSelectedConfigEdit(prev => ({
+        setSelectedConfigEdit((prev) => ({
             ...prev,
             options: prev.options.filter(
-                opt => opt.option !== option_name
+                (opt) => opt.option !== option_name
             )
         }));
     };
@@ -92,9 +99,9 @@ function ConfigurationEditModal ({
 
     const handleSaveOption = (editedOption: ConfigurationOptions) => {
         // save the edited option using this function
-        setSelectedConfigEdit(prev => ({
+        setSelectedConfigEdit((prev:Configuration) => ({
             ...prev,
-            options: prev.options.map(opt =>
+            options: prev.options.map((opt) =>
                 opt.id === editedOption.id
                     ? editedOption
                     : opt
@@ -131,7 +138,7 @@ function ConfigurationEditModal ({
                         <span className="text-[14px] font-bold">Key</span>
                         <input type="text" name="key" id="service_key" 
                         value={selectedConfig.key} 
-                        onChange={(e)=>setSelectedConfigEdit(prev => ({
+                        onChange={(e)=>setSelectedConfigEdit((prev) => ({
                             ...prev, 
                             key: e.target.value
                         }))}
@@ -143,7 +150,7 @@ function ConfigurationEditModal ({
                         <span className="text-[14px] font-bold">Label</span>
                         <input type="text" name="label" id="service_label" 
                         value={selectedConfig.label}
-                        onChange={(e)=>setSelectedConfigEdit(prev => ({
+                        onChange={(e)=>setSelectedConfigEdit((prev) => ({
                             ...prev, 
                             label: e.target.value
                         }))}
@@ -155,7 +162,7 @@ function ConfigurationEditModal ({
                     <span className="text-[14px] font-bold">Type</span>
                     <select name="type" id="type" 
                     value={selectedConfig?.type as ConfigurationType}
-                    onChange={(e)=>setSelectedConfigEdit(prev => ({
+                    onChange={(e)=>setSelectedConfigEdit((prev) => ({
                         ...prev,
                         type: e.target.value as ConfigurationType
                     }))}
@@ -164,7 +171,6 @@ function ConfigurationEditModal ({
                         <option hidden disabled>-- Select type --</option>
                         <option value="select">Dropdown Selection</option>
                         <option value="text">Text Field</option>
-                        <option value="number">Number Field</option>
                         <option value="checkbox">Checkbox</option>
                         <option value="radio">Radio</option>
                     </select>
@@ -191,7 +197,7 @@ function ConfigurationEditModal ({
                                                 <span className="text-[14px] font-bold text-nowrap">Name:</span>
                                                 <input type="text" name="option" id="option_name" 
                                                 value={optionToEdit?.option} 
-                                                onChange={(e)=>setOptionToEdit(prev =>({...prev, option:e.target.value}))} 
+                                                onChange={(e)=>setOptionToEdit((prev) =>({...prev, option:e.target.value}))} 
                                                 required
                                                 className="text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
                                             </div>
@@ -200,7 +206,7 @@ function ConfigurationEditModal ({
                                                 <span className="text-[14px] font-bold text-nowrap">Price:</span>
                                                 <input type="number" name="option" id="option_price" 
                                                 value={optionToEdit?.price}
-                                                onChange={(e)=>setOptionToEdit(prev =>({...prev, price:Number(e.target.value)}))} 
+                                                onChange={(e)=>setOptionToEdit((prev) =>({...prev, price:Number(e.target.value)}))} 
                                                 className="text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
                                             </div>
                                         </div>
@@ -254,7 +260,7 @@ function ConfigurationEditModal ({
                                         <span className="text-[14px] font-bold opacity-50 text-nowrap">Name:</span>
                                         <input type="text" name="option" id="option_new" 
                                         value={newOption.option} 
-                                        onChange={(e)=>setNewOption(prev =>({...prev, option:e.target.value}))} 
+                                        onChange={(e)=>setNewOption((prev) =>({...prev, option:e.target.value}))} 
                                         className="w-full text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
                                     </div>
 
@@ -263,7 +269,7 @@ function ConfigurationEditModal ({
 
                                         <input type="number" name="option" id="option_new" 
                                         value={newOption.price}
-                                        onChange={(e)=>setNewOption(prev =>({...prev, price:Number(e.target.value)}))} 
+                                        onChange={(e)=>setNewOption((prev) =>({...prev, price:Number(e.target.value)}))} 
                                         className="w-full text-[14px] font-bold p-[0.5rem] focus:outline-none"/>
                                     </div>
                                 </div>

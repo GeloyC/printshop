@@ -3,7 +3,7 @@
 function RadioType () {
 
     return (
-        <div className={`group flex w-full bg-[#f2f2f2]/50 border border-[#292929]/15 hover:border-[#292929]/35 active:border-[#292929]/15 z-20`}>
+        <div className={`group flex w-full bg-[#f2f2f2]/50 border border-[#292929]/15 hover:border-[#292929]/35 active:border-[#292929]/15 rounded-[5px] z-20`}>
             <input type="radio" name="key" id="label" hidden/>
             <label htmlFor="label"
             className={`flex items-center justify w-full gap-[0.5rem] p-[0.75rem] cursor-pointer`}>

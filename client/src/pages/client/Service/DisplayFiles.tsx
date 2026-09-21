@@ -1,37 +1,30 @@
 import { type SetStateAction } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // components
-import UploadFileButton from "./UploadFileButton";
+import DocumentItem from "./DocumentItem";
+import NoFilesWrapper from "./NoFilesWrapper";
 
 // icon
-import DocumentItem from "./DocumentItem";
-import AddFileButton from "./AddFileButton";
+import ArrowWithTail from '/src/assets/icon/arrow-with-tail.svg?react'
+import Delete from "/src/assets/icon/add.svg?react";
+import AddIcon from '/src/assets/icon/add.svg?react'
+
+import { useFileContext } from "../../../context/fileContext";
 
 interface DisplayFilesProp {
-    files: File[]
-    setFiles: React.Dispatch<SetStateAction<File[]>>
     setSelectedFile: React.Dispatch<SetStateAction<File|null>>
     setError: React.Dispatch<SetStateAction<string>>
 }
 
 function DisplayFiles ({
-    files,
-    setFiles,
-    setSelectedFile,
-    setError
+    setSelectedFile
 }:DisplayFilesProp) {
 
+    const navigate = useNavigate()
+    const { files, setFiles, setError } = useFileContext();
     const [dragOver, setDragOver] = useState<boolean>(false);
-
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-
-        const files = Array.from(e.target.files ?? []);
-        files.forEach(file => console.log(typeof file));
-        setFiles(files);
-    }
     
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -44,9 +37,8 @@ function DisplayFiles ({
 
         const droppedFiles = Array.from(e.dataTransfer.files);
 
-        const allowedExtension = ['pdf', 'docx'];
-        
         droppedFiles.forEach(file => {
+            const allowedExtension = ['pdf', 'docx'];
             const fileExtension = file?.name.split('.').pop();
 
             if(!allowedExtension.includes(String(fileExtension))) {
@@ -63,6 +55,7 @@ function DisplayFiles ({
                         file => `${file.name}-${file.size}-${file.lastModified}`
                     )
                 );
+
 
                 const key = `${file.name}-${file.size}-${file.lastModified}`;
                 
@@ -88,23 +81,39 @@ function DisplayFiles ({
             e.target.files ?? []
         );
 
-        setFiles(currentFiles => {
-            const existing = new Set(
-                currentFiles.map(
-                    file => `${file.name}-${file.size}-${file.lastModified}`
-                )
-            );
 
-            const newFiles = selectedFiles.filter(file => {
+        selectedFiles.forEach(file => {
+            const allowedExtension = ['pdf', 'docx'];
+            const fileExtension = file?.name.split('.').pop();
+
+            if(!allowedExtension.includes(String(fileExtension))) {
+                console.log(file.name, ' is not allowed because the extension is ', fileExtension)
+
+                setError('Only file with .pdf, .docx allowed');
+                setTimeout(()=>setError(''), 3000);
+                return;
+            }
+            
+            setFiles(currentFiles => {
+                const existing = new Set(
+                    currentFiles.map(
+                        file => `${file.name}-${file.size}-${file.lastModified}`
+                    )
+                );
+
                 const key = `${file.name}-${file.size}-${file.lastModified}`;
+                
+                if (existing?.has(key)) {
+                    console.log(key);
 
-                setError('Duplicate file')
-                setTimeout(()=>setError(''), 3000)
+                    setError('Duplicate file')
+                    setTimeout(()=>setError(''), 3000)
 
-                return !existing.has(key);
+                    return [...currentFiles];
+                }
+    
+                return [...currentFiles, file];
             });
-
-            return [...currentFiles, ...newFiles];
         });
     };
 
@@ -116,18 +125,47 @@ function DisplayFiles ({
         )
     }
 
+    const handleRemoveAllFiles = () => setFiles([]) ;
+
+    const handleProceedToCheckout = () => {
+        navigate('/checkout')
+    }
+
 
     return (
-        <div className={`fade-up flex flex-col w-full min-h-[300px] h-fit max-h-[620px] ${dragOver ? 'bg-[#ffdca5]' : 'bg-[#fff8ec]'}   border-2 ${files.length <= 0 && 'border-dashed' } border-[#ffc36d] rounded-[10px] overflow-hidden`}>
+        <div className={`fade-up flex flex-col w-full min-h-[300px] h-fit max-h-[620px] ${dragOver ? 'bg-[#ffdca5]' : 'bg-[#fff8ec]'} border-2 ${files.length <= 0 && 'border-dashed' } border-[#ffc36d] rounded-[10px] overflow-hidden`}>
             {files.length > 0 && (
                 <div className="flex items-center justify-between w-full gap-[0.3rem] bg-[#fff0d3] border-b-2 border-dashed border-[#ffc36d] p-[0.5rem]">
-                    <span className="text-center text-[14px] text-[#82330c] font-bold w-fit rounded-[5px]">Total files: {files.length}</span>
 
-                    <div className="flex items-center gap-[0.2rem]">
-                        <AddFileButton handleAddFiles={handleAddFiles} />
+                    <div className="flex items-center gap-[1rem]">
+                        <span className="text-center text-[14px] text-[#82330c] font-bold w-fit rounded-[5px]">Total files: {files.length}</span>
 
-                        <button className="py-[0.3rem] px-[0.5rem] cursor-pointer bg-[#ffc36d] hover:bg-[#ff6b00] active:bg-[#ffc36d] rounded-[5px] transition-all duration-100">
-                            <span className="text-[14px] text-[#292929] font-bold leading-none">Proceed</span>
+                        {/* <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer hover:bg-[#ff0000]/75 active:bg-transparent rounded-[5px] transition-all duration-100">
+                            <Delete className="size-3" />
+                            <span className="text-[12px] text-[#292929] font-bold leading-none">Remove all files</span>
+                        </button> */}
+                    </div>
+
+                    <div className="flex items-center gap-[0.5rem]">
+                        <div className="flex items-center">
+                            <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer hover:bg-[#ff0000]/65 active:bg-transparent rounded-[5px] transition-all duration-100">
+                                <Delete className="size-4 rotate-45" />
+                                <span className="text-[12px] text-[#292929] font-bold leading-none">Remove all files</span>
+                            </button>
+                            
+                            <input type="file" name="service_addmore" id="service_addmore" accept={'.doc, .docx, .pdf'} multiple hidden onChange={handleAddFiles} />
+
+                            <label htmlFor="service_addmore"
+                                className="flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer hover:bg-[#ffdca5] active:bg-transparent rounded-[5px] transition-all duration-100"
+                            >
+                                <AddIcon className='size-4' />
+                                <span className='text-[12px] text-[#292929] font-bold leading-none'>Add files</span>
+                            </label>
+                        </div>
+
+                        <button onClick={handleProceedToCheckout} className="group flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ffc36d] rounded-[5px] transition-all duration-100">
+                            <span className="text-[12px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">Proceed</span>
+                            <ArrowWithTail className="size-4" color="#fff" />
                         </button>
                     </div>
                 </div>  
@@ -138,10 +176,7 @@ function DisplayFiles ({
                 overflow-y-auto thin-scrollbar`}
             >
                 {files.length < 1 ? (
-                    <div className="flex flex-col items-center gap-[0.5rem]">
-                        <UploadFileButton handleFileChange={handleFileChange} />
-                        <span className="text-[14px] text-[#461704] opacity-75">or drop your files here</span>
-                    </div>
+                    <NoFilesWrapper />
                 ):(
                     <div className="grid grid-cols-2 items-center justify-center gap-[0.5rem] w-full">
                         {files.map((file, index) => (
@@ -154,9 +189,6 @@ function DisplayFiles ({
                     </div>
                 )}
             </div>
-
-
-            
         </div>
     )
 }

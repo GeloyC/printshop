@@ -1,9 +1,20 @@
-import { createContext, useState, type ReactNode, type Dispatch, type SetStateAction, useContext, } from "react";
+import { 
+    createContext, 
+    useState, 
+    type ReactNode, 
+    type Dispatch, 
+    type SetStateAction, 
+    useContext
+} from "react";
 
 
 type FileContextType = {
     files: File[];
     setFiles: Dispatch<SetStateAction<File[]>>;
+    error: string;
+    setError: Dispatch<SetStateAction<string>>;
+    // add selected service (service_slug)
+    // add a configuration data later
 };
 
 export const FileContext = createContext<FileContextType|undefined>(undefined);
@@ -12,8 +23,12 @@ export const FileContext = createContext<FileContextType|undefined>(undefined);
 export function FileProvider ({ children }:{ children: ReactNode }) {
 
     const [files, setFiles] = useState<File[]>([]);
+    const [error, setError] = useState<string>('');
+    
+
+
     return (
-        <FileContext.Provider value={{ files, setFiles }}> 
+        <FileContext.Provider value={{ files, setFiles, error, setError }}> 
             { children } 
         </FileContext.Provider>
     )

@@ -6,36 +6,30 @@ import { useState } from "react";
 */
 
 import DisplayFiles from "./DisplayFiles"
-import { useFileContext } from "../../../context/documentContext"
 import ModalWrapper from "../../../components/wrapper/ModalWrapper";
 import ConfigurationSetupModal from "../../../components/modal/client/ConfigurationSetupModal";
 import Toast from "../../../components/ui/Toast";
+import { useFileContext } from "../../../context/fileContext";
 
 function ServiceClient () {
 
-    const { files, setFiles } = useFileContext();
     const [selectedFile, setSelectedFile] = useState<File|null>(null);
-
-    const [error, setError] = useState<string>('')
+    const { error, setError } = useFileContext()
 
     return (
         <>
-            <div className="relative flex flex-col w-full h-screen items-center gap-[1rem] py-[2rem]">
+            <div className="relative flex flex-col w-full h-full items-center gap-[1rem] py-[2rem]">
                 <div className="flex flex-col w-full items-center">
                     <span className="text-[36px] text-[#292929] font-bold leading-none">Document Print</span>
                     <p>Display the description of the service at this section</p>
                 </div>
 
                 <DisplayFiles 
-                    files={files}
                     setSelectedFile={setSelectedFile}
-                    setFiles={setFiles}
                     setError={setError}
                 />
 
-                {error && (
-                    <Toast message={error} />
-                )}``
+                {error && <Toast message={error} />}
             </div>
 
             {selectedFile && (
@@ -46,8 +40,6 @@ function ServiceClient () {
                     />
                 </ModalWrapper>
             )}
-
-            
         </>
     )
 }

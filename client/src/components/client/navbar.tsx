@@ -13,7 +13,7 @@ function NavBar () {
     
     return (
         <>
-            <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] py-[0.75rem]">
+            <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] py-[0.75rem] z-10">
                 <div className="flex items-center h-full gap-[1rem]">
                     <Link to="/" className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
 
