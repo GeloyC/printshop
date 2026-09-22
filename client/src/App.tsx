@@ -8,7 +8,7 @@ import ServiceClient from './pages/client/Service/ServiceClient'
 import ServiceAdmin from './pages/admin/ServiceAdmin'
 import CreateService from './pages/admin/CreateService/CreateService'
 import SelectedService from './pages/admin/SelectedService/SelectedService'
-import Checkout from './pages/client/Checkout/Checkout'
+import Cart from './pages/client/Cart/Cart'
 
 function App() {
 
@@ -18,7 +18,7 @@ function App() {
         <Route element={<ClientLayout />}>
           <Route path="/" element={<Home />} />
           <Route path='/service/slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
-          <Route path='/checkout' element={<Checkout />} />
+          <Route path='/checkout' element={<Cart />} />
         </Route>
 
         <Route element={<AdminLayout />}>
