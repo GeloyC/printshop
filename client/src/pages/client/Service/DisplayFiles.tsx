@@ -1,4 +1,4 @@
-import { type SetStateAction } from "react";
+import { useEffect, type SetStateAction } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,9 +12,10 @@ import Delete from "/src/assets/icon/add.svg?react";
 import AddIcon from '/src/assets/icon/add.svg?react'
 
 import { useFileContext } from "../../../context/fileContext";
+import type { fileItem } from "../../../types/FileType";
 
 interface DisplayFilesProp {
-    setSelectedFile: React.Dispatch<SetStateAction<File|null>>
+    setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>
     setError: React.Dispatch<SetStateAction<string>>
 }
 
@@ -37,12 +38,20 @@ function DisplayFiles ({
 
         const droppedFiles = Array.from(e.dataTransfer.files);
 
+        
+
         droppedFiles.forEach(file => {
             const allowedExtension = ['pdf', 'docx'];
             const fileExtension = file?.name.split('.').pop();
 
+            const newFile: fileItem = {
+                id: crypto.randomUUID(),
+                file: file,
+                quantity: 1
+            }
+
             if(!allowedExtension.includes(String(fileExtension))) {
-                console.log(file.name, ' is not allowed because the extension is ', fileExtension)
+                console.log(newFile.file.name, ' is not allowed because the extension is ', fileExtension)
 
                 setError('Only file with .pdf, .docx allowed');
                 setTimeout(()=>setError(''), 3000);
@@ -52,12 +61,12 @@ function DisplayFiles ({
             setFiles(currentFiles => {
                 const existing = new Set(
                     currentFiles.map(
-                        file => `${file.name}-${file.size}-${file.lastModified}`
+                        file => file?.id
                     )
                 );
 
 
-                const key = `${file.name}-${file.size}-${file.lastModified}`;
+                const key = newFile.id;
                 
                 if (existing?.has(key)) {
 
@@ -67,7 +76,7 @@ function DisplayFiles ({
                     return [...currentFiles];
                 }
     
-                return [...currentFiles, file];
+                return [...currentFiles, newFile];
             });
         });
     }
@@ -86,6 +95,12 @@ function DisplayFiles ({
             const allowedExtension = ['pdf', 'docx'];
             const fileExtension = file?.name.split('.').pop();
 
+            const newFile: fileItem = {
+                id: crypto.randomUUID(),
+                file: file,
+                quantity: 1
+            }
+
             if(!allowedExtension.includes(String(fileExtension))) {
                 console.log(file.name, ' is not allowed because the extension is ', fileExtension)
 
@@ -97,14 +112,14 @@ function DisplayFiles ({
             setFiles(currentFiles => {
                 const existing = new Set(
                     currentFiles.map(
-                        file => `${file.name}-${file.size}-${file.lastModified}`
+                        file => file.id
                     )
                 );
 
-                const key = `${file.name}-${file.size}-${file.lastModified}`;
+                const id = newFile.id;
                 
-                if (existing?.has(key)) {
-                    console.log(key);
+                if (existing?.has(id)) {
+                    console.log(id);
 
                     setError('Duplicate file')
                     setTimeout(()=>setError(''), 3000)
@@ -112,7 +127,7 @@ function DisplayFiles ({
                     return [...currentFiles];
                 }
     
-                return [...currentFiles, file];
+                return [...currentFiles, newFile];
             });
         });
     };
@@ -128,8 +143,9 @@ function DisplayFiles ({
     const handleRemoveAllFiles = () => setFiles([]) ;
 
     const handleProceedToCheckout = () => {
-        navigate('/checkout')
+        navigate('/cart')
     }
+
 
 
     return (
@@ -137,14 +153,7 @@ function DisplayFiles ({
             {files.length > 0 && (
                 <div className="flex items-center justify-between w-full gap-[0.3rem] bg-[#fff0d3] border-b-2 border-dashed border-[#ffc36d] p-[0.5rem]">
 
-                    <div className="flex items-center gap-[1rem]">
-                        <span className="text-center text-[14px] text-[#82330c] font-bold w-fit rounded-[5px]">Total files: {files.length}</span>
-
-                        {/* <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer hover:bg-[#ff0000]/75 active:bg-transparent rounded-[5px] transition-all duration-100">
-                            <Delete className="size-3" />
-                            <span className="text-[12px] text-[#292929] font-bold leading-none">Remove all files</span>
-                        </button> */}
-                    </div>
+                    <span className="text-center text-[14px] text-[#82330c] font-bold w-fit rounded-[5px]">Total file/s: {files.length}</span>
 
                     <div className="flex items-center gap-[0.5rem]">
                         <div className="flex items-center">
@@ -180,7 +189,7 @@ function DisplayFiles ({
                 ):(
                     <div className="grid grid-cols-2 items-center justify-center gap-[0.5rem] w-full">
                         {files.map((file, index) => (
-                            <DocumentItem key={`${file.name}-${file.size}-${file.lastModified}`} 
+                            <DocumentItem key={file.id} 
                                 file={file} 
                                 onSelectFile={()=>setSelectedFile(file)}
                                 handleRemoveFile={()=>handleRemoveFile(index)}

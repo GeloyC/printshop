@@ -11,9 +11,12 @@ import ConfigurationSetupModal from "../../../components/modal/client/Configurat
 import Toast from "../../../components/ui/Toast";
 import { useFileContext } from "../../../context/fileContext";
 
+import type { fileItem } from "../../../types/FileType";
+
+
 function ServiceClient () {
 
-    const [selectedFile, setSelectedFile] = useState<File|null>(null);
+    const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
     const { error, setError } = useFileContext()
 
     return (
@@ -35,7 +38,7 @@ function ServiceClient () {
             {selectedFile && (
                 <ModalWrapper>
                     <ConfigurationSetupModal 
-                        selectedFile={selectedFile}
+                        selectedFile={selectedFile.file}
                         closeModal={()=>setSelectedFile(null)}
                     />
                 </ModalWrapper>

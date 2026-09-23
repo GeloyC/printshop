@@ -1,40 +1,58 @@
+import { useState } from "react"
 
 // component
 import CartItem from "./CartItem"
+import OrderSummary from "./OrderSummary"
+import DeleteItemFromCartAlert from "../../../components/modal/client/DeleteItemFromCartAlert"
+import ModalWrapper from "../../../components/wrapper/ModalWrapper"
+
+
+import { useFileContext } from "../../../context/fileContext"
 
 
 function Cart () {
+    
+    const { files, setFiles } = useFileContext();
+
+    const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState<boolean>(false);
+    const [selectedFile, setSelectedFile] = useState<File|undefined>(undefined)
+
+    const handleOpenDeleteAlert = (file:File) => {
+        setSelectedFile(file)
+        setIsDeleteAlertOpen(true)
+    }
+
 
     return (
-        <div className="fade-up relative flex items-start w-full py-[1rem] gap-[1rem]">
+        <>
+            <div className="fade-up relative flex items-start w-full py-[1rem] gap-[1rem]">
+                <section className="flex flex-2 flex-col items-start w-full h-full pb-[1rem] gap-[0.5rem]">
+                    <span className="text-[24px] text-[#292929] font-bold leading-none">Cart</span>
 
-            <section className="flex flex-2 flex-col items-start w-full h-full pb-[1rem] gap-[0.5rem]">
-                <span className="text-[24px] text-[#292929] font-bold leading-none">Cart</span>
-                {/* Item block */}
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
-            </section>
+                    {/* Item block */}
+                    {files.map(file => (
+                            <CartItem key={file.id}
+                                file={file}
+                                openAlert={()=>handleOpenDeleteAlert(file.file)}
+                                setFiles={setFiles}
+                            />
+                        )
+                    )}
+                </section>
 
-            <section className="sticky top-[5rem] flex flex-1 flex-col gap-[0.5rem]">
-                <span className="text-[24px] text-[#292929] font-bold leading-none">Order summary</span>
+                <OrderSummary />
+            </div>
 
-                <div className="flex items-center justify-between py-[0.5rem]">
-                    <span className="text-[16px] text-[#292929] font-bold">Total (10x)</span>
-                    <span className="text-[16px] text-[#ff6b00] font-bold">Php 100.00</span>
-                </div>
 
-                <button className="bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">
-                    <span className="text-[16px] text-[#fff]">Confirm Order</span>
-                </button>
-            </section>
-
-        </div>
+            {isDeleteAlertOpen && (
+                <ModalWrapper>
+                    <DeleteItemFromCartAlert 
+                        file={selectedFile}
+                        closeAlert={()=>setIsDeleteAlertOpen(false)}
+                    />
+                </ModalWrapper>
+            )}
+        </>
     )
 }
 

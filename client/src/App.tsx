@@ -18,7 +18,7 @@ function App() {
         <Route element={<ClientLayout />}>
           <Route path="/" element={<Home />} />
           <Route path='/service/slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
-          <Route path='/checkout' element={<Cart />} />
+          <Route path='/cart' element={<Cart />} />
         </Route>
 
         <Route element={<AdminLayout />}>
