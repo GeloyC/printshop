@@ -6,6 +6,9 @@ import Add from '/src/assets/icon/add.svg?react'
 import Subtract from '/src/assets/icon/subtract.svg?react'
 import PDFIcon from '/src/assets/icon/pdf-icon.svg?react'
 import DOCXIcon from '/src/assets/icon/word-icon.svg?react'
+import ConfigIcon from '/src/assets/icon/configuration-item.svg?react'
+import Service from '/src/assets/icon/service.svg?react'
+import Arrow from '/src/assets/icon/arrow-no-tail.svg?react';
 
 
 import type { SetStateAction } from 'react'
@@ -17,12 +20,14 @@ type CartItemProp = {
     file: fileItem
     setFiles: React.Dispatch<SetStateAction<fileItem[]>>
     openAlert: () => void
+    openConfiguration: () => void
 }
 
 function CartItem ({
     file,
     setFiles,
     openAlert,
+    openConfiguration
 }: CartItemProp) {
 
 
@@ -47,7 +52,7 @@ function CartItem ({
     }
 
     return (
-        <div className="flex flex-col w-full p-[0.75rem] gap-[0.5rem] bg-[#f2f2f2]/20 border border-[#292929]/25 rounded-[5px]">
+        <div className={`flex flex-col w-full py-[0.75rem] gap-[0.3rem] bg-[#fff] border-b border-[#292929]/25`}>
             <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-[0.5rem]">
                     {/* conditionally display icon for pdf or docx file based on file extension later */}
@@ -60,10 +65,19 @@ function CartItem ({
                 <span className="text-[16px] font-bold text-[#ff6b00] leading-none">Php 10.00</span>
             </div>
 
-            <div className="flex items-end justify-between w-full">
-                <div className="flex flex-col w-full">
-                    <span className="text-[14px] opacity-50 leading-tight">Service: Document Print</span>
-                    <span className="text-[14px] opacity-50 leading-tight">Configuration: Long, Black & White</span>
+            <div className="flex items-center justify-between w-full">
+                <div className="flex items-center w-full gap-[1rem]">
+                    <button className='flex items-center gap-[0.3rem] opacity-50 cursor-pointer'>
+                        <Service className='size-4' />
+                        <span className="text-[14px] leading-tight">Document Print</span>
+                    </button>
+
+                    <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] opacity-50 hover:opacity-100 cursor-pointer'>
+                        <ConfigIcon className='size-4' />
+                        <span className="text-[14px] leading-tight">Long, Black & White</span>
+
+                        <Arrow className="size-4 rotate-180 group-hover:translate-x-1 group-active:translate-x-2 transition-all duration-100" />
+                    </button>
                 </div>
 
                 {/* add quantity and delete button */}

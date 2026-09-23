@@ -11,8 +11,10 @@ import RadioType from '../../ui/ConfigurationType/RadioType';
 import DropdownType from '../../ui/ConfigurationType/DropdownType';
 import TextType from '../../ui/ConfigurationType/TextType';
 
+import type { fileItem } from '../../../types/FileType';
+
 interface ModalProp {
-    selectedFile: File | null
+    selectedFile: fileItem | null
     closeModal: () => void;
 }
 
@@ -30,8 +32,8 @@ function ConfigurationSetupModal ({
             <div className='flex flex-col w-full '>
                 <span className='text-[14px] font-bold text-[#575757]'>File</span>
                 <div className='flex items-center gap-[0.5rem] w-full p-[1rem] border border-dashed border-[#ff9e32] bg-[#fff0d3] rounded-[5px]'>
-                    {selectedFile?.type === 'application/pdf' ? <PDFIcon className='size-6' color="#F40F02" /> : <DOCXIcon className='size-6' color='#1B5EBE' />}
-                    <span className="text-[16px] text-[#292929] font-bold leading-none ">{selectedFile?.name}</span>
+                    {selectedFile?.file?.type === 'application/pdf' ? <PDFIcon className='size-6' color="#F40F02" /> : <DOCXIcon className='size-6' color='#1B5EBE' />}
+                    <span className="text-[16px] text-[#292929] font-bold leading-none ">{selectedFile?.file?.name}</span>
                 </div>
             </div>
 

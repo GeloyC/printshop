@@ -38,7 +38,7 @@ function ServiceClient () {
             {selectedFile && (
                 <ModalWrapper>
                     <ConfigurationSetupModal 
-                        selectedFile={selectedFile.file}
+                        selectedFile={selectedFile}
                         closeModal={()=>setSelectedFile(null)}
                     />
                 </ModalWrapper>
