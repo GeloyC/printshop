@@ -1,4 +1,9 @@
 
+/*
+* If a user is not logged in, an alert window must pop once the 'Confirm Order button' is clicked
+* Files and configurations for each must not be wiped during login and must continue normally after successfully login
+*/
+
 
 function OrderSummary () {
     

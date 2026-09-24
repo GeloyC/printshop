@@ -3,6 +3,7 @@ import { useFileContext } from "../../../context/fileContext";
 // icon 
 import UploadBig from '/src/assets/icon/upload_big.svg?react'
 import Document from '/src/assets/icon/document.svg?react'
+import type { fileItem } from "../../../types/FileType";
 
 
 function NoFilesWrapper () {
@@ -13,7 +14,16 @@ function NoFilesWrapper () {
         e.preventDefault();
 
         const files = Array.from(e.target.files ?? []);
-        setFiles(files);
+
+        files.forEach(file => {
+            const newFile: fileItem = {
+                id: `${file.name}-${file.name}-${file.lastModified}`,
+                file: file,
+                quantity: 1
+            }
+
+            setFiles(currentFiles =>  [...currentFiles, newFile]);
+        })
     }
 
     return (
@@ -29,7 +39,7 @@ function NoFilesWrapper () {
 
                     {/* insert the slug name or service_id on the attr htmlFor later */}
                     <label htmlFor={'service_'}
-                    className="flex items-center gap-[0.5rem] bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] cursor-pointer p-[0.5rem] rounded-[5px]">
+                    className="flex items-center gap-[0.5rem] bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] cursor-pointer p-[0.75rem] rounded-[5px] transition-all duration-200">
                         <Document className="size-5" color="#fff" />
                         <span className="text-[#fff] text-[14px] font-bold leading-none">Choose file</span>
                     </label>

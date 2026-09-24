@@ -52,7 +52,7 @@ function CartItem ({
     }
 
     return (
-        <div className={`flex flex-col w-full py-[0.75rem] gap-[0.3rem] bg-[#fff] border-b border-[#292929]/25`}>
+        <div className={`flex flex-col w-full py-[0.75rem] gap-[0.3rem] bg-[#fff] border-b border-[#292929]/15`}>
             <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-[0.5rem]">
                     {/* conditionally display icon for pdf or docx file based on file extension later */}

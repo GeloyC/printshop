@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 function ServiceItem () {
 
     return (
-        <Link to={'/service/slug'} className={`group relative grid grid-rows-[auto_auto] w-full h-[250px] rounded-[8px] bg-[#ffc36d]/0 hover:bg-[#ffdca5] p-[0.5rem] transition-all duration-100`}>
+        <Link to={'/service/slug'} className={`group relative grid grid-rows-[auto_auto] w-full h-[250px] rounded-[8px] bg-[#ffc36d]/0 hover:bg-[#ffdca5] p-[0.5rem] transition-all duration-200`}>
             <div className="flex w-full h-[200px] bg-[#f2f2f2] rounded-[5px] overflow-hidden z-10">
                 <img src="/samples-deletelater/985797580.png" alt="" className="w-full h-full"/>
             </div>

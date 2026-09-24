@@ -27,8 +27,8 @@ function DocumentItem ({
             <span className='absolute -top-2 left-5 px-[0.5rem] py-[0.2rem] text-[10px] text-[#292929]/75 font-bold leading-none border border-[#292929]/50 bg-[#fff] rounded-full text-nowrap'>Not yet configured</span>
 
             {file.file?.type === 'application/pdf' ? <PDFIcon className="size-10 shrink-0" color="#F40F02"/> : <DOCXIcon className="size-10 shrink-0" color="#1B5EBE"/>}
-            <div title={file.file.name} className="flex flex-col items-start w-full gap-[0.1rem]">
-                <span className="text-[14px] text-[#292929] font-bold w-auto truncate">{file.file.name}</span>
+            <div title={file.file?.name} className="flex flex-col items-start w-full gap-[0.1rem]">
+                <span className="text-[14px] text-[#292929] font-bold w-auto truncate">{file.file?.name}</span>
                 <span className="text-[12px] font-bold opacity-50">file size: {(file.file.size / 1024).toFixed(2)} kb</span>
             </div>
 

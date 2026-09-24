@@ -33,18 +33,20 @@ function NavBar () {
 
                 <div className="flex items-center h-full gap-[0.2rem]">
                     <Link to="/admin/service">Temporary admin button</Link>
-                    <button onClick={()=>setLoginOpen(true)} className="bg-[#ffdca5] hover:bg-[#ffc36d] active:bg-[#ffdca5] px-[1rem] py-[0.5rem] cursor-pointer transition-all duration-100">
-                        <span className="px-[1rem] font-bold text-[14px]">Login</span>
+                    <button onClick={()=>setLoginOpen(true)} className="bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] px-[1rem] py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-100">
+                        <span className="px-[1rem] text-[14px] font-[600]">Login</span>
                     </button>
-                    <button onClick={()=>setSignupOpen(true)} className="border border-[#ff6b00] bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] cursor-pointer transition-all duration-100">
-                        <span className="text-[#FFF] font-bold text-[14px]">Get Started</span>
+                    <button onClick={()=>setSignupOpen(true)} className="border border-[#ff6b00] bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-100">
+                        <span className="text-[#FFF] text-[14px] font-[600]">Get Started</span>
                     </button>
                 </div>
             </section>
 
             {signupOpen && (
                 <ModalWrapper>
-                    <Signup />
+                    <Signup 
+                        close={()=>setSignupOpen(false)}
+                    />
                 </ModalWrapper>
             )}
 
@@ -52,6 +54,7 @@ function NavBar () {
                 <ModalWrapper>
                     <Login 
                         close={()=>setLoginOpen(false)}
+                        setSignupOpen={setSignupOpen}
                     />
                 </ModalWrapper>
             )}

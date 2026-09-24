@@ -16,7 +16,6 @@ import type { fileItem } from "../../../types/FileType";
 
 interface DisplayFilesProp {
     setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>
-    setError: React.Dispatch<SetStateAction<string>>
 }
 
 function DisplayFiles ({
@@ -45,7 +44,7 @@ function DisplayFiles ({
             const fileExtension = file?.name.split('.').pop();
 
             const newFile: fileItem = {
-                id: crypto.randomUUID(),
+                id: `${file.name}-${file.name}-${file.lastModified}`,
                 file: file,
                 quantity: 1
             }
@@ -53,7 +52,7 @@ function DisplayFiles ({
             if(!allowedExtension.includes(String(fileExtension))) {
                 console.log(newFile.file.name, ' is not allowed because the extension is ', fileExtension)
 
-                setError('Only file with .pdf, .docx allowed');
+                setError('Only file with .pdf, .docx extension allowed');
                 setTimeout(()=>setError(''), 3000);
                 return;
             }
@@ -96,15 +95,13 @@ function DisplayFiles ({
             const fileExtension = file?.name.split('.').pop();
 
             const newFile: fileItem = {
-                id: crypto.randomUUID(),
+                id: `${file.name}-${file.name}-${file.lastModified}`,
                 file: file,
                 quantity: 1
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
-                console.log(file.name, ' is not allowed because the extension is ', fileExtension)
-
-                setError('Only file with .pdf, .docx allowed');
+                setError('Only file with .pdf, .docx extension allowed');
                 setTimeout(()=>setError(''), 3000);
                 return;
             }
@@ -147,6 +144,9 @@ function DisplayFiles ({
     }
 
 
+    useEffect(() => {
+        console.log('files: ', files)
+    }, [files])
 
     return (
         <div className={`fade-up flex flex-col w-full min-h-[300px] h-fit max-h-[620px] ${dragOver ? 'bg-[#ffdca5]' : 'bg-[#fff8ec]'} border-2 ${files.length <= 0 && 'border-dashed' } border-[#ffc36d] rounded-[10px] overflow-hidden`}>
@@ -184,12 +184,12 @@ function DisplayFiles ({
                 className={`flex ${files.length > 0 ? 'items-start justify-center' : 'items-center justify-center'} w-full min-h-[300px] h-fit max-h-full p-[1rem]
                 overflow-y-auto thin-scrollbar`}
             >
-                {files.length < 1 ? (
+                {files.length <= 0 ? (
                     <NoFilesWrapper />
                 ):(
                     <div className="grid grid-cols-2 items-center justify-center gap-[0.5rem] w-full">
                         {files.map((file, index) => (
-                            <DocumentItem key={file.id} 
+                            <DocumentItem key={file?.id} 
                                 file={file} 
                                 onSelectFile={()=>setSelectedFile(file)}
                                 handleRemoveFile={()=>handleRemoveFile(index)}
