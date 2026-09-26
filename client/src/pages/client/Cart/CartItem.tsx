@@ -56,8 +56,11 @@ function CartItem ({
             <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-[0.5rem]">
                     {/* conditionally display icon for pdf or docx file based on file extension later */}
-                    <PDFIcon className='size-6' color="#F40F02" /> 
-                    {/* <DOCXIcon className='size-6' color='#1B5EBE' /> */}
+                    {file.file.type == 'application/pdf' ? (
+                        <PDFIcon className='size-6' color="#F40F02" /> 
+                    ):(
+                        <DOCXIcon className='size-6' color='#1B5EBE' />
+                    )}
 
                     <span className="text-[16px] text-[#292929] font-bold leading-none">{file.file.name}</span>
                 </div>
