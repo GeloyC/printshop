@@ -10,6 +10,7 @@ import CreateService from './pages/admin/CreateService/CreateService'
 import SelectedService from './pages/admin/SelectedService/SelectedService'
 import Cart from './pages/client/Cart/Cart'
 import OrderConfirmation from './pages/client/OrderConfirmation/OrderConfirmation'
+import Folder from './pages/client/Folder/Folder'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/service/slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
           <Route path='/cart' element={<Cart />} />
           <Route path='/order-confirmation' element={<OrderConfirmation />} />
+          <Route path='/folder' element={<Folder />} />
         </Route>
 
         <Route element={<AdminLayout />}>

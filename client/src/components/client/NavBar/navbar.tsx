@@ -3,12 +3,12 @@ import { useState } from "react";
 
 // icons
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
-import Notification from '/src/assets/icon/notification_2.svg?react'
-import Folder from '/src/assets/icon/folder.svg?react'
 
-import ModalWrapper from "../wrapper/ModalWrapper";
-import Signup from "../modal/client/Signup";
-import Login from "../modal/client/Login";
+import ModalWrapper from "../../wrapper/ModalWrapper";
+import Signup from "../../modal/client/Signup";
+import Login from "../../modal/client/Login";
+import FolderButton from "./FolderButton";
+import NotificationButton from "./NotificationButton";
 
 function NavBar () {
 
@@ -35,16 +35,11 @@ function NavBar () {
                     </div>
                 </div>
 
-                <div className="relative flex items-center h-full gap-[0.2rem]">
+                <div className="relative flex items-center h-full gap-[0.3rem]">
                     <Link to="/admin/service" className="text-[14px] font-bold mr-[2rem]">admin</Link>
 
-                    <button className="p-[0.5rem] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] rounded-full cursor-pointer">
-                        <Folder className="size-5" />
-                    </button>
-
-                    <button className="p-[0.5rem] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] rounded-full cursor-pointer">
-                        <Notification className="size-5" />
-                    </button>
+                    <FolderButton />
+                    <NotificationButton />
 
                     <button onClick={()=>setLoginOpen(true)} className="bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] px-[1rem] py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-100">
                         <span className="px-[1rem] text-[14px] font-[600]">Login</span>
