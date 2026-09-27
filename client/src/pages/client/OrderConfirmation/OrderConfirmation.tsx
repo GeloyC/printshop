@@ -8,13 +8,21 @@ import ArrowBack from '/src/assets/icon/arrow-no-tail.svg?react'
 import Exclamation from '/src/assets/icon/exclamation-mark.svg?react'
 
 
+import { useCartContext } from '../../../context/cartContext';
+import { useEffect } from 'react';
+
+
 function OrderConfirmation () {
 
+    const {items} = useCartContext();
     const ADDRESS = 'Blk 9, Lot 13 Ilang-ilang St, Pembo, Taguig City, Metro Manila'
 
+    useEffect(() => {
+        console.log('items from cartContext', items)
+    }, [items])
 
     return (
-        <div className='flex flex-col w-full h-full'>
+        <div className='fade-up flex flex-col w-full h-full'>
             <div className='flex items-center justify-start gap-[0.3rem] w-full'>
                 <Link to="/" className='flex items-center'>
                     <ArrowBack className="size-5" />
@@ -33,9 +41,9 @@ function OrderConfirmation () {
                     </div>
 
                     <div className="flex flex-col items-center w-full h-auto pt-[1rem] bg-[#f2f2f2]/50 rounded-[5px] border-2 border-dashed border-[#B1B2B5]/50">
-                        <span className="text-[16px] font-bold leading-none">Order details</span>
+                        <span className="w-full text-[16px] text-center font-bold leading-none pb-[0.5rem]">Order details</span>
 
-                        <div className="flex flex-col w-full gap-[0.3rem] max-h-[400px] overflow-y-auto thin-scrollbar p-[1rem]">
+                        <div className="flex flex-col w-full gap-[0.3rem] max-h-[300px] overflow-y-auto thin-scrollbar p-[1rem]">
                             <div className="flex items-center justify-between w-full">
                                 <span className="text-[14px] text-[#292929] font-bold opacity-75">Reference number</span>
                                 <span className="text-[14px] text-[#ff6b00] font-bold">123ABC456DEF</span>
@@ -55,12 +63,9 @@ function OrderConfirmation () {
                                 <span className="text-[14px] text-[#292929] font-bold opacity-75 text-nowrap">Item/s ordered</span>
 
                                 <div className="flex flex-col items-end gap-[0.3rem]">
-                                    <span className="text-[14px] font-bold text-right text-wrap">Item 1.pdf (2x) Php 2.00</span>
-                                    <span className="text-[14px] font-bold text-right text-wrap">Filename longer.pdf (2x) Php 2.00</span>
-                                    <span className="text-[14px] font-bold text-right text-wrap">What if this file name is longer than expected?asdasdasda.pdf (2x) Php 2.00</span>
-                                    <span className="text-[14px] font-bold text-right text-wrap">Item 1.pdf (2x) Php 2.00</span>
-                                    <span className="text-[14px] font-bold text-right text-wrap">Item 1.pdf (2x) Php 2.00</span>
-                                    <span className="text-[14px] font-bold text-right text-wrap">Item 1.pdf (2x) Php 2.00</span>
+                                    {items.map(item => (
+                                        <span key={item.id} className="text-[14px] font-bold text-right text-wrap">{item.file.name} ({item.quantity}x) Php 2.00</span>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -70,7 +75,7 @@ function OrderConfirmation () {
                         <div className='absolute -top-5 left-3 rounded-full bg-[#fff] border-2 border-[#ff6b00] p-[0.3rem]'>
                             <Exclamation className='size-5 -rotate-10' />
                         </div>
-                        <span className="text-[14px] text-[#292929] text-center font-bold leading-normal">When your order is ready, you may pick it up on our shop at <strong className="text-[#ff6b00]">{ADDRESS}</strong> at the convenience of your time and during our working hours. </span>
+                        <span className="text-[14px] text-[#292929] text-center font-bold leading-normal">When your order is ready, you may pick it up on our shop at <strong className="text-[#ff6b00]">{ADDRESS}</strong> at the convenience of your time and during our working hours. Make sure to have the copy of your reference number</span>
                     </div>
                 </div>
 

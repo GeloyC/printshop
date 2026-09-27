@@ -3,9 +3,12 @@ import './index.css'
 import App from './App.tsx'
 
 import { FileProvider } from './context/fileContext.tsx'
+import { CartProvider } from './context/cartContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <FileProvider>
-    <App />
-  </FileProvider>
+  <CartProvider>
+    <FileProvider>
+      <App />
+    </FileProvider>
+  </CartProvider>
 )
