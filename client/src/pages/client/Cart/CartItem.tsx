@@ -18,21 +18,21 @@ import type { fileItem } from '../../../types/FileType'
 
 type CartItemProp = {
     file: fileItem
-    setFiles: React.Dispatch<SetStateAction<fileItem[]>>
+    setItems: React.Dispatch<SetStateAction<fileItem[]>>
     openAlert: () => void
     openConfiguration: () => void
 }
 
 function CartItem ({
     file,
-    setFiles,
+    setItems,
     openAlert,
     openConfiguration
 }: CartItemProp) {
 
 
     const handleAddQuantity = (id: string) => {
-        setFiles(files => 
+        setItems(files => 
             files.map(file =>
                 file.id === id 
                     ? { ...file, quantity: ++file.quantity } 
@@ -42,7 +42,7 @@ function CartItem ({
     }
 
     const handleSubtractQuantity = (id: string) => {
-        setFiles(files => 
+        setItems(files => 
             files.map(file =>
                 file.id === id 
                     ? { ...file, quantity: --file.quantity } 

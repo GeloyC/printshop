@@ -14,17 +14,10 @@ import { useCartContext } from "../../../context/cartContext";
 function OrderSummary () {
 
     const navigate = useNavigate();
-    const { files, setFiles } = useFileContext();
-    const { setItems } = useCartContext()
 
     const handleConfirmOrder = () => {
 
-        // upload the filename to the database
-        // transfer the file to a dedicated cloud storage
-        // remove the files from the setFile state at /fileContext
-        setItems(fileItems => [...fileItems, ...files])
-
-        setFiles([]);
+        
         navigate('/order-confirmation')
     }
 

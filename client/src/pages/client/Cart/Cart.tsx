@@ -5,21 +5,24 @@ import CartItem from "./CartItem"
 import OrderSummary from "./OrderSummary"
 import DeleteItemFromCartAlert from "../../../components/modal/client/DeleteItemFromCartAlert"
 import ModalWrapper from "../../../components/wrapper/ModalWrapper"
-
-
-import { useFileContext } from "../../../context/fileContext"
 import ReturnButton from "../../../components/ui/ReturnButton"
 import ConfigurationSetupModal from "../../../components/modal/client/ConfigurationSetupModal"
+import Toast from "../../../components/ui/Toast"
+
+
+import { useCartContext } from "../../../context/cartContext"
 import type { fileItem } from "../../../types/FileType"
 
 
 function Cart () {
     
-    const { files, setFiles } = useFileContext();
+    const { items, setItems } = useCartContext();
 
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState<boolean>(false);
     const [isConfigurationOpen, setIsConfigurationOpen] = useState<boolean>(false);
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
+
+    const [deleteMessage, setDeleteMessage] = useState<string>('')
 
     const handleOpenDeleteAlert = (file:fileItem) => {
         setSelectedFile(file)
@@ -29,6 +32,14 @@ function Cart () {
     const handleOpenConfiguration = (file:fileItem) => {
         setSelectedFile(file)
         setIsConfigurationOpen(true)
+    }
+
+    const handleDeleteFileFromCart = (filename:string, id: string) => {
+        setItems(files => files.filter(item => item.id === id ? null : item.id))
+        setIsDeleteAlertOpen(false)
+
+        setDeleteMessage(`${filename} deleted!`)
+        setTimeout(()=>setDeleteMessage(''), 3000)
     }
 
 
@@ -42,12 +53,12 @@ function Cart () {
                     </div>
 
                     {/* Item block */}
-                    {files.map(file => (
+                    {items.map(file => (
                             <CartItem key={file.id}
                                 file={file}
                                 openAlert={()=>handleOpenDeleteAlert(file)}
                                 openConfiguration={()=>handleOpenConfiguration(file)}
-                                setFiles={setFiles}
+                                setItems={setItems}
                             />
                         )
                     )}
@@ -56,15 +67,18 @@ function Cart () {
                 <OrderSummary />
             </div>
 
-
+            
             {isDeleteAlertOpen && (
                 <ModalWrapper>
                     <DeleteItemFromCartAlert 
-                        file={selectedFile?.file}
+                        file={selectedFile}
                         closeAlert={()=>setIsDeleteAlertOpen(false)}
+                        handleDeleteFileFromCart={handleDeleteFileFromCart}
                     />
                 </ModalWrapper>
             )}
+
+            {deleteMessage && <Toast message={deleteMessage} />} 
 
             {isConfigurationOpen && (
                 <ModalWrapper>

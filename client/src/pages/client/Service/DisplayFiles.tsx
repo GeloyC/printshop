@@ -12,6 +12,7 @@ import Delete from "/src/assets/icon/add.svg?react";
 import AddIcon from '/src/assets/icon/add.svg?react'
 
 import { useFileContext } from "../../../context/fileContext";
+import { useCartContext } from "../../../context/cartContext";
 import type { fileItem } from "../../../types/FileType";
 
 interface DisplayFilesProp {
@@ -24,6 +25,7 @@ function DisplayFiles ({
 
     const navigate = useNavigate()
     const { files, setFiles, setError } = useFileContext();
+    const { setItems } = useCartContext();
     const [dragOver, setDragOver] = useState<boolean>(false);
     
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -140,6 +142,13 @@ function DisplayFiles ({
     const handleRemoveAllFiles = () => setFiles([]) ;
 
     const handleProceedToCheckout = () => {
+        // upload the filename to the database
+        // transfer the file to a dedicated cloud storage
+        // remove the files from the setFile state at /fileContext
+        // the files will also be saved on the database at this point so the cart can be left and user can come back later to it
+
+        setItems(items => [...items,...files]);
+        setFiles([]);
         navigate('/cart')
     }
 

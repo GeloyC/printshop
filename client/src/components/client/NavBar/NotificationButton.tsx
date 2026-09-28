@@ -20,7 +20,10 @@ function NotificationButton ({
 
     return (
         <div className='relative'>
-            <button onClick={()=>setIsNotifDropdownOpen(open=>!open)} className="relative group p-[0.5rem] border border-[#f2f2f2] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] rounded-full cursor-pointer">
+            <button onClick={()=>{
+                setIsNotifDropdownOpen(open=>!open)
+                setItemDropdownId(false)
+            }} className="relative group p-[0.5rem] border border-[#f2f2f2] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] rounded-full cursor-pointer">
                 <Notification className="size-5" />
 
                 <div className='absolute -bottom-1 -right-1 flex items-center justify-center bg-[#fff] rounded-full border border-[#B1B2B5] group-hover:bg-[#B1B2B5] group-active:bg-[#f2f2f2]'>
