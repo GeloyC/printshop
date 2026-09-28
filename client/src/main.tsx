@@ -4,11 +4,14 @@ import App from './App.tsx'
 
 import { FileProvider } from './context/fileContext.tsx'
 import { CartProvider } from './context/cartContext.tsx'
+import { NotificationProvider } from './context/notificationContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <CartProvider>
-    <FileProvider>
-      <App />
-    </FileProvider>
-  </CartProvider>
+  <NotificationProvider>
+    <CartProvider>
+      <FileProvider>
+        <App />
+      </FileProvider>
+    </CartProvider>
+  </NotificationProvider>
 )
