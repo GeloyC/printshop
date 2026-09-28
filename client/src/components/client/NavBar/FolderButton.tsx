@@ -4,12 +4,15 @@ import { Link } from 'react-router-dom';
 // icon
 import Folder from '/src/assets/icon/folder.svg?react'
 
+type FolderButtonProp = {
+    closeNotif: ()=>void
+}
 
-function FolderButton () {
+function FolderButton ({closeNotif}:FolderButtonProp) {
 
 
     return (
-        <div className='relative'>
+        <div onClick={closeNotif} className='relative'>
             <Link to="/folder" className={`relative flex p-[0.5rem] border border-[#f2f2f2] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] rounded-full cursor-pointer transition-all duration-100`}>
                 <Folder className="size-5" />
 

@@ -17,7 +17,7 @@ import type { fileItem } from "../../../types/FileType";
 function ServiceClient () {
 
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
-    const { error, setError } = useFileContext()
+    const { error } = useFileContext()
 
     return (
         <>
@@ -29,7 +29,6 @@ function ServiceClient () {
 
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}
-                    setError={setError}
                 />
 
                 {error && <Toast message={error} />}
