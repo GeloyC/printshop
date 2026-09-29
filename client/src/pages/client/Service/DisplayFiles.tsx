@@ -147,6 +147,9 @@ function DisplayFiles ({
         // remove the files from the setFile state at /fileContext
         // the files will also be saved on the database at this point so the cart can be left and user can come back later to it
 
+        // TODO
+        // Fix the cart items file duplication bug + create a unique ID for each
+
         setItems(items => [...items,...files]);
         setFiles([]);
         navigate('/cart')
