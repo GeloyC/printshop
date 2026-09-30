@@ -23,7 +23,6 @@ function App() {
           <Route path='/cart' element={<Cart />} />
           <Route path='/order-confirmation' element={<OrderConfirmation />} />
           <Route path='/folder' element={<Folder />} />
-          <Route path='/folder/reference_number' />
         </Route>
 
         <Route element={<AdminLayout />}>
