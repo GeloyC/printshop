@@ -12,7 +12,7 @@ function Folder () {
 
     return (
         <>
-            <div className="flex flex-col w-full h-full gap-[2rem] py-[1rem]">
+            <div className="flex flex-col w-full h-full gap-[1rem] py-[1rem]">
                 <span className="text-[24px] text-[#292929] font-bold leading-none">My Folder</span>
 
                 
@@ -38,6 +38,14 @@ function Folder () {
                 <div className="flex flex-col w-full h-full gap-[0.5rem]">
                     
                     {/* Item block */}
+                    <FolderItem 
+                        viewOrder={()=>setIsItemModalOpen(true)}
+                    />
+
+                    <FolderItem 
+                        viewOrder={()=>setIsItemModalOpen(true)}
+                    />
+
                     <FolderItem 
                         viewOrder={()=>setIsItemModalOpen(true)}
                     />

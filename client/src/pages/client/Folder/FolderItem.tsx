@@ -1,5 +1,4 @@
 
-import { Link } from 'react-router-dom'
 
 // icon
 import ServiceIcon from '/src/assets/icon/service.svg?react'
@@ -27,9 +26,9 @@ function FolderItem ({
     */
 
     return (
-        <button onClick={viewOrder} className="group grid grid-cols-[15%_15%_20%_20%_10%_20%] w-full py-[0.5rem]  rounded-[10px] bg-[#f2f2f2]/50 cursor-pointer hover:bg-[#fff0d3] active:bg-[#fff8ec] transition-all duration-200">
+        <button onClick={viewOrder} className="group grid grid-cols-[15%_15%_20%_20%_10%_20%] w-full py-[0.5rem] rounded-[10px] bg-[#f2f2f2]/50 cursor-pointer hover:bg-[#fff0d3] active:bg-[#fff8ec] transition-all duration-200">
 
-            <div className="flex stretch max-w-full max-h-full object-cover px-[0.5rem]">
+            <div className="flex stretch max-w-full max-h-[100px] object-cover px-[0.5rem]">
                 <img src="/samples-deletelater/985797580.png" alt="service_thumbnail" className="w-full h-full object-cover rounded-[5px]" />
             </div>
             
