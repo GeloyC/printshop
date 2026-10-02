@@ -18,7 +18,7 @@ function SelectedServiceBasicInformation ({
             <div className="flex flex-col gap-[0.3rem] w-full">
                 <span className="text-[14px] font-bold leading-none opacity-75">Name</span>
 
-                <div className="flex items-center justify-between w-full border border-[#292929]/25 focus-within:border-[#ff6b00] p-[0.5rem]">
+                <div className="flex items-center justify-between w-full border border-[#292929]/25 focus-within:border-[#ff6b00] p-[0.5rem] rounded-[5px]">
                     <input type="text" name="service_name" id="service_name" 
                         value={basicInformation.name} onChange={(e)=>setBasicInformation(prev=>({
                             ...prev,
@@ -33,9 +33,9 @@ function SelectedServiceBasicInformation ({
             </div>
 
             <div className="flex flex-col gap-[0.3rem] w-full">
-                <span className="text-[14px] font-bold leading-none opacity-75">Name</span>
+                <span className="text-[14px] font-bold leading-none opacity-75">Description</span>
 
-                <div className="flex items-start justify-between w-full border border-[#292929]/25 focus-within:border-[#ff6b00] p-[0.5rem]">
+                <div className="flex items-start justify-between w-full border border-[#292929]/25 focus-within:border-[#ff6b00] p-[0.5rem] rounded-[5px]">
                     <textarea name="" id="" rows={4} 
                     value={basicInformation.description} onChange={(e)=>setBasicInformation(prev=>({
                             ...prev,
@@ -51,7 +51,7 @@ function SelectedServiceBasicInformation ({
             <div className="flex flex-col gap-[0.3rem] w-full">
                 <span className="text-[14px] font-bold leading-none opacity-75">Base price</span>
 
-                <div className="flex items-center justify-between w-full border border-[#292929]/25 focus-within:border-[#ff6b00] p-[0.5rem]">
+                <div className="flex items-center justify-between w-full border border-[#292929]/25 focus-within:border-[#ff6b00] p-[0.5rem] rounded-[5px]">
                     <input type="text" name="service_name" id="service_name" 
                         value={basicInformation.base_price} onChange={(e)=>setBasicInformation(prev=>({
                             ...prev,

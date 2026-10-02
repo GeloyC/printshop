@@ -77,7 +77,7 @@ function CreateService () {
                         <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
                     </div>
 
-                    <button className="flex items-center gap-[0.3rem] bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] cursor-pointer transition-all duration-100">
+                    <button className="flex items-center gap-[0.3rem] bg-[#ff6b00] rounded-[5px] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] cursor-pointer transition-all duration-100">
                         <span className="text-[#fff] text-[14px] leading-none font-bold">Save</span>
                         <Save className="size-5" fill="#fff"/>
                     </button>

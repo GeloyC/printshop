@@ -88,7 +88,7 @@ function ConfigurationFields ({
                     label: newConfig.label,
                     type: newConfig.type,
                     options: options
-                })} className="fade-up flex flex-col w-[700px] bg-[#fff] gap-[1rem] p-[2rem]">
+                })} className="fade-up flex flex-col w-[700px] bg-[#fff] rounded-[5px] gap-[1rem] p-[2rem]">
 
             <span className="text-[24px] font-bold">New configuration</span>
 
@@ -97,20 +97,20 @@ function ConfigurationFields ({
                     <div className="flex flex-col w-full gap-[0.2rem]">
                         <span className="text-[14px] font-bold">Key</span>
                         <input type="text" name="key" id="service_key" value={newConfig.key} onChange={handleKeyChange} placeholder="Ex. 'color'" required
-                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75"/>
+                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[5px]"/>
                     </div>
 
                     <div className="flex flex-col w-full gap-[0.2rem]">
                         <span className="text-[14px] font-bold">Label</span>
                         <input type="text" name="label" id="service_label" value={newConfig.label} onChange={handleLabelChange} placeholder="Ex. 'Size' or 'Color'" required
-                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75"/>
+                        className="min-w-0 w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[5px]"/>
                     </div>
                 </div>
 
                 <div className="flex flex-col w-full gap-[0.2rem] border-t border-dashed border-t-[#292929]/10 pt-[0.5rem]">
                     <span className="text-[14px] font-bold">Type</span>
                     <select name="type" id="type" value={newConfig.type as ConfigurationType} onChange={handleTypeChange}
-                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75">
+                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[5px]">
                         <option hidden defaultValue={''}>-- Select type --</option>
                         <option value="select">Dropdown Selection (select)</option>
                         <option value="text">Text Field (text)</option>
@@ -127,7 +127,7 @@ function ConfigurationFields ({
 
                             <button type="button" onClick={()=>setIsOptionFieldOpen(true)} 
                             disabled={isOptionFieldOpen}
-                            className={`bg-[#272727] pb-[0.1rem] transition-all duration-100 ${isOptionFieldOpen ? 'opacity-25 cursor-not-allowed' : 'active:bg-[#272727]/75 cursor-pointer'}`}>
+                            className={`bg-[#272727] pb-[0.1rem] transition-all duration-100 rounded-[5px] ${isOptionFieldOpen ? 'opacity-25 cursor-not-allowed' : 'active:bg-[#272727]/75 cursor-pointer'}`}>
                                 <span className="text-[12px] text-[#fff] px-[0.5rem]  leading-none">+ Add</span>
                             </button>
                         </div>
@@ -137,7 +137,7 @@ function ConfigurationFields ({
                             <div className="flex flex-col items-start w-full gap-[0.2rem]">
                                 {options.length > 0 ? (
                                     options.map(opt => (
-                                        <div className="grid grid-cols-2 bg-[#ffdca5]/75 p-[0.5rem] px-[0.75rem] w-full">
+                                        <div className="grid grid-cols-2 bg-[#ffdca5]/75 p-[0.5rem] px-[0.75rem] rounded-[5px] w-full">
                                             <span className="text-[14px] font-bold">Name: {opt.option}</span>
                                             <span className="text-[14px] font-bold">Price: Php {opt.price}</span>
                                         </div>
@@ -151,7 +151,7 @@ function ConfigurationFields ({
                             </div>
 
                             {isOptionFieldOpen && (
-                                <div className="flex items-center w-full px-[0.5rem] bg-[#f2f2f2] border border-[#292929]/50 border-dashed focus-within:border-solid focus-within:border-[#292929]">
+                                <div className="flex items-center w-full px-[0.5rem] bg-[#f2f2f2] rounded-[5px] border border-[#292929]/50 border-dashed focus-within:border-solid focus-within:border-[#292929]">
                                     <div className="flex items-center w-full gap-[1rem]">
                                         <div className="flex items-center justify-between w-full">
                                             <span className="text-[14px] font-bold text-nowrap">Name:</span>
@@ -195,8 +195,8 @@ function ConfigurationFields ({
 
             <div className="flex w-full items-center justify-end gap-[0.2rem] pt-[1rem]">
                 <div className="flex w-full items-center justify-end gap-[0.2rem] pt-[1rem]">
-                    <button type="button" onClick={closeFields} className="w-[8rem] hover:bg-[#f2f2f2] bg-transparent py-[0.5rem] px-[1rem] text-[#292929] font-bold cursor-pointer transition-all duration-100">Cancel</button>
-                    <button className="w-[8rem] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] py-[0.5rem] px-[1rem] text-[#fff] font-bold cursor-pointer transition-all duration-100">Save</button>
+                    <button type="button" onClick={closeFields} className="w-[8rem] hover:bg-[#f2f2f2] bg-transparent rounded-[5px] py-[0.5rem] px-[1rem] text-[#292929] font-bold cursor-pointer transition-all duration-100">Cancel</button>
+                    <button className="w-[8rem] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] rounded-[5px] py-[0.5rem] px-[1rem] text-[#fff] font-bold cursor-pointer transition-all duration-100">Save</button>
                 </div>
             </div>
 

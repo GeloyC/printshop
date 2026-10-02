@@ -46,12 +46,12 @@ function ThumbnailComp ({
                 <span className="text-[14px] opacity-75">Add a short description here. State why thumbnail is important</span>
             </div>
 
-            <div className={`relative flex items-center justify-center w-full ${thumbnailPrev ? 'h-[250px]' : 'h-[200px]'} gap-1 bg-[#fff0d3] p-[0.5rem] border-2 border-dashed border-[#ffdca5]`}>
+            <div className={`relative flex items-center justify-center w-full rounded-[5px] ${thumbnailPrev ? 'h-[250px]' : 'h-[200px]'} gap-1 bg-[#fff0d3] p-[0.5rem] border-2 border-dashed border-[#ffdca5]`}>
 
                 <input type="file" name="thumbnail" id="thumbnail" 
-                onChange={handleReadThumbnail}
-                accept="image/png, image/jpg image/jpeg"
-                hidden
+                    onChange={handleReadThumbnail}
+                    accept="image/png, image/jpg image/jpeg"
+                    hidden
                 />
 
                 {thumbnailPrev ? (
@@ -81,9 +81,6 @@ function ThumbnailComp ({
                     </div>
                 )}
             </div>
-            
-            
-
         </div>
     )
 }

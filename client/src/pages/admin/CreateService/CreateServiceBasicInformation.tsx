@@ -25,7 +25,7 @@ function CreateServiceBasicInformation ({
                         ...prev,
                         name: e.target.value
                     }))}
-                    className="w-full p-[0.5rem] text-[14px] font-bold border border-[#292929]/25 bg-[#f2f2f2] focus:outline-[#ff6b00]" />
+                    className="w-full p-[0.5rem] text-[14px] font-bold border border-[#292929]/25 bg-[#f2f2f2] rounded-[5px] focus:outline-[#ff6b00]" />
                 </div>
 
                 <div className="flex flex-col items-start w-full">
@@ -35,7 +35,7 @@ function CreateServiceBasicInformation ({
                         ...prev,
                         description: e.target.value
                     }))} 
-                    className="w-full p-[0.5rem] text-[14px] font-bold border border-[#292929]/25 bg-[#f2f2f2] focus:outline-[#ff6b00]" />
+                    className="w-full p-[0.5rem] text-[14px] font-bold border border-[#292929]/25 bg-[#f2f2f2] rounded-[5px] focus:outline-[#ff6b00]" />
                 </div>
 
                 <div className="flex flex-col items-start w-full">
@@ -45,7 +45,7 @@ function CreateServiceBasicInformation ({
                         ...prev,
                         base_price: Number(e.target.value)
                     }))}
-                    className="w-full p-[0.5rem] text-[14px] font-bold border border-[#292929]/25 bg-[#f2f2f2] focus:outline-[#ff6b00]" />
+                    className="w-full p-[0.5rem] text-[14px] font-bold border border-[#292929]/25 bg-[#f2f2f2] rounded-[5px] focus:outline-[#ff6b00]" />
                 </div>
             </div>
         </div>

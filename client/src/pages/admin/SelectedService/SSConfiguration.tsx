@@ -35,7 +35,7 @@ function SSConfiguration ({
         <div className="flex flex-col gap-[1rem]">
             <div className="flex items-center justify-between w-full">
                 <span className="text-[16px] font-bold">Configuration</span>
-                <button className={`bg-[#292929] hover:bg-[#404040] active:bg-[#292929] px-[0.5rem] py-[0.3rem] cursor-pointer`}>
+                <button className={`bg-[#292929] hover:bg-[#404040] active:bg-[#292929] rounded-[5px] px-[0.5rem] py-[0.3rem] cursor-pointer`}>
                     <span className="text-[#fff] text-[14px]">+ Add configuration</span>
                 </button>
             </div>
