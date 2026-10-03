@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 function OrderConfirmation () {
 
     const {items} = useCartContext();
-    const ADDRESS = 'Blk 9, Lot 13 Ilang-ilang St, Pembo, Taguig City, Metro Manila'
+    const ADDRESS = 'The Raket Print, Blk 9, Lot 13 Ilang-ilang St, Pembo, Taguig City, Metro Manila'
 
     useEffect(() => {
         console.log('items from cartContext', items)
