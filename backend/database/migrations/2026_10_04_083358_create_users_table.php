@@ -20,7 +20,8 @@ return new class extends Migration
             $table->text('profile_url')
                 ->nullable();
             $table->string('password');
-            $table->string('role', 50);
+            $table->string('role', 50)
+                ->default('regular');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });

@@ -23,7 +23,8 @@ return new class extends Migration
                 ->constrained('services')
                 ->nullOnDelete();
             $table->string('reference_number');
-            $table->string('status');
+            $table->string('status', 25)
+                ->default("order placed");
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });
