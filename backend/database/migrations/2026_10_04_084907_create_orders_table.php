@@ -11,29 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // show this on the "My Folder" page
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('uuidv7()'));
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users');
-            $table->foreign('service_id')
-                ->references('id')
-                ->on('services');
+            $table->foreignUuid('user_id')
+                ->constrained('users')
+                ->nullOnDelete();
+            $table->foreignUuid('service_id')
+                ->constrained('services')
+                ->nullOnDelete();
             $table->string('reference_number');
-            $table->string('order_status');
+            $table->string('status');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });
 
-        Schema::create('order_items', function (Blueprint $table) {
+        // will be retreived when opening an order item showing the files printed
+        Schema::create('order_file_items', function (Blueprint $table) {
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('uuidv7()'));
-            $table->foriegn('order_id')
-                ->references('id')
-                ->on('orders');
+            $table->foreignUuid('order_id')
+                ->constrained('orders');
             $table->string('filename');
             $table->decimal('price', 10, 2);
             $table->jsonb('configuration');
@@ -44,9 +45,9 @@ return new class extends Migration
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('uuidv7()'));
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('orders');
+            $table->foreignUuid('order_id')
+                ->constrained('orders')
+                ->nullOnDelete();
             $table->string('status');
             $table->timestamp('changed_at');
         });
@@ -58,7 +59,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('order_file_items');
         Schemia::dropIfExists('order_status_histories');
     }
 };

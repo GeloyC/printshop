@@ -17,7 +17,8 @@ return new class extends Migration
                 ->default(DB::raw('uuidv7()'));
             $table->string('name', 100);
             $table->string('email', 100)->unique();
-            $table->text('profile_url');
+            $table->text('profile_url')
+                ->nullable();
             $table->string('password');
             $table->string('role', 50);
             $table->timestamp('created_at');

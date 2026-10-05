@@ -26,7 +26,11 @@ function Folder () {
                     </button>
 
                     <button className={`group flex items-center justify-center py-[0.5rem] px-[1rem] min-w-[100px] bg-[#fff] rounded-[5px] cursor-pointer`}>
-                        <span className={`text-[16px] text-[#292929] group-hover:text-[#ff6b00] group-active:text-[#cc4c02] font-bold transition-all duration-100`}>To Pickup</span>
+                        <span className={`text-[16px] text-[#292929] group-hover:text-[#ff6b00] group-active:text-[#cc4c02] font-bold transition-all duration-100`}>Printing Started</span>
+                    </button>
+
+                    <button className={`group flex items-center justify-center py-[0.5rem] px-[1rem] min-w-[100px] bg-[#fff] rounded-[5px] cursor-pointer`}>
+                        <span className={`text-[16px] text-[#292929] group-hover:text-[#ff6b00] group-active:text-[#cc4c02] font-bold transition-all duration-100`}>Ready for Pickup</span>
                     </button>
 
                     <button className={`group flex items-center justify-center py-[0.5rem] px-[1rem] min-w-[100px] bg-[#fff] rounded-[5px] cursor-pointer`}>
