@@ -24,7 +24,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->string('reference_number');
             $table->string('status', 25)
-                ->default("order placed");
+                ->default("Order placed");
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });

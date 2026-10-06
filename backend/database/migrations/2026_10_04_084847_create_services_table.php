@@ -21,7 +21,8 @@ return new class extends Migration
             $table->text('thumbnail_url');
             $table->jsonb('configuration');
             $table->string('slug');
-            $table->boolean('is_active');
+            $table->boolean('is_active')
+                ->default(true);
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });

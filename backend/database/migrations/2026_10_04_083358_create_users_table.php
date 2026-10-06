@@ -34,12 +34,11 @@ return new class extends Migration
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-            $table->uuid('id')
-                ->primary()
-                ->default(DB::raw('uuidv7()'));
+            $table->string('id')->primary();
             $table->foreignUuid('user_id')
                 ->nullable()
-                ->constrained('users');
+                ->constrained('users')
+                ->nullOnDelete();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longtext('payload');

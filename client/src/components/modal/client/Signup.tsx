@@ -2,6 +2,9 @@
 import Close from '/src/assets/icon/close.svg?react'
 import Arrow from '/src/assets/icon/arrow-with-tail.svg?react';
 
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { registration } from '../../../api/user';
 
 type SignupProp = {
     close: () => void
@@ -10,6 +13,22 @@ type SignupProp = {
 function Signup ({
     close
 }: SignupProp) {
+
+    const [newAccount, setNewAccount] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
+
+    const handleRegistration = useMutation({
+        mutationFn: async () => {
+            await registration(newAccount);  
+        }, 
+        onSuccess: () => {
+            console.log('registration success from frontend');
+            close(); 
+        }
+    })
 
     return (
         <div className='fade-up grid grid-cols-2 rounded-[10px] overflow-hidden'>
@@ -30,25 +49,40 @@ function Signup ({
                     {/* input fields here */}
                     <div className='flex flex-col gap-[0.3rem] w-full'>
                         <span className='text-[14px] font-bold opacity-75'>Name</span>
-                        <input type="text" name="input_name" id="input_name" 
-                        className='text-[14px] font-bold p-[0.5rem] border border-[#292929]/50 focus:outline-[#ff6b00] rounded-[5px]'/>
+                        <input type="text" name="input_name" id="input_name" required
+                            value={newAccount.name} 
+                            onChange={(e)=>setNewAccount(prev=> ({
+                                ...prev,
+                                name: e.target.value
+                            }))}
+                            className='text-[14px] text-[#2929292] font-bold p-[0.5rem] border border-[#292929]/50 focus:outline-[#ff6b00] rounded-[5px]'/>
                     </div>
 
                     <div className='flex flex-col gap-[0.3rem] w-full'>
                         <span className='text-[14px] font-bold opacity-75'>Email</span>
-                        <input type="email" name="input_email" id="input_email" 
-                        className='text-[14px] font-bold p-[0.5rem] border border-[#292929]/50 focus:outline-[#ff6b00] rounded-[5px]'/>
+                        <input type="email" name="input_email" id="input_email" required
+                            value={newAccount.email}
+                            onChange={(e)=>setNewAccount(prev=>({
+                                ...prev,
+                                email:e.target.value
+                            }))}
+                            className='text-[14px] text-[#2929292] font-bold p-[0.5rem] border border-[#292929]/50 focus:outline-[#ff6b00] rounded-[5px]'/>
                     </div>
 
                     <div className='flex flex-col w-full full gap-[0.3rem]'>
                         <span className='text-[14px] font-bold opacity-75'>Password</span>
                         <input type="password" name="input_password" id="input_password" 
-                        className='text-[14px] font-bold p-[0.5rem] border border-[#292929]/50 focus:outline-[#ff6b00] rounded-[5px]'/>
+                            value={newAccount.password}
+                            onChange={(e)=>setNewAccount(prev=>({
+                                ...prev,
+                                password:e.target.value
+                            }))}
+                            className='text-[14px] text-[#2929292] font-bold p-[0.5rem] border border-[#292929]/50 focus:outline-[#ff6b00] rounded-[5px]'/>
                     </div>
                 </div>
 
                 <div className='flex items-center w-full gap-[0.3rem]'>
-                    <button className='group flex items-center justify-center gap-[0.3rem] py-[0.5rem] rounded-[5px] w-full bg-[#ff6b00] hover:bg-[#ea6200] active:bg-[#cc4c02]/90 transition-all duration-100 cursor-pointer'>
+                    <button onClick={()=>handleRegistration.mutate()} className='group flex items-center justify-center gap-[0.3rem] py-[0.5rem] rounded-[5px] w-full bg-[#ff6b00] hover:bg-[#ea6200] active:bg-[#cc4c02]/90 transition-all duration-100 cursor-pointer'>
                         <span className='text-[16px] text-[#fff]'>Continue</span>
                         <Arrow className="size-5 group-hover:translate-x-1 transition-all duration-200" color='#fff' />
                     </button>
