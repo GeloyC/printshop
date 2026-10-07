@@ -16,10 +16,17 @@ export const login = async (data: LoginData) => {
     return response.data;
 }
 
+export const logout = async () => {
+    const response = await api.delete('/api/auth/logout');
+    console.log(response.data)
 
-// export const getUser = async () => {
-//     const response = await api.get('/api/auth/me');
-//     console.log(response.data);
+    return response.data;
+}
 
-//     return response.data;
-// }
+
+export const getUser = async () => {
+    const response = await api.get('/api/auth/me');
+    return response.data.user;
+}
+
+

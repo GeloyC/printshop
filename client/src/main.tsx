@@ -10,17 +10,22 @@ import {
 import { FileProvider } from './context/fileContext.tsx'
 import { CartProvider } from './context/cartContext.tsx'
 import { NotificationProvider } from './context/notificationContext.tsx'
+import { UserContextProvider } from './context/userContext.tsx'
+import { getUser } from './api/user.ts'
 
 const queryClient = new QueryClient();
+const currentUser = await getUser();
 
 createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient} >
-    <NotificationProvider>
-      <CartProvider>
-        <FileProvider>
-          <App />
-        </FileProvider>
-      </CartProvider>
-    </NotificationProvider>
+    <UserContextProvider>
+      <NotificationProvider>
+        <CartProvider>
+          <FileProvider>
+            <App />
+          </FileProvider>
+        </CartProvider>
+      </NotificationProvider>
+    </UserContextProvider>
   </QueryClientProvider>
 )

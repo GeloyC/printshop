@@ -3,7 +3,7 @@ import Close from '/src/assets/icon/close.svg?react'
 import Arrow from '/src/assets/icon/arrow-with-tail.svg?react';
 
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { registration } from '../../../api/user';
 
 type SignupProp = {
@@ -20,11 +20,13 @@ function Signup ({
         password: ''
     });
 
+    const queryClient = useQueryClient();
     const handleRegistration = useMutation({
         mutationFn: async () => {
             await registration(newAccount);  
         }, 
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({queryKey: ['user']})
             console.log('registration success from frontend');
             close(); 
         }

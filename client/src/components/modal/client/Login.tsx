@@ -5,7 +5,7 @@ import Arrow from '/src/assets/icon/arrow-with-tail.svg?react';
 import type { SetStateAction } from 'react'
 
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { login } from '../../../api/user';
 
 
@@ -35,12 +35,14 @@ function Login ({
         password: ''
     });
 
+    const queryClient = useQueryClient();
     const handleLogin = useMutation({
         mutationFn: async () => {
             console.log(account)
             await login(account);
         },
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['user'] })
             console.log('login is goooooood!');
             close();
         }

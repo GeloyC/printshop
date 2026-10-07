@@ -9,21 +9,33 @@ import Signup from "../../modal/client/Signup";
 import Login from "../../modal/client/Login";
 import FolderButton from "./FolderButton";
 import NotificationButton from "./NotificationButton";
+import { useUserContext } from "../../../context/userContext";
+import UserAccountIcon from "./UserAccountIcon";
+import CartButton from "./CartButton";
 
 function NavBar () {
+
+    const { user } = useUserContext();
 
     const [loginOpen, setLoginOpen] = useState<boolean>(false);
     const [signupOpen, setSignupOpen] = useState<boolean>(false);
 
     const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
+    const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState<boolean>(false);
 
+    const handleCloseDropdowns = () => {
+        setIsNotifDropdownOpen(false);
+        setIsAccountDropdownOpen(false);
+    }
     
     return (
         <>
-            {isNotifDropdownOpen && <div onClick={()=>setIsNotifDropdownOpen(false)} className="absolute inset-0 z-10"/>}
+            {(isNotifDropdownOpen || isAccountDropdownOpen) && (
+                <div onClick={handleCloseDropdowns} className="absolute inset-0 z-10"/>
+            )}
             <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] py-[0.75rem] z-10">
                 <div className="flex items-center h-full gap-[1rem]">
-                    <Link to="/" onClick={()=>setIsNotifDropdownOpen(false)} className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
+                    <Link to="/" onClick={handleCloseDropdowns} className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
 
                     <div className="group relative flex h-full">
                         <div className="flex h-full items-center cursor-pointer">
@@ -33,35 +45,52 @@ function NavBar () {
                             </div>
                         </div>
 
-                        <div onClick={()=>setIsNotifDropdownOpen(false)} className="fade-up absolute top-[2.5rem] left-1/2 -translate-x-1/2 p-[0.2rem] hidden group-hover:flex flex flex-col items-start shadow-lg bg-[#FFF] border border-[#272727]/10">
+                        <div onClick={handleCloseDropdowns} className="fade-up absolute top-[2.5rem] left-1/2 -translate-x-1/2 p-[0.2rem] hidden group-hover:flex flex flex-col items-start shadow-lg bg-[#FFF] border border-[#272727]/10">
                             <Link to="/service/slug" className="whitespace-nowrap py-[0.5rem] px-[1rem] hover:bg-[#B1B2B5]/25 active:bg-[#B1B2B5]/35">Document Print</Link>
                         </div>
                     </div>
                 </div>
 
-                <div className="relative flex items-center h-full gap-[0.3rem]">
+                <div className="relative flex items-center h-full gap-[0.5rem]">
                     <Link to="/admin/service" className="text-[14px] font-bold mr-[2rem]">admin</Link>
 
+                    <CartButton 
+                        closeDropdowns={handleCloseDropdowns}
+                    />
+
                     <FolderButton 
-                        closeNotif={()=>setIsNotifDropdownOpen(false)}
+                        closeDropdowns={handleCloseDropdowns}
                     />
                     <NotificationButton 
                         isNotifDropdownOpen={isNotifDropdownOpen}
                         setIsNotifDropdownOpen={setIsNotifDropdownOpen}
+                        closeAccount={()=>setIsAccountDropdownOpen(false)}
                     />
 
-                    <button onClick={()=>{
-                        setLoginOpen(true)
-                        setIsNotifDropdownOpen(false)
-                    }} className="bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] px-[1rem] py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-100">
-                        <span className="px-[1rem] text-[14px] font-[600]">Login</span>
-                    </button>
-                    <button onClick={()=>{
-                        setSignupOpen(true)
-                        setIsNotifDropdownOpen(false)
-                    }} className="border border-[#ff6b00] bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-100">
-                        <span className="text-[#FFF] text-[14px] font-[600]">Get Started</span>
-                    </button>
+                    {user ? (
+                        <UserAccountIcon 
+                            user={user}
+                            setIsAccountDropdownOpen={setIsAccountDropdownOpen}
+                            isAccountDropdownOpen={isAccountDropdownOpen}
+                            closeNotif={()=>setIsNotifDropdownOpen(false)}
+                        />
+                    ):(
+                        <>
+                            <button onClick={()=>{
+                                setLoginOpen(true)
+                                handleCloseDropdowns()
+                            }} className="bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] px-[1rem] py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-100">
+                                <span className="px-[1rem] text-[14px] font-[600]">Login</span>
+                            </button>
+                            <button onClick={()=>{
+                                setSignupOpen(true)
+                                handleCloseDropdowns()
+                            }} className="border border-[#ff6b00] bg-[#ff6b00] hover:bg-[#e76100] active:bg-[#ff6b00] px-[1rem] py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-100">
+                                <span className="text-[#FFF] text-[14px] font-[600]">Get Started</span>
+                            </button>
+                        </>
+                    )}
+
                 </div>
             </section>
 
@@ -86,4 +115,4 @@ function NavBar () {
     )
 }
 
-export default NavBar;
+export default NavBar; 

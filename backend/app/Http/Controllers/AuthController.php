@@ -57,18 +57,23 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'login successful.',
-            'authenticated' => Auth::check(),
-            'user' => $request->user(),
-            'session_id'=>$request->session()->getId(),
         ]);
     }
 
 
-    // public function me(Request $request) {
-    //     return response()->json([
-    //         'authenticated' => Auth::check(),
-    //         'user' => $request->user(),
-    //         'session_id'=>$request->session()->getId(),
-    //     ]);
-    // }
+    public function logout (Request $request) {
+        $request->session()->flush();
+
+        return response()->json([
+            'message' => 'logout successfully.',
+        ]);
+    }
+
+
+    public function me(Request $request) {
+        return response()->json([
+            'authenticated' => Auth::check(),
+            'user' => $request->user(),
+        ]);
+    }
 }

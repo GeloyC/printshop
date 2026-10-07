@@ -9,11 +9,13 @@ import NotificationItem from './NotificationItem';
 type NotificationButtonProp = {
     isNotifDropdownOpen: boolean,
     setIsNotifDropdownOpen: React.Dispatch<SetStateAction<boolean>>
+    closeAccount: () => void
 }
 
 function NotificationButton ({
     isNotifDropdownOpen,
-    setIsNotifDropdownOpen
+    setIsNotifDropdownOpen,
+    closeAccount
 }:NotificationButtonProp) {
 
     const [itemDropdownId, setItemDropdownId] = useState<boolean>(false) // change this to id later
@@ -23,7 +25,8 @@ function NotificationButton ({
             <button onClick={()=>{
                 setIsNotifDropdownOpen(open=>!open)
                 setItemDropdownId(false)
-            }} className="relative group p-[0.5rem] border border-[#f2f2f2] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] rounded-full cursor-pointer">
+                closeAccount()
+            }} className="relative group p-[0.5rem] border border-[#f2f2f2] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] rounded-[10px] cursor-pointer">
                 <Notification className="size-5" />
 
                 <div className='absolute -bottom-1 -right-1 flex items-center justify-center bg-[#fff] rounded-full border border-[#B1B2B5] group-hover:bg-[#B1B2B5] group-active:bg-[#f2f2f2]'>
