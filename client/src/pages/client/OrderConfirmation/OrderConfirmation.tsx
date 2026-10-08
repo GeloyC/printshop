@@ -11,6 +11,8 @@ import Exclamation from '/src/assets/icon/exclamation-mark.svg?react'
 import { useCartContext } from '../../../context/cartContext';
 import { useEffect } from 'react';
 
+// Retrieve the order items from the server and display all the files included on the order
+
 
 function OrderConfirmation () {
 

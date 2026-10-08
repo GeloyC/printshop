@@ -1,4 +1,4 @@
-import { useEffect, type SetStateAction } from "react";
+import { type SetStateAction } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -46,7 +46,7 @@ function DisplayFiles ({
             const fileExtension = file?.name.split('.').pop();
 
             const newFile: fileItem = {
-                id: `${file.name}-${file.name}-${file.lastModified}`,
+                id: crypto.randomUUID(),
                 file: file,
                 quantity: 1
             }
@@ -62,14 +62,14 @@ function DisplayFiles ({
             setFiles(currentFiles => {
                 const existing = new Set(
                     currentFiles.map(
-                        file => file?.id
+                        file => file.file?.name
                     )
                 );
 
 
-                const key = newFile.id;
+                const filename = newFile.file.name;
                 
-                if (existing?.has(key)) {
+                if (existing?.has(filename)) {
 
                     setError('Duplicate file')
                     setTimeout(()=>setError(''), 3000)
@@ -97,7 +97,7 @@ function DisplayFiles ({
             const fileExtension = file?.name.split('.').pop();
 
             const newFile: fileItem = {
-                id: `${file.name}-${file.name}-${file.lastModified}`,
+                id:  crypto.randomUUID(),
                 file: file,
                 quantity: 1
             }
@@ -111,14 +111,14 @@ function DisplayFiles ({
             setFiles(currentFiles => {
                 const existing = new Set(
                     currentFiles.map(
-                        file => file.id
+                        file => file.file.name
                     )
                 );
 
-                const id = newFile.id;
+                const filename = newFile.file.name;
                 
-                if (existing?.has(id)) {
-                    console.log(id);
+                if (existing?.has(filename)) {
+                    console.log(filename);
 
                     setError('Duplicate file')
                     setTimeout(()=>setError(''), 3000)
@@ -147,34 +147,10 @@ function DisplayFiles ({
         // remove the files from the setFile state at /fileContext
         // the files will also be saved on the database at this point so the cart can be left and user can come back later to it
 
-        // TODO
-        // Fix the cart items file duplication bug + create a unique ID for each
 
-        setItems(items => {
-            const existing = new Set(
-                files.map(
-                    file => file.id
-                )
-            );
+        setItems(items=>[...files, ...items]);
 
-            console.log(existing);
-
-            items.forEach(file => {
-                const id = file.id;
-
-                if (existing?.has(id)) {
-                    console.log(id);
-    
-                    setError('Duplicate file')
-                    setTimeout(()=>setError(''), 3000)
-    
-                    return [...items, file]
-                }
-            })
-            
-            return [...files];
-        });
-
+        setFiles([]);
         navigate('/cart')
     }
 

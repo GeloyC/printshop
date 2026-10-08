@@ -14,9 +14,19 @@ import { useCartContext } from "../../../context/cartContext"
 import type { fileItem } from "../../../types/FileType"
 
 
+/*
+* IMPORTANT NOTE
+* If two files have the same name and same configuration, mark them as duplicate file
+* 
+* TODO: add a check box for each cart item, only the checked once are going to proceed when order is confirmed.
+* the checked item will be removed after the order is confirmed
+*/
+
+
 function Cart () {
     
     const { items, setItems } = useCartContext();
+    console.log('items: ', items);
 
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState<boolean>(false);
     const [isConfigurationOpen, setIsConfigurationOpen] = useState<boolean>(false);

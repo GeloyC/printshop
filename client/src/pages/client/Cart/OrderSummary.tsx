@@ -6,6 +6,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { useFileContext } from "../../../context/fileContext";
+import { useCartContext } from "../../../context/cartContext";
 
 
 
@@ -13,10 +14,17 @@ function OrderSummary () {
 
     const navigate = useNavigate();
     const { setFiles } = useFileContext();
+    const { setItems } = useCartContext();
 
     const handleConfirmOrder = () => {
 
         setFiles([]);
+
+        // When this function is called, remove the files that are confirmed to be ordered.
+
+        // if the POST request is successful, that is when the items in the setItems are removed.
+        setItems([]);
+
         navigate('/order-confirmation')
     }
 

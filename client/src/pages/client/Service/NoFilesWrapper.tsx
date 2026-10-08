@@ -17,7 +17,7 @@ function NoFilesWrapper () {
 
         files.forEach(file => {
             const newFile: fileItem = {
-                id: `${file.name}-${file.name}-${file.lastModified}`,
+                id: crypto.randomUUID(),
                 file: file,
                 quantity: 1
             }
