@@ -5,19 +5,18 @@
 */
 
 import { useNavigate } from "react-router-dom";
-import type { fileItem } from "../../../types/FileType";
 import { useFileContext } from "../../../context/fileContext";
-import { useCartContext } from "../../../context/cartContext";
 
 
 
 function OrderSummary () {
 
     const navigate = useNavigate();
+    const { setFiles } = useFileContext();
 
     const handleConfirmOrder = () => {
 
-        
+        setFiles([]);
         navigate('/order-confirmation')
     }
 

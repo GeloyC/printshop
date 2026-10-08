@@ -133,7 +133,7 @@ function DisplayFiles ({
 
     const handleRemoveFile = (index:number) => {
         setFiles(files => 
-            Array.from(files).filter((item, idx) => 
+            Array.from(files).filter((_, idx) => 
                 idx !== index
             )
         )
@@ -150,15 +150,35 @@ function DisplayFiles ({
         // TODO
         // Fix the cart items file duplication bug + create a unique ID for each
 
-        setItems(items => [...items,...files]);
-        setFiles([]);
+        setItems(items => {
+            const existing = new Set(
+                files.map(
+                    file => file.id
+                )
+            );
+
+            console.log(existing);
+
+            items.forEach(file => {
+                const id = file.id;
+
+                if (existing?.has(id)) {
+                    console.log(id);
+    
+                    setError('Duplicate file')
+                    setTimeout(()=>setError(''), 3000)
+    
+                    return [...items, file]
+                }
+            })
+            
+            return [...files];
+        });
+
         navigate('/cart')
     }
 
 
-    useEffect(() => {
-        console.log('files: ', files)
-    }, [files])
 
     return (
         <div className={`fade-up flex flex-col w-full min-h-[300px] h-fit max-h-[620px] ${dragOver ? 'bg-[#ffdca5]' : 'bg-[#fff8ec]'} border-2 ${files.length <= 0 && 'border-dashed' } border-[#ffc36d] rounded-[10px] overflow-hidden`}>
