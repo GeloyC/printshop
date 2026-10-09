@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom"
-import NavbarAdmin from "../components/admin/navbarAdmin"
-import TopNavAdmin from "../components/admin/topnavAdmin"
+import NavbarAdmin from "../components/admin/NavBarAdmin/navbarAdmin"
+import TopNavAdmin from "../components/admin/NavBarAdmin/topnavAdmin"
 
 import { useState } from "react"
 
@@ -10,15 +10,18 @@ function AdminLayout () {
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
     return (
-        <div className="flex items-start w-full h-screen bg-[#d6d6d6]">
-            <NavbarAdmin  
-                setIsExpanded={setIsExpanded}
-                isExpanded={isExpanded}
-            />
+        <div className="flex flex-col items-start w-full h-screen">
+            <TopNavAdmin />
 
-            <div className="flex flex-col w-full h-screen">
-                <TopNavAdmin />
-                <Outlet />
+            <div className="flex w-full h-screen bg-[#B1B2B5]/50">
+                <NavbarAdmin  
+                    setIsExpanded={setIsExpanded}
+                    isExpanded={isExpanded}
+                />
+
+                <div className="flex w-full h-full rounded-t-[15px] border-t border-l border-[#292929]/15 overflow-hidden">
+                    <Outlet />
+                </div>
             </div>
         </div>
     )

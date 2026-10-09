@@ -92,10 +92,11 @@ function Login ({
                     {handleLogin.isPending ? (
                         <LoadingSpinner 
                             size={15}
+                            borderSize={2}
                             color='#fff'
                         />
                     ):(
-                        <Arrow className="size-5 group-hover:translate-x-1 transition-all duration-200" color='#fff' />
+                        <Arrow className="size-5 group-hover:translate-x-1 transition-all duration-200" color='#fff' /> 
                     )}
                 </button>
 

@@ -37,7 +37,7 @@ function SelectedService () {
 
     return (
         <>
-            <main className="flex flex-col h-screen bg-[#fff]">
+            <main className="flex flex-col w-full h-full bg-[#fff]">
                 <div className="flex items-center w-full border-b border-[#292929]/10 p-[1rem] gap-[0.5rem]">
                     <ReturnButton/>
                     <span className="text-[20px] font-bold leading-none text-[#292929]">Service Name</span>

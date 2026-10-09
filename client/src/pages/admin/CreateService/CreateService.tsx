@@ -68,7 +68,7 @@ function CreateService () {
 
     return (
         <>
-            <div className="flex flex-col h-full bg-[#fff]">
+            <div className="flex flex-col w-full h-full bg-[#fff]">
                 
                 <div className="flex items-center justify-between w-full border-b border-[#292929]/10 p-[1rem]">
 

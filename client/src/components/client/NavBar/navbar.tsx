@@ -52,8 +52,6 @@ function NavBar () {
                 </div>
 
                 <div className="relative flex items-center h-full gap-[0.5rem]">
-                    <Link to="/admin/service" className="text-[14px] font-bold mr-[2rem]">admin</Link>
-
                     <CartButton 
                         closeDropdowns={handleCloseDropdowns}
                     />

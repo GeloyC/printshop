@@ -3,6 +3,7 @@ import { logout } from "../../../api/user";
 import type { UserType } from "../../../types/UserType";
 import { type SetStateAction } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 
 type UserAccountIconProp = {
@@ -47,7 +48,7 @@ function UserAccountIcon ({
             {isAccountDropdownOpen && (
                 <div className="fade-up absolute top-[2.75rem] right-0 bg-[#fff] border border-[#292929]/25 rounded-[5px] min-w-[150px] shadow-lg">
                     <div className="flex flex-col items-start p-[1rem] gap-[0.2rem] border-b border-[#292929]/25">
-                        <span className="text-[#292929] text-[16px] font-bold leading-none">{user?.name}</span>
+                        <span className="text-nowrap text-[#292929] text-[16px] font-bold leading-none">{user?.name}</span>
                         <span className="text-[#292929] text-[14px] leading-none opacity-50">{user?.email}</span>
                     </div>
 
@@ -55,6 +56,14 @@ function UserAccountIcon ({
                         <button className="flex items-start justify-start cursor-pointer hover:bg-[#f2f2f2] w-full p-[0.5rem] rounded-[5px]">
                             <span className="text-[14px] text-[#292929] font-bold leading-none">View profile</span>
                         </button>
+
+                        {user?.role === 'admin' && (
+                            <Link to="/admin/service" 
+                                className="flex items-start justify-start cursor-pointer hover:bg-[#f2f2f2] w-full p-[0.5rem] rounded-[5px]"
+                            >
+                                <span className="text-[14px] text-[#292929] font-bold leading-none">Dashboard</span>
+                            </Link>
+                        )}
 
                         <button onClick={()=>handleLogout.mutate()} className="flex items-start justify-start cursor-pointer hover:bg-[#f2f2f2] w-full p-[0.5rem] rounded-[5px]">
                             <span className="text-[14px] text-[#292929] font-bold leading-none">Sign out</span>
