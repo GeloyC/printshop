@@ -13,13 +13,13 @@ function AdminLayout () {
         <div className="flex flex-col items-start w-full h-screen">
             <TopNavAdmin />
 
-            <div className="flex w-full h-screen bg-[#B1B2B5]/50">
+            <div className="flex w-full h-screen bg-[#B1B2B5]/50 pr-[1rem]">
                 <NavbarAdmin  
                     setIsExpanded={setIsExpanded}
                     isExpanded={isExpanded}
                 />
 
-                <div className="flex w-full h-full rounded-t-[15px] border-t border-l border-[#292929]/15 overflow-hidden">
+                <div className="flex w-full h-full rounded-t-[15px] border-t border-x border-[#292929]/15 overflow-hidden">
                     <Outlet />
                 </div>
             </div>

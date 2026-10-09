@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // icon
 import Save from '/src/assets/icon/save.svg?react'
@@ -17,6 +18,9 @@ import type {
     BasicInformationType,
     Configuration 
 } from "../../../types/service/service";
+
+// service
+import { createService } from "../../../api/service";
 
 
 
@@ -64,7 +68,19 @@ function CreateService () {
             label: '',
             options: []
         })
-    }
+    };
+
+    const queryClient = useQueryClient();
+    const handleCreateService = useMutation({
+        mutationFn: async () => {
+            // call the createService function here
+            // get the payload for what the createService requires
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['service']});
+        }
+    });
+
 
     return (
         <>
@@ -77,7 +93,7 @@ function CreateService () {
                         <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
                     </div>
 
-                    <button className="flex items-center gap-[0.3rem] bg-[#ff6b00] rounded-[5px] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] cursor-pointer transition-all duration-100">
+                    <button onClick={()=>handleCreateService.mutate()} className="flex items-center gap-[0.3rem] bg-[#ff6b00] rounded-[5px] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] cursor-pointer transition-all duration-100">
                         <span className="text-[#fff] text-[14px] leading-none font-bold">Save</span>
                         <Save className="size-5" fill="#fff"/>
                     </button>
