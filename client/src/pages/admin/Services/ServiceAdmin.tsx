@@ -1,15 +1,25 @@
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
-// component
+// type
+import type { ServiceType } from '../../../types/service/service';
 
 // icon
 import Add from '/src/assets/icon/add-service.svg?react'
 import ServiceItem from './ServiceItem';
+import { getAllService } from '../../../api/service';
 
 
 function ServiceAdmin () {
 
+    const { data: services = [], isLoading } = useQuery({
+        queryKey: ['services'],
+        queryFn: async () => {
+            return await getAllService();
+        }
+    });
     
+    console.log(services.data);
 
     return (
         <>
@@ -25,7 +35,11 @@ function ServiceAdmin () {
                 </div>
 
                 <div className='sticky grid grid-cols-4 w-full gap-[0.5rem] p-[2rem]'>
-                    <ServiceItem />
+                    {services?.map((service:ServiceType) => (
+                        <ServiceItem key={service?.id}
+                            service={service}
+                        />
+                    ))}
                 </div> 
             </div>
         </>

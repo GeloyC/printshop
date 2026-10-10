@@ -20,6 +20,11 @@ class Service extends Model
     protected $keyType = 'string';  
     public $incrementing = false;  
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array {
         return [
             'is_active' => 'boolean',

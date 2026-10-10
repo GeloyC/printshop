@@ -27,7 +27,7 @@ function App() {
 
         <Route element={<AdminLayout />}>
           <Route path="/admin/service" element={<ServiceAdmin />}/>
-          <Route path='/admin/service/service_name' element={<SelectedService />}/> {/* Change this later to :service_name */}
+          <Route path='/admin/service/:slug' element={<SelectedService />}/> {/* Change this later to :service_name */}
           <Route path='/admin/service/create' element={<CreateService />} />
         </Route>
       </Routes>

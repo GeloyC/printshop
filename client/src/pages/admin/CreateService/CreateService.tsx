@@ -75,9 +75,28 @@ function CreateService () {
         mutationFn: async () => {
             // call the createService function here
             // get the payload for what the createService requires
+
+            try {
+                const payload = {
+                    name: basicInfo.name,
+                    description: basicInfo.description,
+                    base_price: basicInfo.base_price,
+                    thumbnail_url: '',
+                    configuration: configs,
+                    slug: basicInfo.name.split(' ').join('_').toLocaleLowerCase(), // ex. Document print => document_print
+                }
+
+                console.log('payload: ', payload);
+                await createService(payload);
+
+            } catch (err) {
+                console.log('create service error: ', err);
+            }
+
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['service']});
+            console.log('create service success, orrrrrraaaaayt!');
         }
     });
 

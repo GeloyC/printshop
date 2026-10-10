@@ -43,7 +43,7 @@ function SSConfiguration ({
             <p className="text-[14px] opacity-75">Add a short description or instruction here about the configuration</p>
 
 
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full gap-[0.5rem]">
                 {configs.map(config => (
                     <ConfigurationItem 
                         config={config}

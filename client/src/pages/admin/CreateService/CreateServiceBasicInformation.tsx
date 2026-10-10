@@ -13,6 +13,7 @@ function CreateServiceBasicInformation ({
     setBasicInfo
 }:BasicInformationProp) {
 
+
     return (
         <div className="flex flex-col w-full gap-[1.5rem]">
             <span className="text-[16px] text-[#292929] font-bold">Basic Information</span>

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 import type { 
     BasicInformationType, 
@@ -14,17 +16,28 @@ import SSConfiguration from "./SSConfiguration";
 import ReturnButton from "../../../components/ui/ReturnButton";
 import ModalWrapper from "../../../components/wrapper/ModalWrapper";
 import ConfigurationEditModal from "../../../components/modal/admin/ConfigurationEditModal";
+import { getServiceBySlug } from "../../../api/service";
 
 function SelectedService () {
 
+    const { slug } = useParams();
+
+    const { data: service } = useQuery({
+        queryKey: ['service', slug],
+        queryFn: async () => {
+            return await getServiceBySlug(String(slug));
+        }, retry: true
+    }); 
+
     const [basicInformation, setBasicInformation] = useState<BasicInformationType>({
-        name: '',
-        description: '',
-        base_price: 0
+        name: service?.name || '',
+        description: service?.description || '',
+        base_price: service?.base_price || 0
     })
 
     // todo: populate the configs with actual data from db
-    const [configs, setConfigs] = useState<Configuration[]>([]);
+    const parsedConfigs = JSON.parse(service.configuration);
+    const [configs, setConfigs] = useState<Configuration[]>(parsedConfigs);
     const [selectedConfigEdit, setSelectedConfigEdit] = useState<Configuration>({
         id: crypto.randomUUID(),
         key: '',
@@ -33,6 +46,10 @@ function SelectedService () {
     });
 
     const [isConfigEditModalOpen, setIsConfigEditModalOpen] = useState<boolean>(false);
+
+    console.log();
+    
+
     
 
     return (
@@ -40,7 +57,7 @@ function SelectedService () {
             <main className="flex flex-col w-full h-full bg-[#fff]">
                 <div className="flex items-center w-full border-b border-[#292929]/10 p-[1rem] gap-[0.5rem]">
                     <ReturnButton/>
-                    <span className="text-[20px] font-bold leading-none text-[#292929]">Service Name</span>
+                    <span className="text-[20px] font-bold leading-none text-[#292929]">{service?.name}</span>
                 </div>
 
                 <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar">
