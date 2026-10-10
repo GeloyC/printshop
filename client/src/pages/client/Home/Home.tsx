@@ -3,9 +3,18 @@
 
 // components
 // import { useFileContext } from "../../../context/documentPrintContext";
+import { useQuery } from "@tanstack/react-query";
 import ServiceList from "./ServiceList";
+import { getAllService } from "../../../api/service";
 
 function Home () {
+
+    const { data: services=[] } = useQuery({
+        queryKey: ['services'],
+        queryFn: async () => {
+            await getAllService();
+        }
+    });
 
     return (
         <div className="flex flex-col w-full h-full items-center justify-center gap-[2rem]">
@@ -15,8 +24,8 @@ function Home () {
                 <span className='text-[18px] text-[#272727] font-bold'>We will handle the printing, you just chill and wait</span>
             </div>
 
-
-            <ServiceList />
+            
+            <ServiceList services={services}/>
         </div>
     )
 }

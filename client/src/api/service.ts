@@ -27,5 +27,6 @@ export const getAllService = async () => {
 export const getServiceBySlug = async (slug: string) => {
     const response = await api.get(`/api/service/${slug}`);
 
+    console.log('[getServiceBySlug]: ', response.data);
     return response.data;
 }

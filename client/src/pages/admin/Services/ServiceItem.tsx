@@ -1,11 +1,11 @@
 
 
 import { Link } from 'react-router-dom';
-import type { ServiceType } from '../../../types/service/service';
+import type { ServiceItemType } from '../../../types/service/service';
 
 
 type ServiceItemProp = {
-    service: ServiceType
+    service: ServiceItemType
 }
 
 function ServiceItem ({

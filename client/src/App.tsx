@@ -19,7 +19,7 @@ function App() {
       <Routes >
         <Route element={<ClientLayout />}>
           <Route path='/' element={<Home />} />
-          <Route path='/service/slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
+          <Route path='/service/:slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
           <Route path='/cart' element={<Cart />} />
           <Route path='/order-confirmation' element={<OrderConfirmation />} />
           <Route path='/folder' element={<Folder />} />

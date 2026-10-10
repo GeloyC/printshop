@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 // type
-import type { ServiceType } from '../../../types/service/service';
+import type { ServiceItemType } from '../../../types/service/service';
 
 // icon
 import Add from '/src/assets/icon/add-service.svg?react'
@@ -19,7 +19,6 @@ function ServiceAdmin () {
         }
     });
     
-    console.log(services.data);
 
     return (
         <>
@@ -35,7 +34,7 @@ function ServiceAdmin () {
                 </div>
 
                 <div className='sticky grid grid-cols-4 w-full gap-[0.5rem] p-[2rem]'>
-                    {services?.map((service:ServiceType) => (
+                    {services.map((service:ServiceItemType) => (
                         <ServiceItem key={service?.id}
                             service={service}
                         />
