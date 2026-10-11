@@ -16,3 +16,4 @@ Route::get('/auth/me', [AuthController::class, 'me']);
 Route::post('/service/new', [ServiceController::class, 'store']);
 Route::get('/services', [ServiceController::class, 'index']);
 Route::get("/service/{slug}", [ServiceController::class, 'show']);
+Route::get("/services/names", [ServiceController::class, 'getNames']);

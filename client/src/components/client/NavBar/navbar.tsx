@@ -13,9 +13,14 @@ import { useUserContext } from "../../../context/userContext";
 import UserAccountIcon from "./UserAccountIcon";
 import CartButton from "./CartButton";
 
+// hooks
+import ServiceContainer from "./Services/ServiceContainer";
+import { useServiceNames } from "../../../hooks/services/UseServiceNames";
+
 function NavBar () {
 
     const { user } = useUserContext();
+    const {data: serviceNames = [] } = useServiceNames();
 
     const [loginOpen, setLoginOpen] = useState<boolean>(false);
     const [signupOpen, setSignupOpen] = useState<boolean>(false);
@@ -27,6 +32,10 @@ function NavBar () {
         setIsNotifDropdownOpen(false);
         setIsAccountDropdownOpen(false);
     }
+
+    
+
+
     
     return (
         <>
@@ -45,9 +54,10 @@ function NavBar () {
                             </div>
                         </div>
 
-                        <div onClick={handleCloseDropdowns} className="fade-up absolute top-[2.5rem] left-1/2 -translate-x-1/2 p-[0.2rem] hidden group-hover:flex flex flex-col items-start shadow-lg bg-[#FFF] border border-[#272727]/10">
-                            <Link to="/service/slug" className="whitespace-nowrap py-[0.5rem] px-[1rem] hover:bg-[#B1B2B5]/25 active:bg-[#B1B2B5]/35">Document Print</Link>
-                        </div>
+                        <ServiceContainer
+                            handleCloseDropdowns={handleCloseDropdowns}
+                            serviceNames={serviceNames}
+                        />
                     </div>
                 </div>
 

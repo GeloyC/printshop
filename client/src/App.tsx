@@ -19,7 +19,7 @@ function App() {
       <Routes >
         <Route element={<ClientLayout />}>
           <Route path='/' element={<Home />} />
-          <Route path='/service/:slug' element={<ServiceClient />} /> {/* change path to /service/:slug later*/}
+          <Route path='/service/:slug' element={<ServiceClient />} /> 
           <Route path='/cart' element={<Cart />} />
           <Route path='/order-confirmation' element={<OrderConfirmation />} />
           <Route path='/folder' element={<Folder />} />
@@ -27,7 +27,7 @@ function App() {
 
         <Route element={<AdminLayout />}>
           <Route path="/admin/service" element={<ServiceAdmin />}/>
-          <Route path='/admin/service/:slug' element={<SelectedService />}/> {/* Change this later to :service_name */}
+          <Route path='/admin/service/:slug' element={<SelectedService />}/> 
           <Route path='/admin/service/create' element={<CreateService />} />
         </Route>
       </Routes>

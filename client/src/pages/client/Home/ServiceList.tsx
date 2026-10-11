@@ -10,11 +10,11 @@ type ServiceListProp = {
 
 function ServiceList ({ services }: ServiceListProp) {
 
-    console.log(services);
+    console.log('serviceList: ', services);
 
     return (
         <div className="grid grid-cols-4 w-full py-[2rem]">
-            {services.map(service => (
+            {services?.map(service => (
                 <ServiceItem 
                     service={service}
                 />

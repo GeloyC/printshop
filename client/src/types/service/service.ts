@@ -45,3 +45,4 @@ export type ServiceItemType = {
     slug: string,
     created_at?: string
 }
+

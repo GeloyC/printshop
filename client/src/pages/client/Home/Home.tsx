@@ -1,20 +1,12 @@
 
-// import { useNavigate } from "react-router-dom"
-
 // components
-// import { useFileContext } from "../../../context/documentPrintContext";
-import { useQuery } from "@tanstack/react-query";
 import ServiceList from "./ServiceList";
-import { getAllService } from "../../../api/service";
+import { useServices } from "../../../hooks/services/useServices";
 
 function Home () {
 
-    const { data: services=[] } = useQuery({
-        queryKey: ['services'],
-        queryFn: async () => {
-            await getAllService();
-        }
-    });
+    const { data: services=[] } = useServices();
+    console.log('check useServices: ', services);
 
     return (
         <div className="flex flex-col w-full h-full items-center justify-center gap-[2rem]">

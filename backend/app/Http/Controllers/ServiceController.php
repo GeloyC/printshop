@@ -11,7 +11,7 @@ class ServiceController extends Controller
     // 
     public function index () {
         // retrieve all service
-        $service = DB::table('services')
+        $service = Service::query()
             ->select(
                 'id',
                 'thumbnail_url',
@@ -46,6 +46,15 @@ class ServiceController extends Controller
             )
             ->where('slug', $slug)
             ->first();
+
+        return response()->json($service);
+    }
+
+
+    public function getNames () {
+        $service = Service::query()
+            ->select('id', 'name', 'slug')
+            ->get();
 
         return response()->json($service);
     }

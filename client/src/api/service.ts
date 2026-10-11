@@ -30,3 +30,11 @@ export const getServiceBySlug = async (slug: string) => {
     console.log('[getServiceBySlug]: ', response.data);
     return response.data;
 }
+
+
+export const getServiceNames = async () => {
+    const response = await api.get('api/services/names');
+    console.log('[getServicesNames]: ', response.data);
+
+    return response.data ?? [];
+}
