@@ -19,6 +19,8 @@ function ServiceClient () {
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
     const { error } = useFileContext()
 
+    
+
     return (
         <>
             <div className="relative flex flex-col w-full h-full items-center gap-[1rem] py-[2rem]">

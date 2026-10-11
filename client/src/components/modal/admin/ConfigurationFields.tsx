@@ -110,13 +110,13 @@ function ConfigurationFields ({
                 <div className="flex flex-col w-full gap-[0.2rem] border-t border-dashed border-t-[#292929]/10 pt-[0.5rem]">
                     <span className="text-[14px] font-bold">Type</span>
                     <select name="type" id="type" value={newConfig.type as ConfigurationType} onChange={handleTypeChange}
-                    className="w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[5px]">
-                        <option hidden defaultValue={''}>-- Select type --</option>
-                        <option value="select">Dropdown Selection (select)</option>
-                        <option value="text">Text Field (text)</option>
-                        <option value="number">Number Field (number)</option>
-                        <option value="checkbox">Checkbox (checkbox)</option>
-                        <option value="radio">Radio (radio)</option>
+                    className="flex w-full p-[0.5rem] text-[14px] text-[#292929] font-bold border border-[#292929]/15 bg-[#f2f2f2]/75 rounded-[5px]">
+                        <option defaultValue={''} disabled className="bg-[#f2f2f2] text-[#292929]">-- Select type --</option>
+                        <option value="select" className="bg-[#f2f2f2] text-[#292929]">Dropdown Selection (select)</option>
+                        <option value="text" className="bg-[#f2f2f2] text-[#292929]">Text Field (text)</option>
+                        <option value="number" className="bg-[#f2f2f2] text-[#292929]">Number Field (number)</option>
+                        <option value="checkbox" className="bg-[#f2f2f2] text-[#292929]">Checkbox (checkbox)</option>
+                        <option value="radio" className="bg-[#f2f2f2] text-[#292929]">Radio (radio)</option>
                     </select>
                 </div>
 
@@ -190,6 +190,9 @@ function ConfigurationFields ({
                         </div>
                     </div>
                 )}
+
+
+                
             </div>
 
 

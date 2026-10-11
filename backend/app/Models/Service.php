@@ -29,8 +29,8 @@ class Service extends Model
         return [
             'is_active' => 'boolean',
             'configuration' => 'array',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
+            'created_at' => 'datetime:M d, Y h:i A',
+            'updated_at' => 'datetime:M d, Y h:i A',
         ];
     }
 }

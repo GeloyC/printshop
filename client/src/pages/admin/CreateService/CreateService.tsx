@@ -21,6 +21,7 @@ import type {
 
 // service
 import { createService } from "../../../api/service";
+import FileRequirement from "./FileRequirement";
 
 
 
@@ -39,6 +40,10 @@ function CreateService () {
         description: '',
         base_price: 0
     })
+
+    
+    type extensionType = { extension: string }
+    const [acceptedFiles, setAcceptedFiles] = useState<extensionType[]>([]);
 
     const [newConfig, setNewConfig] = useState<Configuration>({
         id: crypto.randomUUID(),
@@ -131,6 +136,12 @@ function CreateService () {
                             basicInfo={basicInfo}
                             setBasicInfo={setBasicInfo}
                         />
+
+                        <FileRequirement 
+                            acceptedFiles={acceptedFiles}
+                            setAcceptedFiles={setAcceptedFiles}
+                        />
+
                         <CSConfiguration 
                             isConfigFieldOpen={isConfigFieldOpen}
                             setIsConfigFieldOpen={setIsConfigFieldOpen}
