@@ -5,21 +5,34 @@ import UploadBig from '/src/assets/icon/upload_big.svg?react'
 import Document from '/src/assets/icon/document.svg?react'
 import type { fileItem } from "../../../types/FileType";
 
+type NoFilesWrapperProp = {
+    requiredFiles: string[]
+}
 
-function NoFilesWrapper () {
+function NoFilesWrapper ({ requiredFiles }: NoFilesWrapperProp) {
 
-    const { setFiles } = useFileContext()
+    const { setFiles, setError } = useFileContext()
+    const stringedRequiredFiles = requiredFiles.join(', ');
     
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-
         const files = Array.from(e.target.files ?? []);
-
+        
         files.forEach(file => {
+
+            const allowedExtension = requiredFiles;
+            const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
+
             const newFile: fileItem = {
                 id: crypto.randomUUID(),
                 file: file,
                 quantity: 1
+            }
+
+            if(!allowedExtension.includes(String(fileExtension))) {
+                setError(`'Only file with ${stringedRequiredFiles} extension allowed'`);
+                setTimeout(()=>setError(''), 3000);
+                return;
             }
 
             setFiles(currentFiles =>  [...currentFiles, newFile]);
@@ -34,7 +47,7 @@ function NoFilesWrapper () {
 
                 <div className='w-fit'>
                     {/* insert the slug name or service_id on the attr name and id later */}
-                    <input type="file" onChange={handleFileChange} accept={'.doc, .docx, .pdf'}
+                    <input type="file" onChange={handleFileChange} accept={stringedRequiredFiles}
                             name={`service_`} id={`service_`} multiple hidden />
 
                     {/* insert the slug name or service_id on the attr htmlFor later */}

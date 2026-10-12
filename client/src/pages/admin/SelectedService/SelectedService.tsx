@@ -1,26 +1,17 @@
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 
 // component
 import SelectedServiceForm from "./SelectedServiceForm";
 
 // service
-import { getServiceBySlug } from "../../../api/service";
+
+import { useAdminSelectedService } from "../../../hooks/services/useSelectedService";
 
 function SelectedService () {
 
     const { slug } = useParams();
+    const { data: service, isPending } = useAdminSelectedService(String(slug))
 
-    const { data: service, isPending } = useQuery({
-        queryKey: ['service', slug],
-        queryFn: async () => {
-            return await getServiceBySlug(slug!);
-        }, 
-        enabled: !!slug,
-        retry: false
-    }); 
-
-    console.log('service: ', service);
 
     if (isPending) {
         return (

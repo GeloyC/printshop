@@ -28,11 +28,18 @@ export const getAllService = async () => {
     return response.data ?? [];
 }
 
-export const getServiceBySlug = async (slug: string) => {
-    const response = await api.get(`/api/service/${slug}`);
+export const getAdminServiceBySlug = async (slug: string) => {
+    const response = await api.get(`/api/admin/service/${slug}`);
 
-    console.log('[getServiceBySlug]: ', response.data);
+    console.log('[getAdminServiceBySlug]: ', response.data);
     return response.data;
+}
+
+export const getClientServiceBySlug = async (slug: string) => {
+    const response = await api.get(`/api/client/service/${slug}`);
+
+    console.log('[getClientServiceBySlug]: ', response.data);
+    return response.data; 
 }
 
 

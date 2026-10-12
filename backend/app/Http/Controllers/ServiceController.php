@@ -25,6 +25,7 @@ class ServiceController extends Controller
         return response()->json($service);
     }
 
+
     public function show (string $slug) {
         // retrieve a service base on id
 
@@ -47,7 +48,7 @@ class ServiceController extends Controller
                 'updated_at'
             )
             ->where('slug', $slug)
-            ->first();
+            ->firstOrFail();
 
         return response()->json($service);
     }
@@ -60,6 +61,22 @@ class ServiceController extends Controller
 
         return response()->json($service);
     }
+
+
+    public function getClientService (String $slug) {
+        $service = Service::query() 
+            ->select(
+                'id', 
+                'name',
+                'description',
+                'file_requirements'
+            )
+            ->where('slug', $slug)
+            ->firstorFail();
+
+        return response()->json($service);
+    }
+
 
     public function store (Request $request) {
         // creates a new configuration row 

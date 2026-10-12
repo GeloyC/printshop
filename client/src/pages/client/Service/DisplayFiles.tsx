@@ -17,15 +17,20 @@ import type { fileItem } from "../../../types/FileType";
 
 interface DisplayFilesProp {
     setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>
+    requiredFiles: string[]
 }
 
 function DisplayFiles ({
-    setSelectedFile
+    setSelectedFile,
+    requiredFiles
 }:DisplayFilesProp) {
 
     const navigate = useNavigate()
     const { files, setFiles, setError } = useFileContext();
+
     const { setItems } = useCartContext();
+    const stringedRequiredFiles = requiredFiles.join(', ');
+
     const [dragOver, setDragOver] = useState<boolean>(false);
     
     const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -42,8 +47,8 @@ function DisplayFiles ({
         
 
         droppedFiles.forEach(file => {
-            const allowedExtension = ['pdf', 'docx'];
-            const fileExtension = file?.name.split('.').pop();
+            const allowedExtension = requiredFiles;
+            const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
 
             const newFile: fileItem = {
                 id: crypto.randomUUID(),
@@ -52,9 +57,7 @@ function DisplayFiles ({
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
-                console.log(newFile.file.name, ' is not allowed because the extension is ', fileExtension)
-
-                setError('Only file with .pdf, .docx extension allowed');
+                setError(`'Only file with ${stringedRequiredFiles} extension allowed'`);
                 setTimeout(()=>setError(''), 3000);
                 return;
             }
@@ -93,8 +96,8 @@ function DisplayFiles ({
 
 
         selectedFiles.forEach(file => {
-            const allowedExtension = ['pdf', 'docx'];
-            const fileExtension = file?.name.split('.').pop();
+            const allowedExtension = requiredFiles;
+            const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
 
             const newFile: fileItem = {
                 id:  crypto.randomUUID(),
@@ -103,7 +106,7 @@ function DisplayFiles ({
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
-                setError('Only file with .pdf, .docx extension allowed');
+                setError(`'Only file with ${stringedRequiredFiles} extension allowed'`);
                 setTimeout(()=>setError(''), 3000);
                 return;
             }
@@ -147,7 +150,6 @@ function DisplayFiles ({
         // remove the files from the setFile state at /fileContext
         // the files will also be saved on the database at this point so the cart can be left and user can come back later to it
 
-
         setItems(items=>[...files, ...items]);
 
         setFiles([]);
@@ -170,7 +172,7 @@ function DisplayFiles ({
                                 <span className="text-[12px] text-[#292929] font-bold leading-none">Remove all files</span>
                             </button>
                             
-                            <input type="file" name="service_addmore" id="service_addmore" accept={'.doc, .docx, .pdf'} multiple hidden onChange={handleAddFiles} />
+                            <input type="file" name="service_addmore" id="service_addmore" accept={stringedRequiredFiles} multiple hidden onChange={handleAddFiles} />
 
                             <label htmlFor="service_addmore"
                                 className="flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer hover:bg-[#ffdca5] active:bg-transparent rounded-[5px] transition-all duration-100"
@@ -193,7 +195,9 @@ function DisplayFiles ({
                 overflow-y-auto thin-scrollbar`}
             >
                 {files.length <= 0 ? (
-                    <NoFilesWrapper />
+                    <NoFilesWrapper 
+                        requiredFiles={requiredFiles}
+                    />
                 ):(
                     <div className="grid grid-cols-2 items-center justify-center gap-[0.5rem] w-full">
                         {files.map((file, index) => (
