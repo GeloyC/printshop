@@ -15,7 +15,7 @@ function ServiceList ({ services }: ServiceListProp) {
     return (
         <div className="grid grid-cols-4 w-full py-[2rem]">
             {services?.map(service => (
-                <ServiceItem 
+                <ServiceItem key={service.id}
                     service={service}
                 />
             ))}

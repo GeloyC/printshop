@@ -21,7 +21,7 @@ import type {
 
 // service
 import { createService } from "../../../api/service";
-import FileRequirement from "./FileRequirement";
+import CSFileRequirement from "./CSFileRequirement";
 
 
 
@@ -86,12 +86,15 @@ function CreateService () {
                     name: basicInfo.name,
                     description: basicInfo.description,
                     base_price: basicInfo.base_price,
+                    file_requirements: acceptedFiles,
                     thumbnail_url: '',
                     configuration: configs,
                     slug: basicInfo.name.split(' ').join('_').toLocaleLowerCase(), // ex. Document print => document_print
                 }
 
                 console.log('payload: ', payload);
+                console.log('create service success, orrrrrraaaaayt!');
+
                 await createService(payload);
 
             } catch (err) {
@@ -101,7 +104,6 @@ function CreateService () {
         },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['service']});
-            console.log('create service success, orrrrrraaaaayt!');
         }
     });
 
@@ -137,7 +139,7 @@ function CreateService () {
                             setBasicInfo={setBasicInfo}
                         />
 
-                        <FileRequirement 
+                        <CSFileRequirement 
                             acceptedFiles={acceptedFiles}
                             setAcceptedFiles={setAcceptedFiles}
                         />

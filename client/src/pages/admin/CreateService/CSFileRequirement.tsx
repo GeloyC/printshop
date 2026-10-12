@@ -9,7 +9,7 @@ type FileRequirementProp = {
     setAcceptedFiles: React.Dispatch<SetStateAction<extensionType[]>>
 }
 
-function FileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirementProp) {
+function CSFileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirementProp) {
 
     const fileExtensions = [
         { extension: '.jpeg' },
@@ -18,7 +18,8 @@ function FileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirementPr
         { extension: '.docx' },
     ];
 
-   
+
+
     const [extensions, setExtensions] = useState<extensionType[]>(fileExtensions)
 
     const handleSelectExtension = (extension: string) => {
@@ -28,21 +29,26 @@ function FileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirementPr
                 : [...exts, { extension: extension }]
         )
     }
+
+    
     
 
 
     return (
         <div className="flex flex-col w-full gap-[1rem]">
-            <span className="text-[16px] text-[#292929] font-bold leading-none">Accepted file/s</span>
+            <div className='flex flex-col gap-[0.5rem] w-full'>
+                <span className="text-[16px] text-[#292929] font-bold leading-none">Accepted file/s</span>
+                <span className='text-[14px] leading-none opacity-75'>Select the type of file that users are allowed to upload when availing this service. This will prevent user from uploading unnecessary file/s.</span>
+            </div>
 
-            <div className="flex flex-wrap items-center justify-center w-full gap-[0.2rem]">
+            <div className="flex flex-wrap items-center justify-start w-full gap-[0.2rem]">
                 {extensions.map(ext => {
                     const selected = acceptedFiles.some(
                         file => file.extension === ext.extension
                     );
                     return (
                     <label htmlFor={`file_${ext.extension}`} key={ext.extension}
-                    className={`flex items-center px-[1rem] h-[2.5rem] border-2 ${selected ? 'border-[#ff6b00]' : 'border-[#292929]'} rounded-full cursor-pointer`}>
+                    className={`flex items-center px-[1rem] h-[2.5rem] border-2 ${selected ? 'border-[#ff6b00]' : 'border-[#292929]'} rounded-[10px] cursor-pointer`}>
                         <input 
                             type="checkbox" 
                             name={`file_${ext.extension}`} 
@@ -61,4 +67,4 @@ function FileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirementPr
     )
 }
 
-export default FileRequirement;
+export default CSFileRequirement;

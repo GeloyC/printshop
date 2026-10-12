@@ -4,7 +4,8 @@ import { useState } from "react";
 import type { 
     BasicInformationType, 
     Configuration, 
-    SelectedServiceType
+    SelectedServiceType,
+    fileRequirement
 } from "../../../types/service/service";
 
 // components
@@ -14,6 +15,7 @@ import SSConfiguration from "./SSConfiguration";
 import ReturnButton from "../../../components/ui/ReturnButton";
 import ModalWrapper from "../../../components/wrapper/ModalWrapper";
 import ConfigurationEditModal from "../../../components/modal/admin/ConfigurationEditModal";
+import SSFileRequirement from "./SSFileRequirement";
 
 
 type SelectedServiceFormProp = {
@@ -27,6 +29,9 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
         description: service.description,
         base_price: service.base_price
     })
+
+    const parsedFileRequirements = JSON.parse(String(service.file_requirements));
+    const [acceptedFiles, setAcceptedFiles] = useState<fileRequirement[]>(parsedFileRequirements);
 
     // todo: populate the configs with actual data from db
     const [configs, setConfigs] = useState<Configuration[]>(() => JSON.parse(service.configuration));
@@ -57,6 +62,12 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                             basicInformation={basicInformation}
                             setBasicInformation={setBasicInformation}
                         />
+
+                        <SSFileRequirement 
+                            acceptedFiles={acceptedFiles}
+                            setAcceptedFiles={setAcceptedFiles}
+                        />
+
                         <SSConfiguration 
                             configs={configs}
                             setConfigs={setConfigs}

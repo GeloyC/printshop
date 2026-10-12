@@ -16,6 +16,7 @@ class ServiceController extends Controller
                 'id',
                 'thumbnail_url',
                 'name',
+                'file_requirements',
                 'slug',
                 'created_at',
                 'base_price'
@@ -40,6 +41,7 @@ class ServiceController extends Controller
                 'name',
                 'description',
                 'base_price',
+                'file_requirements',
                 'configuration',
                 'created_at',
                 'updated_at'
@@ -65,6 +67,7 @@ class ServiceController extends Controller
             'name' => ['required', 'string'],
             'description' => ['required', 'string', 'max:5000'],
             'base_price' => ['required', 'numeric', 'decimal:0,2', 'min:0' ],
+            'file_requirements' => ['required', 'array'],
             'thumbnail_url' => ['nullable', 'string'],
             'configuration' => ['required', 'array'],
             'slug' => ['required', 'string'],
@@ -73,6 +76,7 @@ class ServiceController extends Controller
         $name = $validated['name'];
         $description = $validated['description'];
         $base_price = $validated['base_price'];
+        $file_requirements = $validated['file_requirements'];
         $thumbnail_url = $validated['thumbnail_url'];
         $configuration = $validated['configuration'];
         $slug = $validated['slug'];
@@ -81,6 +85,7 @@ class ServiceController extends Controller
             'name' => $name,
             'description' => $description,
             'base_price' => $base_price,
+            'file_requirements' => $file_requirements,
             'thumbnail_url' => $thumbnail_url,
             'configuration' => $configuration,
             'slug' => $slug

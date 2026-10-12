@@ -40,7 +40,10 @@ function Signup ({
                 </div>
             </div>
 
-            <div className="relative flex flex-col items-start justify-between w-[400px] h-auto bg-[#fff] p-[3rem] gap-[2rem]">
+            <form onSubmit={(e)=>{
+                e.preventDefault();
+                handleRegistration.mutate();
+            }} className="relative flex flex-col items-start justify-between w-[400px] h-auto bg-[#fff] p-[3rem] gap-[2rem]">
                 <button onClick={close} className="absolute top-3 right-3 hover:bg-[#f2f2f2] active:bg-transparent rounded-full cursor-pointer">
                     <Close className='size-7 opacity-75' />
                 </button>
@@ -51,7 +54,7 @@ function Signup ({
                     {/* input fields here */}
                     <div className='flex flex-col gap-[0.3rem] w-full'>
                         <span className='text-[14px] font-bold opacity-75'>Name</span>
-                        <input type="text" name="input_name" id="input_name" required
+                        <input type="text" name="input_name" id="input_name" required autoComplete='name'
                             value={newAccount.name} 
                             onChange={(e)=>setNewAccount(prev=> ({
                                 ...prev,
@@ -62,7 +65,7 @@ function Signup ({
 
                     <div className='flex flex-col gap-[0.3rem] w-full'>
                         <span className='text-[14px] font-bold opacity-75'>Email</span>
-                        <input type="email" name="input_email" id="input_email" required
+                        <input type="email" name="input_email" id="input_email" required autoComplete='email'
                             value={newAccount.email}
                             onChange={(e)=>setNewAccount(prev=>({
                                 ...prev,
@@ -73,7 +76,7 @@ function Signup ({
 
                     <div className='flex flex-col w-full full gap-[0.3rem]'>
                         <span className='text-[14px] font-bold opacity-75'>Password</span>
-                        <input type="password" name="input_password" id="input_password" 
+                        <input type="password" name="input_password" id="input_password" autoComplete='new-password'
                             value={newAccount.password}
                             onChange={(e)=>setNewAccount(prev=>({
                                 ...prev,
@@ -84,12 +87,12 @@ function Signup ({
                 </div>
 
                 <div className='flex items-center w-full gap-[0.3rem]'>
-                    <button onClick={()=>handleRegistration.mutate()} className='group flex items-center justify-center gap-[0.3rem] py-[0.5rem] rounded-[5px] w-full bg-[#ff6b00] hover:bg-[#ea6200] active:bg-[#cc4c02]/90 transition-all duration-100 cursor-pointer'>
+                    <button type='submit' className='group flex items-center justify-center gap-[0.3rem] py-[0.5rem] rounded-[5px] w-full bg-[#ff6b00] hover:bg-[#ea6200] active:bg-[#cc4c02]/90 transition-all duration-100 cursor-pointer'>
                         <span className='text-[16px] text-[#fff]'>Continue</span>
                         <Arrow className="size-5 group-hover:translate-x-1 transition-all duration-200" color='#fff' />
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }

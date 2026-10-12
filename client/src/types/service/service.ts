@@ -27,20 +27,27 @@ export type Configuration = {
     options: ConfigurationOptions[]
 }
 
+export type fileRequirement = {
+    extension: string
+}
+
 export type SelectedServiceType = {
     id: string,
     name: string,
     description: string,
     base_price: number,
+    file_requirements: fileRequirement[],
     configuration: string, // backend returns a json so the type is string -> should be parsed when displaying the data
     created_at: string,
     updated_at: string
 }
 
+
 export type ServiceItemType = {
     id: string,
     name: string,
     base_price?: number,
+    file_requirements: fileRequirement[], 
     thumbnail_url: string,
     slug: string,
     created_at?: string

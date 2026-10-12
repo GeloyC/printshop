@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('base_price', 10, 2);
             $table->text('thumbnail_url')
                 ->nullable();
+            $table->jsonb('file_requirements');
             $table->jsonb('configuration');
             $table->string('slug');
             $table->boolean('is_active')

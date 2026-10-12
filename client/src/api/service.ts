@@ -1,11 +1,15 @@
 import type { Configuration } from "../types/service/service";
 import api from "./api";
 
+type fileRequirement = {
+    extension: string
+}
 
 type createServiceType = {
     name: string,
     description: string,
     base_price: number,
+    file_requirements: fileRequirement[],
     thumbnail_url?: string,
     configuration: Configuration[],
     slug: string,

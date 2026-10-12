@@ -45,7 +45,7 @@ function SSConfiguration ({
 
             <div className="flex flex-col w-full gap-[0.5rem]">
                 {configs.map(config => (
-                    <ConfigurationItem 
+                    <ConfigurationItem key={config.id}
                         config={config}
                         onDelete={handleDeleteConfig}
                         selectConfigToEdit={()=>selectConfigToEdit(config.id)}

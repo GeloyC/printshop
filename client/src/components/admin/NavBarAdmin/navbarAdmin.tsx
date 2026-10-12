@@ -19,26 +19,21 @@ function NavbarAdmin ({
     const location = useLocation();
 
     return (
-        <div className={`relative flex flex-col ${isExpanded ? 'w-[4rem]' : 'w-[15rem]'} h-full min-h-0 items-center justify-between`}>
+        <div className={`relative flex flex-col ${isExpanded ? 'w-[4rem]' : 'w-[15rem]'} h-full min-h-0 items-center justify-between transition-all duration-200`}>
             
-            <div className={`sticky top-0 flex flex-col ${isExpanded && 'items-center'} w-full`}>
-
-                <div className="flex flex-col w-full px-[0.5rem] gap-[0.3rem]">
-                    <Link to="/admin/service" className={`flex items-center ${isExpanded ? 'justify-center w-[3rem] h-[3rem]' : 'pl-[0.5rem]'} gap-[0.5rem] w-full h-[3rem] ${location.pathname === '/admin/service' && 'bg-[#B1B2B5]/75'} hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/75 rounded-[10px] transition-all duration-100`}>
+            <div className={`sticky top-0 flex flex-col ${isExpanded && 'items-start'} w-full`}>
+                <div className="flex flex-col items-start px-[0.5rem] gap-[0.3rem] min-w-[4rem]">
+                    <Link to="/admin/service" 
+                    className={`flex items-center ${isExpanded ? 'justify-center h-[2rem] pl-[0.5rem]' : 'justify-start h-[2rem] pl-[0.5rem]'} gap-[0.5rem] w-full ${location.pathname === '/admin/service' && 'bg-[#B1B2B5]/75'} hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/75 rounded-[5px] transition-all duration-200 `}>
                         <Service className="h-[20px] w-[30px]" />
-                        {!isExpanded && (
-                            <span className="text-[16px] text-[#292929] font-bold ">Service</span>
-                        )}
+                        <span className={`text-[16px] text-[#292929] font-bold ${isExpanded ? 'opacity-0 w-0' : 'opacity-100 w-25'} transition-all duration-200`}>Service</span>
                     </Link>
 
-                    <Link to="/admin/service" className={`flex items-center ${isExpanded ? 'justify-center w-[3rem] h-[3rem]' : 'pl-[0.5rem]'} gap-[0.5rem] h-[3rem] ${location.pathname === '/admin/orders' && 'bg-[#B1B2B5]/75'} hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/75 rounded-[10px] transition-all duration-100`}>
+                    <Link to="/admin/service" 
+                    className={`flex items-center ${isExpanded ? 'justify-center h-[2rem] pl-[0.5rem]' : 'justify-start h-[2rem] pl-[0.5rem]'} gap-[0.5rem] w-full ${location.pathname === '/admin/orders' && 'bg-[#B1B2B5]/75'} hover:bg-[#B1B2B5]/50 active:bg-[#B1B2B5]/75 rounded-[5px] transition-all duration-200`}>
                         <Orders className="h-[20px] w-[30px]" />
-                        {!isExpanded && (
-                            <span className="text-[16px] text-[#292929] font-bold">Orders</span>
-                        )}
+                        <span className={`text-[16px] text-[#292929] font-bold ${isExpanded ? 'opacity-0 w-0' : 'opacity-100 w-25'} transition-all duration-200`}>Orders</span>
                     </Link>
-
-
                 </div>
             </div>
 

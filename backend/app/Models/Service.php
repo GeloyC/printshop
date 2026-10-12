@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
     'description',
     'base_price',
     'thumbnail_url',
+    'file_requirements',
     'configuration',
     'slug',
 ])]
@@ -29,6 +30,7 @@ class Service extends Model
         return [
             'is_active' => 'boolean',
             'configuration' => 'array',
+            'file_requirements' => 'array',
             'created_at' => 'datetime:M d, Y h:i A',
             'updated_at' => 'datetime:M d, Y h:i A',
         ];

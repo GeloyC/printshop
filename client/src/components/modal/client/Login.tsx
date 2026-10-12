@@ -51,7 +51,7 @@ function Login ({
 
 
     return (
-        <div className="fade-up relative flex flex-col w-[400px] h-auto bg-[#fff] p-[3rem] rounded-[5px] gap-[2rem]">
+        <form onSubmit={(e)=>{e.preventDefault(); handleLogin.mutate()}} className="fade-up relative flex flex-col w-[400px] h-auto bg-[#fff] p-[3rem] rounded-[5px] gap-[2rem]">
             <button type='button' onClick={close} className="absolute top-3 right-3 cursor-pointer hover:bg-[#f2f2f2] active:bg-transparent rounded-full">
                 <Close className='size-7 opacity-75'/>
             </button>
@@ -62,7 +62,7 @@ function Login ({
                 {/* input fields here */}
                 <div className={`flex flex-col w-full full gap-[0.3rem] ${handleLogin.isPending && 'opacity-50'} transition-all duration-200`}>
                     <span className='text-[14px] font-bold opacity-75'>Email</span>
-                    <input type="email" name="input_email" id="input_email" 
+                    <input type="email" name="input_email" id="input_email" autoComplete="email"
                         value={account.email}
                         onChange={(e)=>setAccount(prev=>({
                             ...prev,
@@ -74,7 +74,7 @@ function Login ({
 
                 <div className={`flex flex-col w-full full gap-[0.3rem] ${handleLogin.isPending && 'opacity-50'} transition-all duration-200`}>
                     <span className='text-[14px] font-bold opacity-75'>Password</span>
-                    <input type="password" name="input_password" id="input_password" 
+                    <input type="password" name="input_password" id="input_password" autoComplete="current-password"
                         value={account.password}
                         onChange={(e)=>setAccount(prev=>({
                             ...prev,
@@ -87,7 +87,7 @@ function Login ({
             </div>
 
             <div className='flex flex-col items-center w-full gap-[0.5rem]'>
-                <button onClick={()=>handleLogin.mutate()} className='group flex items-center justify-center gap-[0.3rem] py-[0.5rem] rounded-[5px] w-full bg-[#ff6b00] hover:bg-[#ea6200] active:bg-[#cc4c02]/90 transition-all duration-100 cursor-pointer'>
+                <button type='submit' className='group flex items-center justify-center gap-[0.3rem] py-[0.5rem] rounded-[5px] w-full bg-[#ff6b00] hover:bg-[#ea6200] active:bg-[#cc4c02]/90 transition-all duration-100 cursor-pointer'>
                     <span className='text-[16px] text-[#fff]'>Continue</span>
                     {handleLogin.isPending ? (
                         <LoadingSpinner 
@@ -106,7 +106,7 @@ function Login ({
                     className='cursor-pointer hover:underline active:text-[#cc4c02]'>Sign in instead</button>
                 </div>
             </div>
-        </div>
+        </form>
     )
 }
 
