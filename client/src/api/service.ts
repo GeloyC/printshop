@@ -1,20 +1,8 @@
 import type { Configuration } from "../types/service/service";
 import api from "./api";
 
-type fileRequirement = {
-    extension: string
-}
 
-type createServiceType = {
-    name: string,
-    description: string,
-    base_price: number,
-    file_requirements: fileRequirement[],
-    thumbnail_url?: string,
-    configuration: Configuration[],
-    slug: string,
-}
-export const createService = async (data: createServiceType) => {
+export const createService = async (data: FormData) => {
     const response = await api.post('/api/service/new', data);
 
     console.log('createService response: ', response.data);

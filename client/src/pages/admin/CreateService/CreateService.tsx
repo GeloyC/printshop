@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 // icon
 import Save from '/src/assets/icon/save.svg?react'
@@ -34,6 +35,7 @@ function CreateService () {
 
     const [thumbnailBlob, setThumbnailBlob] = useState<File|null>(null);
     const [thumbnailPrev, setThumbnailPrev] = useState<string>('')
+
 
     const [basicInfo, setBasicInfo] = useState<BasicInformationType>({
         name: '',
@@ -82,23 +84,34 @@ function CreateService () {
             // get the payload for what the createService requires
 
             try {
-                const payload = {
-                    name: basicInfo.name,
-                    description: basicInfo.description,
-                    base_price: basicInfo.base_price,
-                    file_requirements: acceptedFiles,
-                    thumbnail_url: '',
-                    configuration: configs,
-                    slug: basicInfo.name.split(' ').join('_').toLocaleLowerCase(), // ex. Document print => document_print
+
+                const ServiceFormData = new FormData();
+                ServiceFormData.append('name', basicInfo.name);
+                ServiceFormData.append('description', basicInfo.description);
+                ServiceFormData.append('base_price', String(basicInfo.base_price));
+                ServiceFormData.append('file_requirements', JSON.stringify(acceptedFiles));
+
+                if (thumbnailBlob) {
+                    ServiceFormData.append('thumbnail_file', thumbnailBlob);
                 }
 
-                console.log('payload: ', payload);
-                console.log('create service success, orrrrrraaaaayt!');
+                ServiceFormData.append('configuration', JSON.stringify(configs));
+                ServiceFormData.append('slug', basicInfo.name.split(' ').join('_').toLocaleLowerCase());
 
-                await createService(payload);
+                console.log('Thumbnail:', thumbnailBlob);
+                console.log('FormData entries:', [...ServiceFormData.entries()]);
+                
+                return await createService(ServiceFormData);
 
-            } catch (err) {
+            } catch (err: any) {
                 console.log('create service error: ', err);
+                if (axios.isAxiosError(err)) {
+                    console.log('Validation errors:', err.response?.data);
+                } else {
+                    console.log('Unexpected error:', err);
+                }
+
+                throw err;
             }
 
         },

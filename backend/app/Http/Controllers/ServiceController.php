@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Service;
 
 class ServiceController extends Controller
@@ -79,13 +80,30 @@ class ServiceController extends Controller
 
 
     public function store (Request $request) {
+
+        $request->merge([
+            'file_requirements' => json_decode(
+                $request->input('file_requirements', ''),
+                true
+            ),
+            'configuration' => json_decode(
+                $request->input('configuration', ''),
+                true
+            ),
+        ]);
+
         // creates a new configuration row 
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'description' => ['required', 'string', 'max:5000'],
             'base_price' => ['required', 'numeric', 'decimal:0,2', 'min:0' ],
             'file_requirements' => ['required', 'array'],
-            'thumbnail_url' => ['nullable', 'string'],
+            'thumbnail_file' => [
+                'nullable',
+                'file',
+                'mimes:png,jpeg,jpg',
+                'max:20480'
+            ],
             'configuration' => ['required', 'array'],
             'slug' => ['required', 'string'],
         ]);
@@ -94,7 +112,17 @@ class ServiceController extends Controller
         $description = $validated['description'];
         $base_price = $validated['base_price'];
         $file_requirements = $validated['file_requirements'];
-        $thumbnail_url = $validated['thumbnail_url'];
+        $thumbnail_file = $validated['thumbnail_file'] ?? null;
+
+        $path = null;
+
+        if ($thumbnail_file) {
+            $path = $thumbnail_file->store('service/thumbnail', 'r2');
+        }
+        $url = config('filesystems.disks.r2.url')
+            .'/'
+            .$path;
+
         $configuration = $validated['configuration'];
         $slug = $validated['slug'];
 
@@ -103,13 +131,14 @@ class ServiceController extends Controller
             'description' => $description,
             'base_price' => $base_price,
             'file_requirements' => $file_requirements,
-            'thumbnail_url' => $thumbnail_url,
+            'thumbnail_url' => $url,
             'configuration' => $configuration,
             'slug' => $slug
         ]);
 
         return response()->json([
-            'message' => 'new service created successfully'
+            'message' => 'new service created successfully',
+            'service' => $service,
         ]);
     }
 

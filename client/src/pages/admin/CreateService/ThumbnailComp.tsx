@@ -32,7 +32,6 @@ function ThumbnailComp ({
         const previewURL = URL.createObjectURL(thumbnailBlob);
         setThumbnailPrev(previewURL)
 
-        console.log(previewURL);
         return () => URL.revokeObjectURL(previewURL)
     }, [thumbnailBlob]);
 
@@ -50,7 +49,7 @@ function ThumbnailComp ({
 
                 <input type="file" name="thumbnail" id="thumbnail" 
                     onChange={handleReadThumbnail}
-                    accept="image/png, image/jpg image/jpeg"
+                    accept=".png, .jpg, .jpeg"
                     hidden
                 />
 
