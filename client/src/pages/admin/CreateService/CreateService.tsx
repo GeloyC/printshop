@@ -23,6 +23,8 @@ import type {
 // service
 import { createService } from "../../../api/service";
 import CSFileRequirement from "./CSFileRequirement";
+import AdminToast from "../../../components/ui/ToastAdmin";
+import LoadingSpinner from "../../../components/ui/LoadingSpinner/LoadingSpinner";
 
 
 
@@ -42,7 +44,6 @@ function CreateService () {
         description: '',
         base_price: 0
     })
-
     
     type extensionType = { extension: string }
     const [acceptedFiles, setAcceptedFiles] = useState<extensionType[]>([]);
@@ -77,46 +78,89 @@ function CreateService () {
         })
     };
 
+    type toastType = {
+        message: string,
+        color?: string
+    }
+    const [toast, setToast] = useState<toastType>({
+        message: '',
+        color: '#fff600'
+    });
+
     const queryClient = useQueryClient();
     const handleCreateService = useMutation({
         mutationFn: async () => {
-            // call the createService function here
-            // get the payload for what the createService requires
+            const ServiceFormData = new FormData();
+            ServiceFormData.append('name', basicInfo.name);
+            ServiceFormData.append('description', basicInfo.description);
+            ServiceFormData.append('base_price', String(basicInfo.base_price));
+            ServiceFormData.append('file_requirements', JSON.stringify(acceptedFiles));
 
-            try {
-
-                const ServiceFormData = new FormData();
-                ServiceFormData.append('name', basicInfo.name);
-                ServiceFormData.append('description', basicInfo.description);
-                ServiceFormData.append('base_price', String(basicInfo.base_price));
-                ServiceFormData.append('file_requirements', JSON.stringify(acceptedFiles));
-
-                if (thumbnailBlob) {
-                    ServiceFormData.append('thumbnail_file', thumbnailBlob);
-                }
-
-                ServiceFormData.append('configuration', JSON.stringify(configs));
-                ServiceFormData.append('slug', basicInfo.name.split(' ').join('_').toLocaleLowerCase());
-
-                console.log('Thumbnail:', thumbnailBlob);
-                console.log('FormData entries:', [...ServiceFormData.entries()]);
-                
-                return await createService(ServiceFormData);
-
-            } catch (err: any) {
-                console.log('create service error: ', err);
-                if (axios.isAxiosError(err)) {
-                    console.log('Validation errors:', err.response?.data);
-                } else {
-                    console.log('Unexpected error:', err);
-                }
-
-                throw err;
+            if (thumbnailBlob) {
+                ServiceFormData.append('thumbnail_file', thumbnailBlob);
             }
 
+            ServiceFormData.append('configuration', JSON.stringify(configs));
+            ServiceFormData.append('slug', basicInfo.name.split(' ').join('_').toLocaleLowerCase());
+            
+            return createService(ServiceFormData);
         },
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['service']});
+            await queryClient.invalidateQueries({ queryKey: ['services']});
+
+
+            setToast({
+                message: `${basicInfo.name} successfully created!`,
+                color: '#CCFFCC'
+            });
+            setTimeout(()=>setToast({message: '', color: ''}), 3000);
+            
+
+            setThumbnailBlob(null);
+            setThumbnailPrev('');
+            setBasicInfo({
+                name: '',
+                description: '',
+                base_price: 0
+            });
+            setAcceptedFiles([]);
+            setConfigs([]);
+            setNewConfig({
+                id: '',
+                key: '',
+                label: '',
+                options: []
+            });
+
+        },
+        onError: (err: unknown) => {
+            if (axios.isAxiosError(err)) {
+                if (err.response?.status === 409) {
+                    console.log('error message:', err.response.data.message);
+
+                    setToast({
+                        message: err.response.data.message,
+                        color: ' #FF5F15'
+                    });
+                    setTimeout(()=>setToast({
+                        message: '',
+                        color: ''
+                    }), 3000);
+
+                    return;
+                }
+                setToast({
+                    message: err.response?.data.message,
+                    color: ' #FF5F15'
+                });
+                setTimeout(()=>setToast({
+                    message: '',
+                    color: ''
+                }), 3000);
+            } else {
+                console.log('Unexpected error:', err);
+            }
+            throw err;
         }
     });
 
@@ -134,11 +178,23 @@ function CreateService () {
 
                     <button onClick={()=>handleCreateService.mutate()} className="flex items-center gap-[0.3rem] bg-[#ff6b00] rounded-[5px] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] cursor-pointer transition-all duration-100">
                         <span className="text-[#fff] text-[14px] leading-none font-bold">Save</span>
-                        <Save className="size-5" fill="#fff"/>
+                        {handleCreateService.isPending ? (
+                            <LoadingSpinner 
+                                size={20}
+                                color="#fff"
+                            />
+                        ):(
+                            <Save className="size-5" fill="#fff"/>
+                        )}
                     </button>
                 </div>
 
-                <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar gap-[1rem] p-[1rem]">
+                {handleCreateService.isPending && ( 
+                    <div className={`absolute inset-0 flex h-full bg-[#292929]/30 ${handleCreateService.isPending ? 'opacity-100' : 'opacity-0'} z-10 transition-all duration-200`}/>
+                )}
+
+                <div className={`flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar gap-[1rem] p-[1rem]`}>
+
                     <ThumbnailComp 
                         thumbnailPrev={thumbnailPrev}
                         thumbnailBlob={thumbnailBlob}
@@ -165,6 +221,7 @@ function CreateService () {
                             setSelectedConfigEdit={setSelectedConfigEdit}
                             openEditModal={()=>setIsConfigEditModalOpen(true)}
                         />
+
                     </div>
                 </div>
 
@@ -191,6 +248,13 @@ function CreateService () {
                         setConfigs={setConfigs}
                     />
                 </ModalWrapper>
+            )}
+
+            {toast.message && (
+                <AdminToast 
+                    message={toast.message}
+                    color={toast.color}
+                />
             )}
         </>
     )

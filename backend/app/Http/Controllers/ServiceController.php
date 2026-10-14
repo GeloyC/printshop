@@ -80,7 +80,7 @@ class ServiceController extends Controller
 
 
     public function store (Request $request) {
-
+        
         $request->merge([
             'file_requirements' => json_decode(
                 $request->input('file_requirements', ''),
@@ -92,7 +92,6 @@ class ServiceController extends Controller
             ),
         ]);
 
-        // creates a new configuration row 
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'description' => ['required', 'string', 'max:5000'],
@@ -113,6 +112,16 @@ class ServiceController extends Controller
         $base_price = $validated['base_price'];
         $file_requirements = $validated['file_requirements'];
         $thumbnail_file = $validated['thumbnail_file'] ?? null;
+
+        $check_exist = Service::query()
+            ->where('name', $name)
+            ->exists();
+
+        if ($check_exist) {
+            return response()->json([
+                'message' => 'duplicate service'
+            ], 409);
+        }
 
         $path = null;
 
@@ -141,6 +150,9 @@ class ServiceController extends Controller
             'service' => $service,
         ]);
     }
+
+
+
 
     public function edit () {
 

@@ -44,14 +44,17 @@ body {
     0% {
         opacity: 0%;
         transform: scale(50%);
-        transform: translateY(10%);
+        transform: translateY(30%);
+        
     }
-    15% {
+    10% {
         transform: scale(100%);
         opacity: 100%;
+        transform: translateY(10%);
     }
     85% {
         transform: scale(100%);
+        transform: translateY(10%);
         opacity: 100%;
     }
     100% {
