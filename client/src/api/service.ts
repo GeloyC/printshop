@@ -30,10 +30,16 @@ export const getClientServiceBySlug = async (slug: string) => {
     return response.data; 
 }
 
-
 export const getServiceNames = async () => {
-    const response = await api.get('api/services/names');
+    const response = await api.get('/api/services/names');
     console.log('[getServicesNames]: ', response.data);
 
     return response.data ?? [];
+}
+
+export const deleteService = async (id: string) => {
+    console.log('received ID: ', id);
+    const response = await api.delete(`/api/service/${id}`);
+
+    return response.data;
 }

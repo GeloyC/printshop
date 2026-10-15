@@ -13,7 +13,7 @@ function AdminLayout () {
         <div className="flex flex-col items-start w-full h-screen">
             <TopNavAdmin />
 
-            <div className="flex w-full h-screen bg-[#B1B2B5]/50 pr-[1rem]">
+            <div className="flex w-full min- h-screen bg-[#B1B2B5]/50 pr-[1rem]">
                 <NavbarAdmin  
                     setIsExpanded={setIsExpanded}
                     isExpanded={isExpanded}

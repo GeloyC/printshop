@@ -15,7 +15,7 @@ function LoadingSpinner ({
 
     return (
         <div
-            className="loading-spinner rounded-full border-solid bg-[#ff6b00]"
+            className="loading-spinner rounded-full border-solid bg-transparent"
             style={{
                 width: `${size}px`,
                 height: `${size}px`,

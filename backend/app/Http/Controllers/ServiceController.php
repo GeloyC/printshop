@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Service;
 
 class ServiceController extends Controller
@@ -65,6 +66,7 @@ class ServiceController extends Controller
 
 
     public function getClientService (String $slug) {
+
         $service = Service::query() 
             ->select(
                 'id', 
@@ -128,9 +130,9 @@ class ServiceController extends Controller
         if ($thumbnail_file) {
             $path = $thumbnail_file->store('service/thumbnail', 'r2');
         }
-        $url = config('filesystems.disks.r2.url')
-            .'/'
-            .$path;
+        // $url = config('filesystems.disks.r2.url')
+        //     .'/'
+        //     .$path;
 
         $configuration = $validated['configuration'];
         $slug = $validated['slug'];
@@ -140,7 +142,7 @@ class ServiceController extends Controller
             'description' => $description,
             'base_price' => $base_price,
             'file_requirements' => $file_requirements,
-            'thumbnail_url' => $url,
+            'thumbnail_url' => $path,
             'configuration' => $configuration,
             'slug' => $slug
         ]);
@@ -162,7 +164,36 @@ class ServiceController extends Controller
 
     }
 
-    public function destroy () {
+    public function destroy (String $id) {
 
+        $validator = Validator::make(
+            ['id' => $id],
+            [
+                'id' => ['required', 'uuid', 'exists:services,id'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            return reponse()->json([
+                'message'=>'invalid id',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $thumbnail = DB::table('services')
+            ->select('thumbnail_url')
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $disk = Storage::disk('r2');
+        $disk->delete($thumbnail->thumbnail_url);
+
+        DB::table('services')
+            ->where('id', $id)
+            ->delete();
+
+        return response()->json([
+            'message' => 'delete service success',
+        ]);
     }
 }

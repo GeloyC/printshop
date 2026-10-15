@@ -42,7 +42,7 @@ function CreateService () {
     const [basicInfo, setBasicInfo] = useState<BasicInformationType>({
         name: '',
         description: '',
-        base_price: 0
+        base_price: ''
     })
     
     type extensionType = { extension: string }
@@ -121,7 +121,7 @@ function CreateService () {
             setBasicInfo({
                 name: '',
                 description: '',
-                base_price: 0
+                base_price: ''
             });
             setAcceptedFiles([]);
             setConfigs([]);

@@ -2,7 +2,7 @@
 export type BasicInformationType = {
     name: string,
     description: string,
-    base_price: number
+    base_price: string
 }
 
 export type ConfigurationType = 
@@ -33,6 +33,7 @@ export type fileRequirement = {
 
 export type SelectedServiceType = {
     id: string,
+    thumbnail_url: string,
     name: string,
     description: string,
     base_price: number,

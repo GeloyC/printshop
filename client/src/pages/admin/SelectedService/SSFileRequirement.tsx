@@ -13,6 +13,7 @@ function SSFileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirement
 
     const fileExtensions = [
         { extension: '.jpeg' },
+        { extension: '.jpg' },
         { extension: '.png' },
         { extension: '.pdf' },
         { extension: '.docx' },

@@ -49,7 +49,7 @@ function ThumbnailComp ({
 
                 <input type="file" name="thumbnail" id="thumbnail" 
                     onChange={handleReadThumbnail}
-                    accept=".png, .jpg, .jpeg"
+                    accept=".png, .jpg, .jpeg" 
                     hidden
                 />
 
