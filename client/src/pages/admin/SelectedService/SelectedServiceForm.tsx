@@ -2,8 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// icon
-import DeleteIcon from '/src/assets/icon/delete_v2.svg?react';
 
 // types
 import type { 
@@ -35,6 +33,8 @@ type SelectedServiceFormProp = {
 function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
 
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
     const [basicInformation, setBasicInformation] = useState<BasicInformationType>({
         name: service.name,
         description: service.description,
@@ -56,9 +56,9 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
     const [isConfigEditModalOpen, setIsConfigEditModalOpen] = useState<boolean>(false);
 
-
     const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
+
 
     const queryClient = useQueryClient();
     const handleDeleteService = useMutation({
@@ -89,6 +89,28 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
         }
     });
 
+    const handleUpdateService = useMutation({
+        mutationFn: async () => {
+            
+        }, 
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ['services'] });
+        }, onError: (err: unknown) => {
+            if (axios.isAxiosError(err)) {
+                if (err.response?.status === 409) {
+                    console.log('error message:', err.response.data.message);
+                    return;
+                }
+
+                console.log(err.response?.data);
+            } else {
+                console.log('Unexpected error:', err);
+            }
+            throw err;
+        }
+    });
+
+
     return (
         <>
             <main className="flex flex-col w-full h-full bg-[#fff]">
@@ -99,24 +121,44 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                     </div>
 
 
-                    <div className="flex items-center gap-[0.5rem]">
+                    <div className="flex items-center gap-[0.3rem]">
 
-                        <button onClick={()=>setDeleteModalOpen(true)} className="flex items-center gap-[0.3rem] p-[0.5rem] px-[1rem] cursor-pointer bg-[#ff0f0f] hover:bg-[#e50000] active:bg-[#ff0f0f] rounded-[5px] transition-all duration-200">
-                            <DeleteIcon className="size-4" color="#fff" />
-                            <span className="text-[14px] text-[#fff] font-bold leading-none">Delete</span>
-                        </button>
+                        {!isEditing ? (
+                            <>
+                                <button onClick={()=>setIsEditing(true)} className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
+                                    <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Edit details</span>
+                                </button>
+
+                                <button onClick={()=>setDeleteModalOpen(true)} className="flex items-center gap-[0.3rem] p-[0.5rem] px-[1rem] cursor-pointer opacity-50 bg-[#ff0f0f] hover:opacity-100 hover:bg-[#e50000] active:bg-[#ff0f0f] rounded-[5px] transition-all duration-200">
+                                    <span className="text-[14px] text-[#fff] font-bold leading-none">Delete</span>
+                                </button>
+                            </>
+                        ):(
+                            <>
+                                <button className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
+                                    <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Save Changes</span>
+                                </button>
+
+                                <button onClick={()=>setIsEditing(false)} className="flex bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] p-[0.5rem] px-[1rem] cursor-pointer rounded-[5px] transition-all duration-200">
+                                    <span className="text-[14px] text-[#292929] font-bold leading-none text-nowrap">Cancel</span>
+                                </button>
+                            </>
+                        )}
+
                     </div>
                 </div>
 
                 <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar">
                     <SelectedServiceThumbnail 
                         currentImage={service.thumbnail_url}
+                        isEditing={isEditing}
                     />
 
                     <section className="flex flex-col w-[700px] p-[1rem] gap-[2rem]">
                         <SelectedServiceBasicInformation 
                             basicInformation={basicInformation}
                             setBasicInformation={setBasicInformation}
+                            isEditing={isEditing}
                         />
 
                         <SSFileRequirement 

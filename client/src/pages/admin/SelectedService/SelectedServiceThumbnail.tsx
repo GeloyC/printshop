@@ -3,13 +3,16 @@
 import ImageIcon from '/src/assets/icon/image.svg?react'
 
 import { ThumbnailUrl } from '../../../utils/cloudflarePublicURL';
+import type { SetStateAction } from 'react';
 
 type SelectedServiceThumbnailProp = {
     currentImage: string
+    isEditing: boolean
 }
 
 function SelectedServiceThumbnail ({
-    currentImage
+    currentImage,
+    isEditing
 }: SelectedServiceThumbnailProp) {
 
 
@@ -25,10 +28,13 @@ function SelectedServiceThumbnail ({
                 <img src={`${ThumbnailUrl}${currentImage}`} alt="" className={`object-contain w-full h-full`} />
             </div>
 
-            <button className="flex items-center justify-center py-[0.5rem] gap-[0.3rem] w-full bg-[#292929] hover:bg-[#292929]/90 active:bg-[#292929] rounded-[5px] transition-all duration-100 cursor-pointer">
-                <ImageIcon className="size-5" color="#fff"/>
-                <span className="text-[14px] text-[#fff]">Replace image</span>
-            </button>
+
+            {isEditing && (
+                <button className="flex items-center justify-center py-[0.5rem] gap-[0.3rem] w-full bg-[#292929] hover:bg-[#292929]/90 active:bg-[#292929] rounded-[5px] transition-all duration-100 cursor-pointer">
+                    <ImageIcon className="size-5" color="#fff"/>
+                    <span className="text-[14px] text-[#fff]">Replace image</span>
+                </button>
+            )}
         </section>
     )
 }

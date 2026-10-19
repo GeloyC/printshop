@@ -157,11 +157,35 @@ class ServiceController extends Controller
 
 
     public function edit () {
-
+        
     }
 
-    public function update () {
+    public function update (Request $request, String $id) {
+        $service = DB::table('services')->findOrFail($id);
 
+        $validated = $request->validate([
+            'name' => ['sometimes', 'string'],
+            'description' => ['sometimes', 'string', 'max:5000'],
+            'base_price' => ['sometimes', 'numeric', 'decimal:0,2', 'min:0'],
+            'file_requirements' => ['sometimes', 'array'],
+            'thumbnail_file' => [
+                'sometimes',
+                'file',
+                'mimes:png,jpeg,jpg',
+                'max:20480'
+            ],
+            'configuration' => ['sometimes', 'array'],
+            'slug' => ['sometimes', 'string'],
+        ]);
+
+        DB::table('services')
+            ->where('id', $id)
+            ->update($validated);
+
+        return reponse()->json([
+            'message' => 'service updated successfully',
+            'service' => $service->fresh()
+        ]);
     }
 
     public function destroy (String $id) {

@@ -19,3 +19,4 @@ Route::get("/admin/service/{slug}", [ServiceController::class, 'show']);
 Route::get("/client/service/{slug}", [ServiceController::class, 'getClientService']);
 Route::get("/services/names", [ServiceController::class, 'getNames']);
 Route::delete("/service/{id}", [ServiceController::class, 'destroy']);
+Route::put("/service/{id}", [ServiceController::class, 'update']);

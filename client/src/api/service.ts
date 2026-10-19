@@ -37,6 +37,13 @@ export const getServiceNames = async () => {
     return response.data ?? [];
 }
 
+export const updateService = async (formData: FormData, id: string) => {
+    const response = await api.put(`/api/serivce/${id}`, formData);
+    console.log('[updateService]: ', response.data);
+
+    return response.data;
+}
+
 export const deleteService = async (id: string) => {
     console.log('received ID: ', id);
     const response = await api.delete(`/api/service/${id}`);

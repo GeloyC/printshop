@@ -28,7 +28,7 @@ function ServiceAdmin () {
                 replace: true,
                 state: null
             })
-        }, 3000)
+        }, 1500)
     };
 
     if (location.state?.message) {
