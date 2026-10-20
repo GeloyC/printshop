@@ -25,13 +25,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 // utils
 import { deleteService } from "../../../api/service";
+import ConfigurationFields from "../../../components/modal/admin/ConfigurationFields";
 
 type SelectedServiceFormProp = {
     service: SelectedServiceType
 }
 
 function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
-
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -47,6 +47,13 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
     // todo: populate the configs with actual data from db
     const [configs, setConfigs] = useState<Configuration[]>(() => JSON.parse(service.configuration));
 
+    const [newConfig, setNewConfig] = useState<Configuration>({
+        id: crypto.randomUUID(),
+        key: '',
+        label: '',
+        options: []
+    });
+
     const [selectedConfigEdit, setSelectedConfigEdit] = useState<Configuration>({
         id: crypto.randomUUID(),
         key: '',
@@ -55,9 +62,21 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
     });
 
     const [isConfigEditModalOpen, setIsConfigEditModalOpen] = useState<boolean>(false);
+    const [isAddConfigModalOpen, setIsAddConfigModalOpen] = useState<boolean>(false);
 
     const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
+
+
+    const closeConfigModal = () => {
+        setIsAddConfigModalOpen(false);
+        setNewConfig({
+            id: "",
+            key: '',
+            label: '',
+            options: []
+        })
+    };
 
 
     const queryClient = useQueryClient();
@@ -118,6 +137,10 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                     <div className="flex items-center w-full gap-[0.5rem]">
                         <ReturnButton/>
                         <span className="text-[20px] font-bold leading-none text-[#292929]">{service?.name}</span>
+
+                        {isEditing && (
+                            <span className="text-[14px] font-bold opacity-50">Currently editing</span>
+                        )}
                     </div>
 
 
@@ -125,12 +148,12 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
                         {!isEditing ? (
                             <>
-                                <button onClick={()=>setIsEditing(true)} className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
-                                    <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Edit details</span>
-                                </button>
-
                                 <button onClick={()=>setDeleteModalOpen(true)} className="flex items-center gap-[0.3rem] p-[0.5rem] px-[1rem] cursor-pointer opacity-50 bg-[#ff0f0f] hover:opacity-100 hover:bg-[#e50000] active:bg-[#ff0f0f] rounded-[5px] transition-all duration-200">
                                     <span className="text-[14px] text-[#fff] font-bold leading-none">Delete</span>
+                                </button>
+
+                                <button onClick={()=>setIsEditing(true)} className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
+                                    <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Edit details</span>
                                 </button>
                             </>
                         ):(
@@ -164,13 +187,16 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                         <SSFileRequirement 
                             acceptedFiles={acceptedFiles}
                             setAcceptedFiles={setAcceptedFiles}
+                            isEditing={isEditing}
                         />
 
                         <SSConfiguration 
                             configs={configs}
                             setConfigs={setConfigs}
                             setSelectedConfigEdit={setSelectedConfigEdit}
-                            openEditModal={()=>setIsConfigEditModalOpen(true)}
+                            openEditConfigModal={()=>setIsConfigEditModalOpen(true)}
+                            openAddConfigModal={()=>setIsAddConfigModalOpen(true)}
+                            isEditing={isEditing}
                         />
                     </section>
                 </div>
@@ -183,6 +209,18 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                         close={()=>setIsConfigEditModalOpen(false)}
                         setSelectedConfigEdit={setSelectedConfigEdit}
                         setConfigs={setConfigs}
+                    />
+                </ModalWrapper>
+            )}
+
+            {isAddConfigModalOpen && (
+                <ModalWrapper>
+                    <ConfigurationFields 
+                        setNewConfig={setNewConfig}
+                        newConfig={newConfig}
+                        setConfigs={setConfigs}
+                        configs={configs}
+                        closeFields={closeConfigModal}
                     />
                 </ModalWrapper>
             )}

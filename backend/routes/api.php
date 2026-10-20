@@ -13,10 +13,14 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::delete('/auth/logout', [AuthController::class, 'logout']);
 Route::get('/auth/me', [AuthController::class, 'me']);
 
-Route::post('/service/new', [ServiceController::class, 'store']);
 Route::get('/services', [ServiceController::class, 'index']);
-Route::get("/admin/service/{slug}", [ServiceController::class, 'show']);
 Route::get("/client/service/{slug}", [ServiceController::class, 'getClientService']);
 Route::get("/services/names", [ServiceController::class, 'getNames']);
-Route::delete("/service/{id}", [ServiceController::class, 'destroy']);
-Route::put("/service/{id}", [ServiceController::class, 'update']);
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::post('/service/new', [ServiceController::class, 'store']);
+    Route::get("/admin/service/{slug}", [ServiceController::class, 'show']);
+    Route::put("/service/{id}", [ServiceController::class, 'update']);
+    Route::delete("/service/{id}", [ServiceController::class, 'destroy']);
+});

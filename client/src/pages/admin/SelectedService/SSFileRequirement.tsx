@@ -7,9 +7,10 @@ type extensionType = { extension: string }
 type FileRequirementProp = {
     acceptedFiles: extensionType[],
     setAcceptedFiles: React.Dispatch<SetStateAction<extensionType[]>>
+    isEditing: boolean
 }
 
-function SSFileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirementProp) {
+function SSFileRequirement ({ acceptedFiles, setAcceptedFiles, isEditing }: FileRequirementProp) {
 
     const fileExtensions = [
         { extension: '.jpeg' },
@@ -40,7 +41,7 @@ function SSFileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirement
                 <span className='text-[14px] leading-none opacity-75'>Select the type of file that users are allowed to upload when availing this service. This will prevent user from uploading unnecessary file/s.</span>
             </div>
 
-            <div className="flex flex-wrap items-center justify-start w-full gap-[0.2rem]">
+            <div className={`flex flex-wrap items-center justify-start w-full gap-[0.2rem] ${!isEditing && 'opacity-50'}`}>
                 {extensions.map(ext => {
                     const selected = acceptedFiles.some(
                         file => file.extension === ext.extension
@@ -55,6 +56,7 @@ function SSFileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirement
                                 id={`file_${ext.extension}`} 
                                 hidden
                                 checked={selected}
+                                disabled={!isEditing}
                                 onChange={()=>handleSelectExtension(ext.extension)}
                             />
                             

@@ -10,34 +10,38 @@ interface ConfigItemProp {
     config: Configuration;
     onDelete: (id: string) => void;
     selectConfigToEdit: () => void;
+    isEditing?: boolean
 }
 
 function ConfigurationItem ({ 
     config, 
     onDelete, 
     selectConfigToEdit,
+    isEditing
 }: ConfigItemProp) {
 
 
     return (
-        <div className="group flex flex-col items-start w-full bg-[#e6e6e6] rounded-[5px] p-[1rem]">
+        <div className={`group flex flex-col items-start w-full ${isEditing ? 'bg-[#fff0d3]' : 'bg-[#e6e6e6]'}  rounded-[5px] p-[1rem]`}>
             <div className="flex items-center justify-between gap-[0.5rem] w-full transition-all duration-100">
                 <div className="flex items-center gap-[0.5rem]">
                     <Folder className="size-5" />
                     <span className="text-[14px] font-bold leading-none">{config?.label}</span>
                 </div>
 
-                <div className="opacity-0 group-hover:opacity-100 flex items-center gap-[0.3rem]">
-                    <button title="Edit" onClick={selectConfigToEdit} className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
-                        <Edit className="size-4" />
-                        <span className="text-[14px] font-bold leading-none">Edit</span>
-                    </button>
+                {isEditing && (
+                    <div className="opacity-0 group-hover:opacity-100 flex items-center gap-[0.3rem]">
+                        <button title="Edit" onClick={selectConfigToEdit} className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
+                            <Edit className="size-4" />
+                            <span className="text-[14px] font-bold leading-none">Edit</span>
+                        </button>
 
-                    <button onClick={()=>onDelete(config?.id)} title="Delete" className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
-                        <Delete className="size-4" />
-                        <span className="text-[14px] font-bold leading-none">Delete</span>
-                    </button>
-                </div>
+                        <button onClick={()=>onDelete(config?.id)} title="Delete" className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
+                            <Delete className="size-4" />
+                            <span className="text-[14px] font-bold leading-none">Delete</span>
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className="flex items-center w-full gap-[1rem] opacity-50">

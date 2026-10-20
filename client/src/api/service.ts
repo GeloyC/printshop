@@ -1,4 +1,3 @@
-import type { Configuration } from "../types/service/service";
 import api from "./api";
 
 

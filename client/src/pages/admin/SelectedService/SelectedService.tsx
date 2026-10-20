@@ -12,6 +12,7 @@ function SelectedService () {
     const { slug } = useParams();
     const { data: service, isPending } = useAdminSelectedService(String(slug))
 
+    console.log('check service in Selected Service in admin: ', service);
 
     if (isPending) {
         return (

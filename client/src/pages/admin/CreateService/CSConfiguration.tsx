@@ -10,6 +10,7 @@ interface ConfigurationProp {
     setConfigs: React.Dispatch<SetStateAction<Configuration[]>>
     setSelectedConfigEdit: React.Dispatch<SetStateAction<Configuration>>
     openEditModal: ()=>void;
+    isEditing?: boolean
 }
 
 function CSConfiguration ({
@@ -18,7 +19,8 @@ function CSConfiguration ({
     configs,
     setConfigs,
     setSelectedConfigEdit,
-    openEditModal
+    openEditModal,
+    isEditing
 }: ConfigurationProp) {
 
 
@@ -54,6 +56,7 @@ function CSConfiguration ({
                             config={config}
                             onDelete={handleDeleteConfig}
                             selectConfigToEdit={()=>selectConfigToEdit(config.id)}
+                            isEditing={isEditing}
                         />
                     ))}
                 </div>
