@@ -37,7 +37,7 @@ export const getServiceNames = async () => {
 }
 
 export const updateService = async (formData: FormData, id: string) => {
-    const response = await api.put(`/api/serivce/${id}`, formData);
+    const response = await api.put(`/api/service/${id}`, formData);
     console.log('[updateService]: ', response.data);
 
     return response.data;

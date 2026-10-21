@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 // types
@@ -21,11 +21,11 @@ import ConfigurationEditModal from "../../../components/modal/admin/Configuratio
 import SSFileRequirement from "./SSFileRequirement";
 import DeleteServiceAlert from "../../../components/modal/admin/DeleteServiceAlert";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import ConfigurationFields from "../../../components/modal/admin/ConfigurationFields";
 
 
 // utils
-import { deleteService } from "../../../api/service";
-import ConfigurationFields from "../../../components/modal/admin/ConfigurationFields";
+import { deleteService, updateService } from "../../../api/service";
 
 type SelectedServiceFormProp = {
     service: SelectedServiceType
@@ -35,6 +35,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
 
+    const [newThumbnail, setNewThumbnail] = useState<File|null>(null);
     const [basicInformation, setBasicInformation] = useState<BasicInformationType>({
         name: service.name,
         description: service.description,
@@ -108,12 +109,63 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
         }
     });
 
+
+    let slug = useParams();
+
     const handleUpdateService = useMutation({
         mutationFn: async () => {
+            const formData = new FormData();
+
+            const serviceNameUpdated = service.name !== basicInformation.name;
+            const serviceDescriptionUpdated = service.description !== basicInformation.description;
+            const serviceBasePriceUpdated = service.base_price !== Number(basicInformation.base_price);
+            const fileRequirementUpdated =
+                service.file_requirements.length !== acceptedFiles.length ||
+                !service.file_requirements.every(ext =>
+                    acceptedFiles.some(accepted =>
+                        accepted.extension === ext.extension
+                    )
+                );
+
+            const serviceThumbnailUpdated = newThumbnail !== null;
+            const serviceConfigUpdated = JSON.parse(service.configuration) !==  configs;
+            const serviceSlugUpdated = service.name.split(' ').join('_') !== basicInformation.name.split(' ').join('_');
+
+            if (serviceNameUpdated) {
+                formData.append('name', basicInformation.name);
+            }
+
+            if (serviceDescriptionUpdated) {
+                formData.append('description', basicInformation.description);
+            }
+
+            if (serviceBasePriceUpdated) {
+                formData.append('base_price', basicInformation.base_price);
+            }
+
+            if (fileRequirementUpdated) {
+                formData.append('file_requirements', JSON.stringify(acceptedFiles))
+            }
+
+            if (serviceThumbnailUpdated) {
+                formData.append('thumbnail_file', newThumbnail);
+            }
+
+            if (serviceConfigUpdated) {
+                formData.append('configuration', JSON.stringify(configs));
+            }
+
+            if (serviceSlugUpdated) {
+                formData.append('slug', basicInformation.name.split(' ').join('_'));
+            }
             
+            return await updateService(formData, service.id);
         }, 
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['services'] });
+            navigate(`/admin/service/${basicInformation.name.split(' ').join('_')}`);
+            console.log('service updated');
+
         }, onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
                 if (err.response?.status === 409) {
@@ -158,7 +210,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                             </>
                         ):(
                             <>
-                                <button className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
+                                <button onClick={()=>handleUpdateService.mutate()} className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
                                     <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Save Changes</span>
                                 </button>
 
@@ -174,6 +226,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                 <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar">
                     <SelectedServiceThumbnail 
                         currentImage={service.thumbnail_url}
+                        setNewThumbnail={setNewThumbnail}
                         isEditing={isEditing}
                     />
 

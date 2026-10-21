@@ -8,11 +8,13 @@ import type { SetStateAction } from 'react';
 type SelectedServiceThumbnailProp = {
     currentImage: string
     isEditing: boolean
+    setNewThumbnail: React.Dispatch<SetStateAction<File|null>>
 }
 
 function SelectedServiceThumbnail ({
     currentImage,
-    isEditing
+    isEditing,
+    setNewThumbnail
 }: SelectedServiceThumbnailProp) {
 
 

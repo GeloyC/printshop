@@ -161,7 +161,20 @@ class ServiceController extends Controller
     }
 
     public function update (Request $request, String $id) {
-        $service = DB::table('services')->findOrFail($id);
+        $service = DB::table('services')
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $request->merge([
+            'file_requirements' => json_decode(
+                $request->input('file_requirements', ''),
+                true
+            ),
+            'configuration' => json_decode(
+                $request->input('configuration', ''),
+                true
+            ),
+        ]);
 
         $validated = $request->validate([
             'name' => ['sometimes', 'string'],
@@ -182,9 +195,9 @@ class ServiceController extends Controller
             ->where('id', $id)
             ->update($validated);
 
-        return reponse()->json([
+        return response()->json([
             'message' => 'service updated successfully',
-            'service' => $service->fresh()
+            'service' => $service
         ]);
     }
 
