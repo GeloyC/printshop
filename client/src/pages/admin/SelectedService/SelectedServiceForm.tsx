@@ -276,10 +276,6 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                             </>
                         ):(
                             <>
-                                <p>Original name: {service.name}</p>
-                                <p>Edited name: {basicInformation.name}</p>
-                                <p>Has changes: {String(hasChanges)}</p>
-
                                 <button onClick={()=>handleUpdateService.mutate()} 
                                 disabled={!hasChanges}
                                 className={`flex items-center gap-[0.3rem] bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] transition-all duration-200 ${!hasChanges ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0F4D0F] active:bg-[#008000] cursor-pointer'}`}>

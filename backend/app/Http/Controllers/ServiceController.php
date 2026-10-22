@@ -165,16 +165,16 @@ class ServiceController extends Controller
             ->where('id', $id)
             ->firstOrFail();
 
-        $request->merge([
-            'file_requirements' => json_decode(
-                $request->input('file_requirements', ''),
-                true
-            ),
-            'configuration' => json_decode(
-                $request->input('configuration', ''),
-                true
-            ),
-        ]);
+        foreach (['file_requirements', 'configuration'] as $field) {
+            if ($request->has($field)) {
+                $request->merge([
+                    $field => json_decode(
+                        $request->input($field),
+                        true
+                    ),
+                ]);
+            }
+        }
 
         $validated = $request->validate([
             'name' => ['sometimes', 'string'],
