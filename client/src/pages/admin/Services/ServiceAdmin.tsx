@@ -10,7 +10,6 @@ import ServiceListAdmin from './ServiceListAdmin';
 
 // component
 import AdminToast from '../../../components/ui/ToastAdmin';
-import ModalWrapper from '../../../components/wrapper/ModalWrapper';
 
 
 function ServiceAdmin () {
@@ -56,7 +55,7 @@ function ServiceAdmin () {
             {message && (
                 <AdminToast 
                     message={message}
-                    color='#CCFFCC'
+                    color='#FF5F15'
                 />
             )}
         </>

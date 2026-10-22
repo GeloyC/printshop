@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 
 // types
@@ -26,6 +26,7 @@ import ConfigurationFields from "../../../components/modal/admin/ConfigurationFi
 
 // utils
 import { deleteService, updateService } from "../../../api/service";
+import AdminToast from "../../../components/ui/ToastAdmin";
 
 type SelectedServiceFormProp = {
     service: SelectedServiceType
@@ -33,7 +34,11 @@ type SelectedServiceFormProp = {
 
 function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
+    const location = useLocation();
+    const {slug} = useParams();
+
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     const [newThumbnail, setNewThumbnail] = useState<File|null>(null);
     const [basicInformation, setBasicInformation] = useState<BasicInformationType>({
@@ -44,6 +49,10 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
     const parsedFileRequirements = JSON.parse(String(service.file_requirements));
     const [acceptedFiles, setAcceptedFiles] = useState<fileRequirement[]>(parsedFileRequirements);
+
+    console.log('parsed: ', parsedFileRequirements);
+    console.log('accepted: ', acceptedFiles);
+
 
     // todo: populate the configs with actual data from db
     const [configs, setConfigs] = useState<Configuration[]>(() => JSON.parse(service.configuration));
@@ -100,7 +109,8 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                     console.log('error message:', err.response.data.message);
                     return;
                 }
-
+                
+                
                 console.log(err.response?.data);
             } else {
                 console.log('Unexpected error:', err);
@@ -109,41 +119,54 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
         }
     });
 
+    
+    const serviceNameUpdated = service.name !== basicInformation.name;
+    const serviceDescriptionUpdated = service.description !== basicInformation.description;
+    const serviceBasePriceUpdated = String(service.base_price) !== basicInformation.base_price;
 
-    let slug = useParams();
+    const fileRequirementUpdated =
+        parsedFileRequirements.length !== acceptedFiles.length ||
+        !parsedFileRequirements.every((item: { extension: string }) =>
+            acceptedFiles.some(
+                accepted => accepted.extension === item.extension
+            )
+        );
 
+    const serviceThumbnailUpdated = newThumbnail !== null;
+
+    const isEqual = (a: unknown, b: unknown) => {
+        return JSON.stringify(a) === JSON.stringify(b);
+    };
+    const serviceConfigUpdated = !isEqual(JSON.parse(service.configuration), configs);
+    const serviceSlugUpdated = service.name.split(' ').join('_') !== basicInformation.name.split(' ').join('_');
+
+    const hasChanges = 
+        serviceNameUpdated ||
+        serviceDescriptionUpdated ||
+        serviceBasePriceUpdated ||
+        fileRequirementUpdated || 
+        serviceThumbnailUpdated ||
+        serviceConfigUpdated || 
+        serviceSlugUpdated;
+        ;
     const handleUpdateService = useMutation({
         mutationFn: async () => {
             const formData = new FormData();
 
-            const serviceNameUpdated = service.name !== basicInformation.name;
-            const serviceDescriptionUpdated = service.description !== basicInformation.description;
-            const serviceBasePriceUpdated = service.base_price !== Number(basicInformation.base_price);
-            const fileRequirementUpdated =
-                service.file_requirements.length !== acceptedFiles.length ||
-                !service.file_requirements.every(ext =>
-                    acceptedFiles.some(accepted =>
-                        accepted.extension === ext.extension
-                    )
-                );
 
-            const serviceThumbnailUpdated = newThumbnail !== null;
-            const serviceConfigUpdated = JSON.parse(service.configuration) !==  configs;
-            const serviceSlugUpdated = service.name.split(' ').join('_') !== basicInformation.name.split(' ').join('_');
-
-            if (serviceNameUpdated) {
+            if (serviceNameUpdated && basicInformation.name !== null) {
                 formData.append('name', basicInformation.name);
             }
 
-            if (serviceDescriptionUpdated) {
+            if (serviceDescriptionUpdated && basicInformation.description !== null) {
                 formData.append('description', basicInformation.description);
             }
 
-            if (serviceBasePriceUpdated) {
+            if (serviceBasePriceUpdated && basicInformation.base_price !== String(0)) {
                 formData.append('base_price', basicInformation.base_price);
             }
 
-            if (fileRequirementUpdated) {
+            if (fileRequirementUpdated && acceptedFiles.length !== 0) {
                 formData.append('file_requirements', JSON.stringify(acceptedFiles))
             }
 
@@ -151,11 +174,11 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                 formData.append('thumbnail_file', newThumbnail);
             }
 
-            if (serviceConfigUpdated) {
+            if (serviceConfigUpdated && configs.length !== 0) {
                 formData.append('configuration', JSON.stringify(configs));
             }
 
-            if (serviceSlugUpdated) {
+            if (basicInformation.name !== null && serviceSlugUpdated) {
                 formData.append('slug', basicInformation.name.split(' ').join('_'));
             }
             
@@ -163,8 +186,15 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
         }, 
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ['services'] });
-            navigate(`/admin/service/${basicInformation.name.split(' ').join('_')}`);
+
+            setIsEditing(false);
+            navigate(`/admin/service/${basicInformation.name.split(' ').join('_')}`, {
+                state: {
+                    message: 'Service updated successfully!'
+                }
+            });
             console.log('service updated');
+
 
         }, onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
@@ -172,7 +202,14 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                     console.log('error message:', err.response.data.message);
                     return;
                 }
+                const errors = err.response?.data?.errors;
+                if (errors) {
+                    const allErrors = Object.values(errors).flat();
+                    const combinedErrors = allErrors.join(' ');
 
+                    setError(combinedErrors)
+                }
+                
                 console.log(err.response?.data);
             } else {
                 console.log('Unexpected error:', err);
@@ -180,6 +217,35 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
             throw err;
         }
     });
+
+
+    const handleCancelEdit = () => {
+
+        // add the original state for thumbnail later
+
+        setBasicInformation({
+            name: service.name,
+            description: service.description,
+            base_price: String(service.base_price)
+        });
+
+        setAcceptedFiles(parsedFileRequirements);
+        setConfigs((() => JSON.parse(service.configuration)));
+    }
+
+    const message = location.state?.message;
+    const dismissToast = () => {
+        setTimeout(() => {
+            navigate(location.pathname, {
+                replace: true,
+                state: null
+            })
+        }, 1500)
+    };
+
+    if (location.state?.message) {
+        dismissToast();
+    }
 
 
     return (
@@ -210,11 +276,20 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                             </>
                         ):(
                             <>
-                                <button onClick={()=>handleUpdateService.mutate()} className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
+                                <p>Original name: {service.name}</p>
+                                <p>Edited name: {basicInformation.name}</p>
+                                <p>Has changes: {String(hasChanges)}</p>
+
+                                <button onClick={()=>handleUpdateService.mutate()} 
+                                disabled={!hasChanges}
+                                className={`flex items-center gap-[0.3rem] bg-[#008000] p-[0.5rem] px-[1rem] rounded-[5px] transition-all duration-200 ${!hasChanges ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0F4D0F] active:bg-[#008000] cursor-pointer'}`}>
                                     <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Save Changes</span>
                                 </button>
 
-                                <button onClick={()=>setIsEditing(false)} className="flex bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] p-[0.5rem] px-[1rem] cursor-pointer rounded-[5px] transition-all duration-200">
+                                <button onClick={()=>{
+                                    setIsEditing(false)
+                                    handleCancelEdit()
+                                }} className="flex bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] p-[0.5rem] px-[1rem] cursor-pointer rounded-[5px] transition-all duration-200">
                                     <span className="text-[14px] text-[#292929] font-bold leading-none text-nowrap">Cancel</span>
                                 </button>
                             </>
@@ -287,6 +362,20 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                         name={service.name}
                     />
                 </ModalWrapper>
+            )}
+
+            {message && (
+                <AdminToast 
+                    message={message}
+                    color='#CCFFCC'
+                />
+            )}
+
+            {error && (
+                <AdminToast 
+                    message={error}
+                    color='#CCFFCC'
+                />
             )}
         </>
     )
