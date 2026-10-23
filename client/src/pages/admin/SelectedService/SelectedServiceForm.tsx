@@ -35,12 +35,27 @@ type SelectedServiceFormProp = {
 function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
     const location = useLocation();
-    const {slug} = useParams();
+
+    const message = location.state?.message;
+    const dismissToast = () => {
+        setTimeout(() => {
+            navigate(location.pathname, {
+                replace: true,
+                state: null
+            })
+        }, 1500)
+    };
+
+    if (location.state?.message) {
+        dismissToast();
+    }
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
 
     const [newThumbnail, setNewThumbnail] = useState<File|null>(null);
+    const [thumbnailPreview, setThumbnailPreview] = useState<string>(service.thumbnail_url);
+
     const [basicInformation, setBasicInformation] = useState<BasicInformationType>({
         name: service.name,
         description: service.description,
@@ -49,9 +64,6 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
     const parsedFileRequirements = JSON.parse(String(service.file_requirements));
     const [acceptedFiles, setAcceptedFiles] = useState<fileRequirement[]>(parsedFileRequirements);
-
-    console.log('parsed: ', parsedFileRequirements);
-    console.log('accepted: ', acceptedFiles);
 
 
     // todo: populate the configs with actual data from db
@@ -132,13 +144,13 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
             )
         );
 
-    const serviceThumbnailUpdated = newThumbnail !== null;
+    const serviceThumbnailUpdated = thumbnailPreview !== service.thumbnail_url;
 
     const isEqual = (a: unknown, b: unknown) => {
         return JSON.stringify(a) === JSON.stringify(b);
     };
     const serviceConfigUpdated = !isEqual(JSON.parse(service.configuration), configs);
-    const serviceSlugUpdated = service.name.split(' ').join('_') !== basicInformation.name.split(' ').join('_');
+
 
     const hasChanges = 
         serviceNameUpdated ||
@@ -146,9 +158,9 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
         serviceBasePriceUpdated ||
         fileRequirementUpdated || 
         serviceThumbnailUpdated ||
-        serviceConfigUpdated || 
-        serviceSlugUpdated;
-        ;
+        serviceConfigUpdated;
+
+
     const handleUpdateService = useMutation({
         mutationFn: async () => {
             const formData = new FormData();
@@ -171,15 +183,13 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
             }
 
             if (serviceThumbnailUpdated) {
-                formData.append('thumbnail_file', newThumbnail);
+                if (newThumbnail) {
+                    formData.append('thumbnail_file', newThumbnail);
+                }
             }
 
             if (serviceConfigUpdated && configs.length !== 0) {
                 formData.append('configuration', JSON.stringify(configs));
-            }
-
-            if (basicInformation.name !== null && serviceSlugUpdated) {
-                formData.append('slug', basicInformation.name.split(' ').join('_'));
             }
             
             return await updateService(formData, service.id);
@@ -188,7 +198,9 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
             await queryClient.invalidateQueries({ queryKey: ['services'] });
 
             setIsEditing(false);
-            navigate(`/admin/service/${basicInformation.name.split(' ').join('_')}`, {
+
+            const slug = basicInformation.name.split(' ').join('_').toLowerCase();
+            navigate(`/admin/service/${slug}`, {
                 state: {
                     message: 'Service updated successfully!'
                 }
@@ -220,9 +232,8 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
 
     const handleCancelEdit = () => {
-
         // add the original state for thumbnail later
-
+        setThumbnailPreview(service.thumbnail_url);
         setBasicInformation({
             name: service.name,
             description: service.description,
@@ -233,19 +244,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
         setConfigs((() => JSON.parse(service.configuration)));
     }
 
-    const message = location.state?.message;
-    const dismissToast = () => {
-        setTimeout(() => {
-            navigate(location.pathname, {
-                replace: true,
-                state: null
-            })
-        }, 1500)
-    };
-
-    if (location.state?.message) {
-        dismissToast();
-    }
+    
 
 
     return (
@@ -253,7 +252,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
             <main className="flex flex-col w-full h-full bg-[#fff]">
                 <div className="flex items-center justify-between w-full p-[1rem] border-b border-[#292929]/10">
                     <div className="flex items-center w-full gap-[0.5rem]">
-                        <ReturnButton/>
+                        <ReturnButton path="/admin/service" />
                         <span className="text-[20px] font-bold leading-none text-[#292929]">{service?.name}</span>
 
                         {isEditing && (
@@ -296,8 +295,9 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
                 <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar">
                     <SelectedServiceThumbnail 
-                        currentImage={service.thumbnail_url}
+                        currentImage={thumbnailPreview}
                         setNewThumbnail={setNewThumbnail}
+                        setThumbnailPreview={setThumbnailPreview}
                         isEditing={isEditing}
                     />
 
@@ -370,7 +370,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
             {error && (
                 <AdminToast 
                     message={error}
-                    color='#CCFFCC'
+                    color='#FF5F15'
                 />
             )}
         </>

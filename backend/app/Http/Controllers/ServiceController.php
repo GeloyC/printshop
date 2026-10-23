@@ -130,9 +130,6 @@ class ServiceController extends Controller
         if ($thumbnail_file) {
             $path = $thumbnail_file->store('service/thumbnail', 'r2');
         }
-        // $url = config('filesystems.disks.r2.url')
-        //     .'/'
-        //     .$path;
 
         $configuration = $validated['configuration'];
         $slug = $validated['slug'];
@@ -176,24 +173,55 @@ class ServiceController extends Controller
             }
         }
 
-        $validated = $request->validate([
-            'name' => ['sometimes', 'string'],
-            'description' => ['sometimes', 'string', 'max:5000'],
-            'base_price' => ['sometimes', 'numeric', 'decimal:0,2', 'min:0'],
-            'file_requirements' => ['sometimes', 'array'],
+        $validatedThumbnail = $request->validate([
             'thumbnail_file' => [
                 'sometimes',
                 'file',
                 'mimes:png,jpeg,jpg',
                 'max:20480'
             ],
-            'configuration' => ['sometimes', 'array'],
-            'slug' => ['sometimes', 'string'],
         ]);
 
+        $validated = $request->validate([
+            'name' => ['sometimes', 'string'],
+            'description' => ['sometimes', 'string', 'max:5000'],
+            'base_price' => ['sometimes', 'numeric', 'decimal:0,2', 'min:0'],
+            'file_requirements' => ['sometimes', 'array'],
+            'thumbnail_url' => ['sometimes', 'string'],
+            'configuration' => ['sometimes', 'array'],
+        ]);
+
+        $disk = Storage::disk('r2');
+        $oldThumbnailPath = $service->thumbnail_url;
+        $newThumbnailPath = null;
+
+        $thumbnail_file = $request->file('thumbnail_file');
+
+        if ($thumbnail_file) {
+            $newThumbnailPath = $thumbnail_file->store('service/thumbnail', 'r2');
+
+            if (!$newThumbnailPath) {
+                return response()->json([
+                    'message' => 'failed to upload thumbnail'
+                ], 500);
+            }
+
+            $validated['thumbnail_url'] = $newThumbnailPath;
+        }
+
+        if (array_key_exists('name', $validated)) {
+            $validated['slug'] = strtolower(
+                str_replace(' ', '_', trim($validated['name']))
+            );
+        }
+        
         DB::table('services')
             ->where('id', $id)
             ->update($validated);
+
+        if ($newThumbnailPath && $oldThumbnailPath) {
+            $disk->delete($oldThumbnailPath);
+        }
 
         return response()->json([
             'message' => 'service updated successfully',

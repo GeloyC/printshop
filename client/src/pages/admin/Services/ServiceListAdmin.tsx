@@ -11,6 +11,8 @@ type ServiceListAdminProp = {
 
 function ServiceListAdmin ({ services }: ServiceListAdminProp) {
 
+    console.log('check services in serviceadmin: ', services);
+
     return (
         <div className='sticky grid grid-cols-4 w-full h-[650px] overflow-y-auto thin-scrollbar gap-[0.5rem] p-[1rem]'>
             {services.map(service=>(

@@ -21,6 +21,6 @@ Route::get("/services/names", [ServiceController::class, 'getNames']);
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/service/new', [ServiceController::class, 'store']);
     Route::get("/admin/service/{slug}", [ServiceController::class, 'show']);
-    Route::put("/service/{id}", [ServiceController::class, 'update']);
+    Route::patch("/service/{id}", [ServiceController::class, 'update']);
     Route::delete("/service/{id}", [ServiceController::class, 'destroy']);
 });
