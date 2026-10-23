@@ -27,6 +27,7 @@ import ConfigurationFields from "../../../components/modal/admin/ConfigurationFi
 // utils
 import { deleteService, updateService } from "../../../api/service";
 import AdminToast from "../../../components/ui/ToastAdmin";
+import TopLoadingBar from "../../../components/ui/TopLoadingBar";
 
 type SelectedServiceFormProp = {
     service: SelectedServiceType
@@ -167,7 +168,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
 
             if (serviceNameUpdated && basicInformation.name !== null) {
-                formData.append('name', basicInformation.name);
+                formData.append('name', basicInformation.name.trim());
             }
 
             if (serviceDescriptionUpdated && basicInformation.description !== null) {
@@ -245,10 +246,14 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
     }
 
     
-
+    const checkIfLoading =
+        handleUpdateService.isPending ||
+        handleDeleteService.isPending;
+    
 
     return (
         <>
+            <TopLoadingBar isLoading={handleUpdateService.isPending} />
             <main className="flex flex-col w-full h-full bg-[#fff]">
                 <div className="flex items-center justify-between w-full p-[1rem] border-b border-[#292929]/10">
                     <div className="flex items-center w-full gap-[0.5rem]">
@@ -259,7 +264,6 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                             <span className="text-[14px] font-bold opacity-50">Currently editing</span>
                         )}
                     </div>
-
 
                     <div className="flex items-center gap-[0.3rem]">
 
@@ -292,6 +296,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
                     </div>
                 </div>
+
 
                 <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar">
                     <SelectedServiceThumbnail 

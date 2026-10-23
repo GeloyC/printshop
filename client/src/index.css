@@ -36,8 +36,12 @@ body {
 }
 
 @keyframes loadProgress {
-    from { width:0% }
-    to { width: 100% }
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(400%);
+    }
 }
 
 @keyframes toastPop {
@@ -70,7 +74,7 @@ body {
 }
 
 .load-progress {
-    animation: loadProgress 0.75s ease-in-out forwards
+    animation: loadProgress 1.2s ease-in-out infinite
 }
 
 .toast-pop {
