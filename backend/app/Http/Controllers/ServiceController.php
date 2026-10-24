@@ -75,7 +75,21 @@ class ServiceController extends Controller
                 'file_requirements'
             )
             ->where('slug', $slug)
-            ->firstorFail();
+            ->firstOrFail();
+
+        return response()->json($service);
+    }
+
+
+    public function getConfiguration (String $slug) {
+        $service = Service::query()
+            ->select(
+                'id',
+                'configuration',
+                'slug'
+            )
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         return response()->json($service);
     }
@@ -149,9 +163,6 @@ class ServiceController extends Controller
             'service' => $service,
         ]);
     }
-
-
-
 
     public function edit () {
         

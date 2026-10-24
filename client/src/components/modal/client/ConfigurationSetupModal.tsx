@@ -12,18 +12,30 @@ import DropdownType from '../../ui/ConfigurationType/DropdownType';
 import TextType from '../../ui/ConfigurationType/TextType';
 
 import type { fileItem } from '../../../types/FileType';
+import type { Configuration } from '../../../types/service/service';
+
+
+type fileConfigType = {
+    id: string,
+    configuration: Configuration[],
+    slug: string
+}
 
 interface ModalProp {
     selectedFile: fileItem | null
     closeModal: () => void;
+    configuration: fileConfigType
 }
 
 function ConfigurationSetupModal ({ 
     selectedFile,
-    closeModal 
+    closeModal,
+    configuration 
 }: ModalProp ) {
 
     const [quantity, setQuantity] = useState<number>(1);
+
+    console.log('configration: ', configuration.slug);
 
     return (
         <div className="fade-up flex flex-col w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[5px]">
@@ -40,22 +52,39 @@ function ConfigurationSetupModal ({
 
             <div className="flex flex-col w-full gap-[1rem]">
 
-                <ConfigItemWrapper configLabel='Checkbox'>
-                    <CheckboxType />
-                    <CheckboxType />
-                    <CheckboxType />
-                </ConfigItemWrapper>
-
-                <ConfigItemWrapper configLabel='Radio'>
-                    <RadioType />
-                    <RadioType />
-                </ConfigItemWrapper>
-
-                <ConfigItemWrapper configLabel='Dropdown'>
-                    <DropdownType />
-                </ConfigItemWrapper>
-
-                <TextType configLabel='Text field' />
+                {configuration.configuration.map(config => {
+                    console.log('checking config');
+                    return (
+                    <div key={config.id}>  
+                        {config.type === 'checkbox' ? (
+                            <ConfigItemWrapper configLabel={config.label}>
+                                {config.options.map(opt => (
+                                    <CheckboxType key={opt.id}
+                                        option={opt.option}
+                                        price={opt.price}
+                                    />
+                                ))}
+                            </ConfigItemWrapper>
+                        ) : config.type === 'radio' ? (
+                            <ConfigItemWrapper configLabel={config.label}>
+                                {config.options.map(opt => (
+                                    <RadioType key={opt.id}
+                                        option={opt.option}
+                                        price={opt.price}
+                                    />
+                                ))}
+                            </ConfigItemWrapper>
+                        ) : config.type === 'select' ? (
+                            <ConfigItemWrapper configLabel={config.label}>
+                                <DropdownType
+                                    options={config.options}
+                                />
+                            </ConfigItemWrapper>
+                        ) : (
+                            <TextType configLabel={config.label} />
+                        )}
+                    </div>
+                )})}
                 
                 <div className="flex flex-col w-full gap-[0.3rem] pb-[0.5rem] z-10">
                     <span className='text-[14px] font-bold text-[#575757]'>Quantity</span>

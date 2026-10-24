@@ -22,7 +22,6 @@ function DocumentItem ({
     onSelectFile,
 }:DocumentItemProp) {
 
-    
 
     return (
         <div className={`fade-up relative group flex items-end w-full p-[0.5rem] pt-[1rem] gap-[0.5rem] bg-[#fff] cursor-pointer shadow-lg border border-[#292929]/35 hover:border-[#292929] rounded-[5px]`}>

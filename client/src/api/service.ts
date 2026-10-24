@@ -49,3 +49,10 @@ export const deleteService = async (id: string) => {
 
     return response.data;
 }
+
+
+export const getServiceConfiguration = async (slug: string) => {
+    const response = await api.get(`/api/service/${slug}/configuration`);
+
+    return response.data;
+}

@@ -3,8 +3,14 @@ import { useState } from 'react';
 
 // icons
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
+import type { ConfigurationOptions } from '../../../types/service/service';
 
-function DropdownType () {
+
+type DropdownTypeProp = {
+    options: ConfigurationOptions[]
+}
+
+function DropdownType ({ options }: DropdownTypeProp) {
 
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
     const [selectedOption, setSelectedOption] = useState<string>('-- Select option --')
@@ -13,6 +19,9 @@ function DropdownType () {
         setSelectedOption(name);
         setDropdownOpen(false);
     }
+
+
+    console.log(typeof options);
 
     return (
         <>
@@ -28,10 +37,12 @@ function DropdownType () {
                 {dropdownOpen && (
                     <div className='absolute top-[100%] flex flex-col w-full bg-[#fff] border border-[#292929]/25 shadow-md'>
 
-                        {/* This button is mapped later */}
-                        <button onClick={()=>handleSelectOption('Select name 1')} className='flex items-center justify-between w-full p-[1rem] hover:bg-[#B1B2B5]/25 active:bg-transparent cursor-pointer'>
-                            <span className='text-[14px] text-[#292929] font-bold leading-none'>Select name 1</span>
-                        </button>
+                        {options.map(option => (
+                            <button key={option.id}
+                            onClick={()=>handleSelectOption('Select name 1')} className='flex items-center justify-between w-full p-[1rem] hover:bg-[#B1B2B5]/25 active:bg-transparent cursor-pointer'>
+                                <span className='text-[14px] text-[#292929] font-bold leading-none'>{option.option}</span>
+                            </button>
+                        ))}
 
                     </div>
                 )}

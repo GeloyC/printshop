@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { createBrowserRouter, BrowserRouter, Routes, Route, RouterProvider } from 'react-router-dom'
 
 import ClientLayout from './layouts/client.layout'
 import Home from './pages/client/Home/Home' 
@@ -12,27 +12,54 @@ import Cart from './pages/client/Cart/Cart'
 import OrderConfirmation from './pages/client/OrderConfirmation/OrderConfirmation'
 import Folder from './pages/client/Folder/Folder'
 
+
+const router = createBrowserRouter([
+    {
+        element: <ClientLayout />,
+        children: [
+            { path: '/', element: <Home /> },
+            { path: '/service/:slug', element: <ServiceClient /> },
+            { path: '/cart', element: <Cart /> },
+            { path: '/order-confirmation', element: <OrderConfirmation /> },
+            { path: '/folder', element: <Folder /> },
+        ],
+    },
+    {
+        element: <AdminLayout />,
+        children: [
+            { path: '/admin/service', element: <ServiceAdmin /> },
+            { path: '/admin/service/:slug', element: <SelectedService /> },
+            { path: '/admin/service/create', element: <CreateService /> },
+        ],
+    },
+]);
+
+
+// function App() {
+
+//   return (
+//     <BrowserRouter>
+//       <Routes >
+//         <Route element={<ClientLayout />}>
+//           <Route path='/' element={<Home />} />
+//           <Route path='/service/:slug' element={<ServiceClient />} /> 
+//           <Route path='/cart' element={<Cart />} />
+//           <Route path='/order-confirmation' element={<OrderConfirmation />} />
+//           <Route path='/folder' element={<Folder />} />
+//         </Route>
+
+//         <Route element={<AdminLayout />}>
+//           <Route path="/admin/service" element={<ServiceAdmin />}/>
+//           <Route path='/admin/service/:slug' element={<SelectedService />}/> 
+//           <Route path='/admin/service/create' element={<CreateService />} />
+//         </Route>
+//       </Routes>
+//     </BrowserRouter>
+//   )
+// }
+
 function App() {
-
-  return (
-    <BrowserRouter>
-      <Routes >
-        <Route element={<ClientLayout />}>
-          <Route path='/' element={<Home />} />
-          <Route path='/service/:slug' element={<ServiceClient />} /> 
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/order-confirmation' element={<OrderConfirmation />} />
-          <Route path='/folder' element={<Folder />} />
-        </Route>
-
-        <Route element={<AdminLayout />}>
-          <Route path="/admin/service" element={<ServiceAdmin />}/>
-          <Route path='/admin/service/:slug' element={<SelectedService />}/> 
-          <Route path='/admin/service/create' element={<CreateService />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  )
+  return <RouterProvider router={router}/>
 }
 
 export default App

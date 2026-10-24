@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useBlocker } from "react-router-dom";
 
 
 import DisplayFiles from "./DisplayFiles"
@@ -8,6 +8,10 @@ import ConfigurationSetupModal from "../../../components/modal/client/Configurat
 import Toast from "../../../components/ui/Toast";
 
 import type { fileItem } from "../../../types/FileType";
+import RedirectAlert from "../../../components/ui/RedirectAlert";
+import type { Configuration } from "../../../types/service/service";
+
+
 
 type fileRequirement = {
     extension: string
@@ -20,26 +24,55 @@ type ServiceType = {
     file_requirements: fileRequirement[],
 }
 
-type ServiceClientFormProp = {
-    service: ServiceType
+type fileConfigType = {
+    id: string,
+    configuration: Configuration[],
+    slug: string
 }
 
-function ServiceClientForm ({ service }: ServiceClientFormProp) {
+type ServiceClientFormProp = {
+    service: ServiceType
+    configuration: fileConfigType
+}
+
+function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
 
     const { slug } = useParams();
+    console.log('check config per service: ', configuration);
 
-    console.log('slug: ', slug);
 
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
     const [files, setFiles] = useState<fileItem[]>([]);
     const [error, setError] = useState<string>('');
+
 
     const requiredFiles = service?.file_requirements.map(
         (req: { extension: string }) => req.extension
     ) ?? [];
 
 
-    console.log(files.length);
+    // TODO: use useBlocker from react-router to alert user when navigating away from /service/[selected service slug]
+
+    const filesSlugCheckExist = files.some(file => file.slug === slug);
+    const blocker = useBlocker(files.length >= 1 && filesSlugCheckExist);
+
+    const handleProceed = () => {
+        if (filesSlugCheckExist) {
+            setFiles(prevFiles =>
+                prevFiles.filter(file => file.slug !== slug)
+            );
+        }
+
+        if (blocker.state === 'blocked') {
+            blocker.proceed()
+        }
+    }
+
+    const handleStay = () => {
+        if (blocker.state === 'blocked') {
+            blocker.reset()
+        }
+    }
 
     return (
         <>
@@ -66,6 +99,16 @@ function ServiceClientForm ({ service }: ServiceClientFormProp) {
                     <ConfigurationSetupModal 
                         selectedFile={selectedFile}
                         closeModal={()=>setSelectedFile(null)}
+                        configuration={configuration}
+                    />
+                </ModalWrapper>
+            )}
+
+            {blocker.state === 'blocked' && (
+                <ModalWrapper>
+                    <RedirectAlert 
+                        stayPage={handleStay}
+                        leavePage={handleProceed}
                     />
                 </ModalWrapper>
             )}

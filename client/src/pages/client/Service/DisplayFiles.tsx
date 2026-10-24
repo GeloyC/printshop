@@ -14,6 +14,8 @@ import AddIcon from '/src/assets/icon/add.svg?react'
 import { useCartContext } from "../../../context/cartContext";
 import type { fileItem } from "../../../types/FileType";
 
+// services
+
 type DisplayFilesProp =  {
     setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>
     requiredFiles: string[]
@@ -32,12 +34,9 @@ function DisplayFiles ({
     slug
 }:DisplayFilesProp) {
 
-    console.log(files);
-
-
     const navigate = useNavigate()
 
-    const { items, setItems } = useCartContext();
+    const { setItems } = useCartContext();
     const stringedRequiredFiles = requiredFiles.join(', ');
 
     const [dragOver, setDragOver] = useState<boolean>(false);
@@ -166,7 +165,6 @@ function DisplayFiles ({
         setFiles([]);
         navigate('/cart')
     }
-
 
 
     return (
