@@ -1,6 +1,6 @@
 import { type SetStateAction } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // components
 import DocumentItem from "./DocumentItem";
@@ -11,24 +11,33 @@ import ArrowWithTail from '/src/assets/icon/arrow-with-tail.svg?react'
 import Delete from "/src/assets/icon/add.svg?react";
 import AddIcon from '/src/assets/icon/add.svg?react'
 
-import { useFileContext } from "../../../context/fileContext";
 import { useCartContext } from "../../../context/cartContext";
 import type { fileItem } from "../../../types/FileType";
 
-interface DisplayFilesProp {
+type DisplayFilesProp =  {
     setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>
     requiredFiles: string[]
+    setFiles: React.Dispatch<SetStateAction<fileItem[]>>
+    files: fileItem[]
+    setError: React.Dispatch<SetStateAction<string>>
+    slug: string
 }
 
 function DisplayFiles ({
     setSelectedFile,
-    requiredFiles
+    requiredFiles,
+    setFiles,
+    files,
+    setError,
+    slug
 }:DisplayFilesProp) {
 
-    const navigate = useNavigate()
-    const { files, setFiles, setError } = useFileContext();
+    console.log(files);
 
-    const { setItems } = useCartContext();
+
+    const navigate = useNavigate()
+
+    const { items, setItems } = useCartContext();
     const stringedRequiredFiles = requiredFiles.join(', ');
 
     const [dragOver, setDragOver] = useState<boolean>(false);
@@ -53,7 +62,8 @@ function DisplayFiles ({
             const newFile: fileItem = {
                 id: crypto.randomUUID(),
                 file: file,
-                quantity: 1
+                quantity: 1,
+                slug: String(slug)
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
@@ -102,7 +112,8 @@ function DisplayFiles ({
             const newFile: fileItem = {
                 id:  crypto.randomUUID(),
                 file: file,
-                quantity: 1
+                quantity: 1,
+                slug: String(slug)
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
@@ -160,6 +171,7 @@ function DisplayFiles ({
 
     return (
         <div className={`fade-up flex flex-col w-full min-h-[300px] h-fit max-h-[620px] ${dragOver ? 'bg-[#ffdca5]' : 'bg-[#fff8ec]'} border-2 ${files.length <= 0 && 'border-dashed' } border-[#ffc36d] rounded-[10px] overflow-hidden`}>
+
             {files.length > 0 && (
                 <div className="flex items-center justify-between w-full gap-[0.3rem] bg-[#fff0d3] border-b-2 border-dashed border-[#ffc36d] p-[0.5rem]">
 
@@ -197,16 +209,23 @@ function DisplayFiles ({
                 {files.length <= 0 ? (
                     <NoFilesWrapper 
                         requiredFiles={requiredFiles}
+                        setFiles={setFiles}
+                        setError={setError}
+                        slug={slug}
                     />
                 ):(
                     <div className="grid grid-cols-2 items-center justify-center gap-[0.5rem] w-full">
-                        {files.map((file, index) => (
-                            <DocumentItem key={file?.id} 
-                                file={file} 
-                                onSelectFile={()=>setSelectedFile(file)}
-                                handleRemoveFile={()=>handleRemoveFile(index)}
-                            />
-                        ))}
+                        {files.map((file, index) => {
+                            if (file.slug === slug) {
+                                return (
+                                    <DocumentItem key={file?.id} 
+                                        file={file} 
+                                        onSelectFile={()=>setSelectedFile(file)}
+                                        handleRemoveFile={()=>handleRemoveFile(index)}
+                                    />
+                                )}
+                            }
+                        )}
                     </div>
                 )}
             </div>

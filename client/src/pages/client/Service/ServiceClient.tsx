@@ -8,6 +8,7 @@
 import ServiceClientForm from "./ServiceClientForm";
 import { useParams } from "react-router-dom";
 import { useClientSelectedService } from "../../../hooks/services/useSelectedService";
+import TopLoadingBar from "../../../components/ui/TopLoadingBar";
 
 
 function ServiceClient () {
@@ -19,9 +20,12 @@ function ServiceClient () {
     
     if (isPending) {
         return (
-            <div className="flex items-center justify-center w-full h-full">
-                ...loading
-            </div>
+            <>
+                <TopLoadingBar isLoading={isPending} />
+                <div className="flex items-center justify-center w-full h-full">
+                    ...loading
+                </div>
+            </>
         )
     }
 

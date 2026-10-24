@@ -1,17 +1,21 @@
-import { useFileContext } from "../../../context/fileContext";
+
+import { useParams } from 'react-router-dom';
 
 // icon 
 import UploadBig from '/src/assets/icon/upload_big.svg?react'
 import Document from '/src/assets/icon/document.svg?react'
 import type { fileItem } from "../../../types/FileType";
+import type { SetStateAction } from "react";
 
 type NoFilesWrapperProp = {
-    requiredFiles: string[]
+    requiredFiles: string[],
+    setFiles: React.Dispatch<SetStateAction<fileItem[]>>,
+    setError: React.Dispatch<SetStateAction<string>>,
+    slug: string
 }
 
-function NoFilesWrapper ({ requiredFiles }: NoFilesWrapperProp) {
+function NoFilesWrapper ({ requiredFiles, setFiles, setError, slug }: NoFilesWrapperProp) {
 
-    const { setFiles, setError } = useFileContext()
     const stringedRequiredFiles = requiredFiles.join(', ');
     
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +30,8 @@ function NoFilesWrapper ({ requiredFiles }: NoFilesWrapperProp) {
             const newFile: fileItem = {
                 id: crypto.randomUUID(),
                 file: file,
-                quantity: 1
+                quantity: 1,
+                slug: String(slug)
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {

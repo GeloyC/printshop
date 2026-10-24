@@ -196,18 +196,17 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
             return await updateService(formData, service.id);
         }, 
         onSuccess: async () => {
+            const slug = basicInformation.name.split(' ').join('_').toLowerCase();
+            
             await queryClient.invalidateQueries({ queryKey: ['services'] });
 
             setIsEditing(false);
 
-            const slug = basicInformation.name.split(' ').join('_').toLowerCase();
             navigate(`/admin/service/${slug}`, {
                 state: {
                     message: 'Service updated successfully!'
                 }
             });
-            console.log('service updated');
-
 
         }, onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
@@ -253,7 +252,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
     return (
         <>
-            <TopLoadingBar isLoading={handleUpdateService.isPending} />
+            <TopLoadingBar isLoading={checkIfLoading} />
             <main className="flex flex-col w-full h-full bg-[#fff]">
                 <div className="flex items-center justify-between w-full p-[1rem] border-b border-[#292929]/10">
                     <div className="flex items-center w-full gap-[0.5rem]">
@@ -269,7 +268,7 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
                         {!isEditing ? (
                             <>
-                                <button onClick={()=>setDeleteModalOpen(true)} className="flex items-center gap-[0.3rem] p-[0.5rem] px-[1rem] cursor-pointer opacity-50 bg-[#ff0f0f] hover:opacity-100 hover:bg-[#e50000] active:bg-[#ff0f0f] rounded-[5px] transition-all duration-200">
+                                <button onClick={()=>setDeleteModalOpen(true)} className="flex items-center gap-[0.3rem] p-[0.5rem] px-[1rem] cursor-pointer opacity-100 bg-[#ff0f0f] hover:opacity-75 hover:bg-[#e50000] active:bg-[#ff0000] active:opacity-100 rounded-[5px] transition-all duration-200">
                                     <span className="text-[14px] text-[#fff] font-bold leading-none">Delete</span>
                                 </button>
 

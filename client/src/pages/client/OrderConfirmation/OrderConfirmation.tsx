@@ -1,6 +1,5 @@
 
-import { Link } from 'react-router-dom';
-
+import { useLocation, Link } from 'react-router-dom';
 
 // icon
 import BoxCheck from '/src/assets/icon/box-with-check.svg?react'
@@ -8,20 +7,15 @@ import ArrowBack from '/src/assets/icon/arrow-no-tail.svg?react'
 import Exclamation from '/src/assets/icon/exclamation-mark.svg?react'
 
 
-import { useCartContext } from '../../../context/cartContext';
-import { useEffect } from 'react';
-
 // Retrieve the order items from the server and display all the files included on the order
 
 
 function OrderConfirmation () {
 
-    const {items} = useCartContext();
+    const location = useLocation();
     const ADDRESS = 'The Raket Print, Blk 9, Lot 13 Ilang-ilang St, Pembo, Taguig City, Metro Manila'
 
-    useEffect(() => {
-        console.log('items from cartContext', items)
-    }, [items])
+    const { orders } = location.state || {};
 
     return (
         <div className='fade-up flex flex-col w-full h-full'>
@@ -65,8 +59,8 @@ function OrderConfirmation () {
                                 <span className="text-[14px] text-[#292929] font-bold opacity-75 text-nowrap">Item/s ordered</span>
 
                                 <div className="flex flex-col items-end gap-[0.3rem]">
-                                    {items.map(item => (
-                                        <span key={item.id} className="text-[14px] font-bold text-right text-wrap">{item.file.name} ({item.quantity}x) Php 2.00</span>
+                                    {orders.map((order: any) => (
+                                        <span key={order.id} className="text-[14px] font-bold text-right text-wrap">{order.file.name} ({order.quantity}x) Php 2.00</span>
                                     ))}
                                 </div>
                             </div>
