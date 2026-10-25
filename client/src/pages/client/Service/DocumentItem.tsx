@@ -37,7 +37,7 @@ function DocumentItem ({
 
 
             <div title={file.file?.name} className="flex flex-col items-start w-full gap-[0.1rem]">
-                <span className="text-[14px] text-[#292929] font-bold w-auto truncate">{file.file?.name}</span>
+                <span className="text-[14px] text-[#292929] font-bold w-[400px] truncate">{file.file?.name}</span>
                 <span className="text-[12px] font-bold opacity-50">file size: {(file.file.size / 1024).toFixed(2)} kb</span>
             </div>
 

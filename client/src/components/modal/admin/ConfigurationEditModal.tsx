@@ -12,7 +12,7 @@ import { useState, type SetStateAction } from "react";
 // icons
 import Cancel from '/src/assets/icon/close.svg?react'
 import Check from '/src/assets/icon/save-check.svg?react'
-import Delete from '/src/assets/icon/delete.svg?react'
+import Delete from '/src/assets/icon/delete_v2.svg?react'
 import Edit from '/src/assets/icon/edit.svg?react'
 
 interface ModalProp {
@@ -23,7 +23,7 @@ interface ModalProp {
 }
 
 function ConfigurationEditModal ({
-    selectedConfig,
+    selectedConfig, 
     setSelectedConfigEdit,
     setConfigs,
     close

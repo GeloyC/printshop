@@ -1,4 +1,4 @@
-
+import { useLocation } from "react-router-dom";
 import type { Configuration } from "../../../types/service/service";
 
 // icons
@@ -20,16 +20,18 @@ function ConfigurationItem ({
     isEditing
 }: ConfigItemProp) {
 
+    const location = useLocation();
+    const isNotCreatingService = location.pathname === '/admin/service/create' ? !isEditing : isEditing;
 
     return (
-        <div className={`group flex flex-col items-start w-full ${isEditing ? 'bg-[#fff0d3]' : 'bg-[#e6e6e6]'}  rounded-[5px] p-[1rem]`}>
+        <div className={`group flex flex-col items-start w-full ${isNotCreatingService ? 'bg-[#fff0d3]' : 'bg-[#e6e6e6]'}  rounded-[5px] p-[1rem]`}>
             <div className="flex items-center justify-between gap-[0.5rem] w-full transition-all duration-100">
                 <div className="flex items-center gap-[0.5rem]">
                     <Folder className="size-5" />
                     <span className="text-[14px] font-bold leading-none">{config?.label}</span>
                 </div>
 
-                {isEditing && (
+                {isNotCreatingService && (
                     <div className="opacity-0 group-hover:opacity-100 flex items-center gap-[0.3rem]">
                         <button title="Edit" onClick={selectConfigToEdit} className="flex items-center gap-[0.2rem] p-[0.3rem] rounded-[10px] opacity-50 hover:opacity-100 active:opacity-50 cursor-pointer transition-all duration-100">
                             <Edit className="size-4" />

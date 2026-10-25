@@ -14,6 +14,13 @@ import TextType from '../../ui/ConfigurationType/TextType';
 import type { fileItem } from '../../../types/FileType';
 import type { Configuration } from '../../../types/service/service';
 
+type SelectedOption = {
+    id: string,
+    option: string,
+    price: number
+}
+
+type SelectedOptions = Record<string, SelectedOption[]>;
 
 type fileConfigType = {
     id: string,
@@ -34,8 +41,10 @@ function ConfigurationSetupModal ({
 }: ModalProp ) {
 
     const [quantity, setQuantity] = useState<number>(1);
+    const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({});
 
-    console.log('configration: ', configuration.slug);
+
+    console.log('selected option: ', selectedOptions);
 
     return (
         <div className="fade-up flex flex-col w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[5px]">
@@ -45,37 +54,78 @@ function ConfigurationSetupModal ({
                 <span className='text-[14px] font-bold text-[#575757]'>File</span>
                 <div className='flex items-center gap-[0.5rem] w-full p-[1rem] border border-dashed border-[#ff9e32] bg-[#fff0d3] rounded-[5px]'>
                     {selectedFile?.file?.type === 'application/pdf' ? <PDFIcon className='size-6' color="#F40F02" /> : <DOCXIcon className='size-6' color='#1B5EBE' />}
-                    <span className="text-[16px] text-[#292929] font-bold leading-none ">{selectedFile?.file?.name}</span>
+                    <span className="text-[16px] text-[#292929] font-bold leading-none w-[500px] truncate">{selectedFile?.file?.name}</span>
                 </div>
             </div>
 
 
             <div className="flex flex-col w-full gap-[1rem]">
-
-                {configuration.configuration.map(config => {
-                    console.log('checking config');
-                    return (
+                {configuration.configuration.map(config => (
                     <div key={config.id}>  
                         {config.type === 'checkbox' ? (
-                            <ConfigItemWrapper configLabel={config.label}>
+                            <ConfigItemWrapper configLabel={config.label} configType={config.type}>
                                 {config.options.map(opt => (
-                                    <CheckboxType key={opt.id}
+                                    <CheckboxType 
+                                        key={opt.id}
+                                        id={opt.id}
+                                        labelKey={config.key}
                                         option={opt.option}
                                         price={opt.price}
+                                        selected={selectedOptions[config.id]?.some(
+                                            item => item.id === opt.id 
+                                        ) ?? false}
+                                        onSelect={() => {
+                                            setSelectedOptions(prev => {
+                                                const currentOptions = prev[config.id] ?? [];
+
+                                                const isSelected = currentOptions.some(
+                                                    item => item.id === opt.id 
+                                                )
+                                                
+                                                return ({
+                                                ...prev,
+                                                [config.id]: isSelected 
+                                                    ? currentOptions.filter(item => item.id !== opt.id)
+                                                    : [
+                                                        ...currentOptions,
+                                                        {
+                                                            id: opt.id,
+                                                            option: opt.option,
+                                                            price: opt.price
+                                                        }
+                                                    ]
+                                            })})
+                                        }}
                                     />
                                 ))}
                             </ConfigItemWrapper>
                         ) : config.type === 'radio' ? (
-                            <ConfigItemWrapper configLabel={config.label}>
+                            <ConfigItemWrapper configLabel={config.label} configType={config.type}>
                                 {config.options.map(opt => (
-                                    <RadioType key={opt.id}
+                                    <RadioType 
+                                        key={opt.id}
+                                        id={opt.id}
+                                        labelKey={config.key}
                                         option={opt.option}
                                         price={opt.price}
+                                        selected={selectedOptions[config.id]?.some(
+                                            item => item.id === opt.id 
+                                        ) ?? false}
+                                        onSelect={() => {
+                                            setSelectedOptions(prev => ({
+                                                ...prev,
+                                                [config.id]: [{
+                                                    id: opt.id,
+                                                    option: opt.option,
+                                                    price: opt.price
+                                                }]
+                                            }))
+                                        }}
                                     />
                                 ))}
                             </ConfigItemWrapper>
                         ) : config.type === 'select' ? (
-                            <ConfigItemWrapper configLabel={config.label}>
+                            <ConfigItemWrapper configLabel={config.label} configType={config.type}>
                                 <DropdownType
                                     options={config.options}
                                 />
@@ -84,7 +134,7 @@ function ConfigurationSetupModal ({
                             <TextType configLabel={config.label} />
                         )}
                     </div>
-                )})}
+                ))}
                 
                 <div className="flex flex-col w-full gap-[0.3rem] pb-[0.5rem] z-10">
                     <span className='text-[14px] font-bold text-[#575757]'>Quantity</span>

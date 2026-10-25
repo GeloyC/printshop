@@ -1,25 +1,30 @@
 import { useState } from "react"
 
-import type { ConfigurationType } from "../../types/service/service"
-
 interface ConfigItemWrapperProp { 
     configLabel: string,
+    configType: string,
     children: React.ReactNode
 }
 
 
-function ConfigItemWrapper ({ configLabel, children }: ConfigItemWrapperProp) {
+function ConfigItemWrapper ({ configLabel, configType, children }: ConfigItemWrapperProp) {
     
-    const [type, setType] = useState<ConfigurationType>() // the type will be taken from the data collected from created service
-    const ifType = type === 'select' || type === 'text';
+    const [type, setType] = useState<string>(configType) // the type will be taken from the data collected from created service
+    const isGridType = ['select', 'text', 'number'].includes(configType);
 
-
+    console.log('type: ', type);
     return (
         <div className="flex flex-col w-full gap-[0.5rem]">
             <span className="text-[14px] text-[#575757] font-bold leading-none">{configLabel}</span>
 
             {/* Change to flex when type is Number field, text field, and select */}
-            <div className={`${ifType  ? 'flex items-center' : ' grid grid-cols-2'} w-full gap-1`}> 
+            <div
+                className={`${
+                    isGridType
+                        ? 'flex items-center'
+                        : 'grid grid-cols-2'
+                } w-full gap-1`}
+            >
                 { children }
             </div>
         </div>

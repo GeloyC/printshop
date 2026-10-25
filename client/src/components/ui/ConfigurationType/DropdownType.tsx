@@ -39,7 +39,7 @@ function DropdownType ({ options }: DropdownTypeProp) {
 
                         {options.map(option => (
                             <button key={option.id}
-                            onClick={()=>handleSelectOption('Select name 1')} className='flex items-center justify-between w-full p-[1rem] hover:bg-[#B1B2B5]/25 active:bg-transparent cursor-pointer'>
+                            onClick={()=>handleSelectOption(option.option)} className='flex items-center justify-between w-full p-[1rem] hover:bg-[#B1B2B5]/25 active:bg-transparent cursor-pointer'>
                                 <span className='text-[14px] text-[#292929] font-bold leading-none'>{option.option}</span>
                             </button>
                         ))}

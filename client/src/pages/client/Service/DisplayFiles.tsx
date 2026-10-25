@@ -1,6 +1,6 @@
 import { type SetStateAction } from "react";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // components
 import DocumentItem from "./DocumentItem";
@@ -17,12 +17,13 @@ import type { fileItem } from "../../../types/FileType";
 // services
 
 type DisplayFilesProp =  {
-    setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>
-    requiredFiles: string[]
-    setFiles: React.Dispatch<SetStateAction<fileItem[]>>
-    files: fileItem[]
-    setError: React.Dispatch<SetStateAction<string>>
-    slug: string
+    setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>;
+    requiredFiles: string[];
+    setFiles: React.Dispatch<SetStateAction<fileItem[]>>;
+    files: fileItem[];
+    setError: React.Dispatch<SetStateAction<string>>;
+    slug: string;
+    handleCheckoutAttemp: () => void;
 }
 
 function DisplayFiles ({
@@ -31,10 +32,13 @@ function DisplayFiles ({
     setFiles,
     files,
     setError,
-    slug
+    slug,
+    handleCheckoutAttemp
 }:DisplayFilesProp) {
 
     const navigate = useNavigate()
+
+    // ----------------------------------  ---------------------------------- //
 
     const { setItems } = useCartContext();
     const stringedRequiredFiles = requiredFiles.join(', ');
@@ -51,8 +55,6 @@ function DisplayFiles ({
         setDragOver(false);
 
         const droppedFiles = Array.from(e.dataTransfer.files);
-
-        
 
         droppedFiles.forEach(file => {
             const allowedExtension = requiredFiles;
@@ -82,7 +84,6 @@ function DisplayFiles ({
                 const filename = newFile.file.name;
                 
                 if (existing?.has(filename)) {
-
                     setError('Duplicate file')
                     setTimeout(()=>setError(''), 3000)
 
@@ -159,12 +160,13 @@ function DisplayFiles ({
         // transfer the file to a dedicated cloud storage
         // remove the files from the setFile state at /fileContext
         // the files will also be saved on the database at this point so the cart can be left and user can come back later to it
+        // handleProceed();
+        navigate('/cart');
 
         setItems(items=>[...files, ...items]);
-
         setFiles([]);
-        navigate('/cart')
     }
+
 
 
     return (
@@ -192,7 +194,7 @@ function DisplayFiles ({
                             </label>
                         </div>
 
-                        <button onClick={handleProceedToCheckout} className="group flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ffc36d] rounded-[5px] transition-all duration-100">
+                        <button onClick={handleCheckoutAttemp} className="group flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ffc36d] rounded-[5px] transition-all duration-100">
                             <span className="text-[12px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">Proceed</span>
                             <ArrowWithTail className="size-4" color="#fff" />
                         </button>

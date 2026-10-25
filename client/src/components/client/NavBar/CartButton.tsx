@@ -4,8 +4,9 @@ import Cart from '/src/assets/icon/cart.svg?react'
 
 type CartButtonProp = {
     closeDropdowns: ()=>void
+    itemCount: number
 }
-function CartButton ({closeDropdowns}:CartButtonProp) {
+function CartButton ({ closeDropdowns, itemCount }:CartButtonProp) {
 
     return (
         <div onClick={closeDropdowns} className='relative'>
@@ -16,7 +17,9 @@ function CartButton ({closeDropdowns}:CartButtonProp) {
                 </div>
 
                 <div className='absolute -top-1 -left-1 h-[1.2rem] w-[1.2rem] flex items-center justify-center bg-[#ff6b00] rounded-full'>
-                    <span className='text-[#fff] text-[12px] font-bold leading-none'>9+</span>
+                    <span className='text-[#fff] text-[12px] font-bold leading-none'>
+                        { itemCount > 9 ? '+9' : itemCount }
+                    </span>
                 </div>
             </Link>
         </div>

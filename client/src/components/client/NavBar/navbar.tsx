@@ -16,11 +16,13 @@ import CartButton from "./CartButton";
 // hooks
 import ServiceContainer from "./Services/ServiceContainer";
 import { useServiceNames } from "../../../hooks/services/UseServiceNames";
+import { useCartContext } from "../../../context/cartContext";
 
 function NavBar () {
 
     const { user } = useUserContext();
     const {data: serviceNames = [] } = useServiceNames();
+    const { items } = useCartContext();
 
     const [loginOpen, setLoginOpen] = useState<boolean>(false);
     const [signupOpen, setSignupOpen] = useState<boolean>(false);
@@ -64,6 +66,7 @@ function NavBar () {
                 <div className="relative flex items-center h-full gap-[0.5rem]">
                     <CartButton 
                         closeDropdowns={handleCloseDropdowns}
+                        itemCount={items.length}
                     />
 
                     <FolderButton 

@@ -35,31 +35,34 @@ const router = createBrowserRouter([
 ]);
 
 
+
 // function App() {
 
 //   return (
 //     <BrowserRouter>
-//       <Routes >
-//         <Route element={<ClientLayout />}>
-//           <Route path='/' element={<Home />} />
-//           <Route path='/service/:slug' element={<ServiceClient />} /> 
-//           <Route path='/cart' element={<Cart />} />
-//           <Route path='/order-confirmation' element={<OrderConfirmation />} />
-//           <Route path='/folder' element={<Folder />} />
-//         </Route>
+    //   <Routes >
+    //     <Route element={<ClientLayout />}>
+    //       <Route path='/' element={<Home />} />
+    //       <Route path='/service/:slug' element={<ServiceClient />} /> 
+    //       <Route path='/cart' element={<Cart />} />
+    //       <Route path='/order-confirmation' element={<OrderConfirmation />} />
+    //       <Route path='/folder' element={<Folder />} />
+    //     </Route>
 
-//         <Route element={<AdminLayout />}>
-//           <Route path="/admin/service" element={<ServiceAdmin />}/>
-//           <Route path='/admin/service/:slug' element={<SelectedService />}/> 
-//           <Route path='/admin/service/create' element={<CreateService />} />
-//         </Route>
-//       </Routes>
+    //     <Route element={<AdminLayout />}>
+    //       <Route path="/admin/service" element={<ServiceAdmin />}/>
+    //       <Route path='/admin/service/:slug' element={<SelectedService />}/> 
+    //       <Route path='/admin/service/create' element={<CreateService />} />
+    //     </Route>
+    //   </Routes>
 //     </BrowserRouter>
 //   )
 // }
 
+
+
 function App() {
-  return <RouterProvider router={router}/>
+    return <RouterProvider router={router}/>
 }
 
 export default App

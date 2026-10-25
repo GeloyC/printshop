@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams, useBlocker } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { useParams, useBlocker, useNavigate } from "react-router-dom";
 
 
 import DisplayFiles from "./DisplayFiles"
@@ -10,6 +10,7 @@ import Toast from "../../../components/ui/Toast";
 import type { fileItem } from "../../../types/FileType";
 import RedirectAlert from "../../../components/ui/RedirectAlert";
 import type { Configuration } from "../../../types/service/service";
+import { useCartContext } from "../../../context/cartContext";
 
 
 
@@ -37,9 +38,9 @@ type ServiceClientFormProp = {
 
 function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
 
-    const { slug } = useParams();
-    console.log('check config per service: ', configuration);
-
+    const { slug } = useParams();   
+    const { setItems } = useCartContext();
+    const navigate = useNavigate();
 
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
     const [files, setFiles] = useState<fileItem[]>([]);
@@ -52,27 +53,23 @@ function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
 
 
     // TODO: use useBlocker from react-router to alert user when navigating away from /service/[selected service slug]
+    const filesSlugCheckExist = files.some(file => file.slug === slug); // check the slug of files if it's similar to the current service
 
-    const filesSlugCheckExist = files.some(file => file.slug === slug);
-    const blocker = useBlocker(files.length >= 1 && filesSlugCheckExist);
+    const shouldBlock = files.length > 0 && filesSlugCheckExist; // change later to have configuration under the condition
+    
+    const blocker = useBlocker(({ currentLocation, nextLocation }) => 
+        shouldBlock && currentLocation.pathname !== nextLocation.pathname
+    );
 
-    const handleProceed = () => {
-        if (filesSlugCheckExist) {
-            setFiles(prevFiles =>
-                prevFiles.filter(file => file.slug !== slug)
-            );
-        }
 
-        if (blocker.state === 'blocked') {
-            blocker.proceed()
-        }
-    }
+    const proceedToCheckOut = () => {
+        navigate('/cart');
 
-    const handleStay = () => {
-        if (blocker.state === 'blocked') {
-            blocker.reset()
-        }
-    }
+        setItems(items=>[...files, ...items]);
+        // setFiles([]);
+    } 
+
+
 
     return (
         <>
@@ -89,6 +86,7 @@ function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
                     files={files}
                     setError={setError}
                     slug={String(slug)}
+                    handleCheckoutAttemp={proceedToCheckOut}
                 />
 
                 {error && <Toast message={error} />}
@@ -104,11 +102,14 @@ function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
                 </ModalWrapper>
             )}
 
-            {blocker.state === 'blocked' && (
+            {blocker.state === 'blocked' &&  (
                 <ModalWrapper>
                     <RedirectAlert 
-                        stayPage={handleStay}
-                        leavePage={handleProceed}
+                        stayPage={() => blocker.reset()}
+                        leavePage={() =>  {
+                            setFiles(prev => prev.filter(file => file.slug !== slug));
+                            blocker.proceed()
+                        }}
                     />
                 </ModalWrapper>
             )}
