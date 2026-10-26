@@ -10,9 +10,10 @@ export type fileConfigType = {
 export type fileItem = {
     id: string,
     file: File,
-    quantity: number
+    quantity: number,
     slug: string,
-    configuration?: SelectedOption[]
+    configuration?: SelectedOption[],
+    additional_instruction?: string
 }
 
 

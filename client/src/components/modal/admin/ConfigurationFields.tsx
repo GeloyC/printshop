@@ -14,6 +14,7 @@ import type {
     ConfigurationOptions,
     ConfigurationType
 } from "../../../types/service/service"
+import TextType from "../../ui/ConfigurationType/TextType";
 
 interface ConfigurationProps {
     setNewConfig: React.Dispatch<SetStateAction<Configuration>>
@@ -168,8 +169,6 @@ function ConfigurationFields ({
                         </option>
 
                         <option value="select">Dropdown Selection (select)</option>
-                        <option value="text">Text Field (text)</option>
-                        <option value="number">Number Field (number)</option>
                         <option value="checkbox">Checkbox (checkbox)</option>
                         <option value="radio">Radio (radio)</option>
                     </select>
@@ -282,6 +281,7 @@ function ConfigurationFields ({
                                     </button>
                                 </div>
                             )}
+
                         </div>
                     </div>
                 )}

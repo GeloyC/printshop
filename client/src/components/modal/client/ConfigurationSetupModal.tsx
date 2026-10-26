@@ -53,9 +53,8 @@ function ConfigurationSetupModal ({
     setFileSetupModalOpen
 }: ModalProp ) {
 
-    const [quantity, setQuantity] = useState<number>(
-        selectedFile?.quantity ?? 1
-    );
+    const [quantity, setQuantity] = useState<number>(selectedFile?.quantity ?? 1);
+    const [additionalInstruction, setAdditionalInstruction] = useState<string>(selectedFile?.additional_instruction ?? '');
     // const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({});
 
     const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>(() => {
@@ -77,7 +76,8 @@ function ConfigurationSetupModal ({
 
     const handleSaveFileConfiguration = (
         quantity: number,
-        configuration: SelectedOptions
+        configuration: SelectedOptions,
+        additionalInstruction?: string 
     ) => {
         if (!selectedFile) return;
 
@@ -86,7 +86,8 @@ function ConfigurationSetupModal ({
         const updatedFile: fileItem = {
             ...selectedFile,
             quantity,
-            configuration: formattedConfiguration
+            configuration: formattedConfiguration,
+            additional_instruction: additionalInstruction
         };
 
         // Update the currently selected file
@@ -104,7 +105,7 @@ function ConfigurationSetupModal ({
 
 
     return (
-        <div className="fade-up flex flex-col w-[600px] bg-[#FFF] p-[2rem] gap-[2rem] rounded-[5px]">
+        <div className="fade-up flex flex-col items-center w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[5px]">
             <span className='text-3xl text-[#292929] font-bold leading-none'>File setup</span>
 
             <div className='flex flex-col w-full '>
@@ -189,20 +190,24 @@ function ConfigurationSetupModal ({
                                     />
                                 ))}
                             </ConfigItemWrapper>
-                        ) : config.type === 'select' ? (
+                        ) : config.type === 'select' && (
                             <ConfigItemWrapper configLabel={config.label} configType={config.type}>
                                 <DropdownType
                                     options={config.options}
                                 />
                             </ConfigItemWrapper>
-                        ) : (
-                            <TextType configLabel={config.label} />
                         )}
                     </div>
                 ))}
+
+                <TextType 
+                    additionalInstruction={additionalInstruction}
+                    setAdditionalInstruction={setAdditionalInstruction}
+                />
+
                 
                 <div className="flex flex-col w-full gap-[0.3rem] pb-[0.5rem] z-10">
-                    <span className='text-[14px] font-bold text-[#575757]'>Quantity</span>
+                    <span className='text-[14px] font-bold text-[#575757]'>Quantity (how many copies)</span>
 
                     <div className="flex items-center w-full gap-[0.3rem]">
                         <button onClick={()=>setQuantity(count=> --count)} disabled={quantity === 1} className={`p-[0.5rem] px-[1rem] rounded-[5px] bg-[#e6e6e6] ${quantity > 1 ? 'active:bg-[#a5a5a5] cursor-pointer' : 'cursor-not-allowed' }  transition-all duration-100`}>-</button>
@@ -216,9 +221,14 @@ function ConfigurationSetupModal ({
                 <button onClick={closeModal} className="p-[0.5rem] bg-[#f2f2f2] hover:bg-[#d6d6d6] active:bg-[#e6e6e6] rounded-[5px] cursor-pointer">
                     <span className="text-[#272727] px-[1rem]">Cancel</span>
                 </button>
-                <button onClick={() => handleSaveFileConfiguration(
-                    quantity, selectedOptions
-                )} className="p-[0.5rem] bg-[#272727] hover:bg-[#1a1a1a] active:bg-[#434343] rounded-[5px] cursor-pointer">
+                <button onClick={
+                    () => handleSaveFileConfiguration(
+                        quantity, 
+                        selectedOptions, 
+                        additionalInstruction
+                    )
+                } 
+                className="p-[0.5rem] bg-[#272727] hover:bg-[#1a1a1a] active:bg-[#434343] rounded-[5px] cursor-pointer">
                     <span className="text-[#FFF] px-[1rem]">Save</span>
                 </button>
             </div>
