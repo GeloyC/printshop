@@ -14,6 +14,7 @@ interface DocumentItemProp  {
     file: fileItem
     handleRemoveFile: ()=>void
     onSelectFile: ()=>void
+    onCancel: () => void
 }
 
 function DocumentItem ({ 
@@ -22,11 +23,18 @@ function DocumentItem ({
     onSelectFile,
 }:DocumentItemProp) {
 
+    const isConfigured = !!file.configuration?.length;
 
     return (
         <div className={`fade-up relative group flex items-end w-full p-[0.5rem] pt-[1rem] gap-[0.5rem] bg-[#fff] cursor-pointer shadow-lg border border-[#292929]/35 hover:border-[#292929] rounded-[5px]`}>
 
-            <span className='absolute -top-2 left-5 px-[0.5rem] py-[0.2rem] text-[10px] text-[#292929]/75 font-bold leading-none border border-[#292929]/50 bg-[#fff] rounded-full text-nowrap'>Not yet configured</span>
+            <span className={`absolute -top-2 left-5 px-[0.5rem] py-[0.2rem] text-[10px]  font-bold leading-none border ${isConfigured ? 'border-[#498d49] text-[#498d49]' : 'border-[#292929]/50 text-[#292929]/75'}  bg-[#fff] rounded-full text-nowrap`}>
+                {
+                    isConfigured
+                        ? 'Configured'
+                        : 'Not yet configured' 
+                }
+            </span>
 
             {
                 file.file?.type === 'application/pdf' ? <PDFIcon className="size-10 shrink-0" color="#F40F02"/> 

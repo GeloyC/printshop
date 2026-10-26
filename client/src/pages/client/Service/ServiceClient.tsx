@@ -18,7 +18,10 @@ function ServiceClient () {
 
     const { slug } = useParams();
     const { data: service, isPending } = useClientSelectedService(String(slug));
-    const { data: configuration = [] } = useServiceConfiguration(String(slug));
+    const { data: configurations = [] } = useServiceConfiguration(String(slug));
+
+
+    console.log('check content of configuration from ServiceClient.tsx: ', configurations);
     
     
     if (isPending) {
@@ -35,7 +38,7 @@ function ServiceClient () {
     return (
         <ServiceClientForm  
             service={service} 
-            configuration={configuration}
+            configurations={configurations} // used to display the selections for configuration
         />
     )
 }

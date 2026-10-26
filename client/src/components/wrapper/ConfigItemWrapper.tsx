@@ -9,10 +9,8 @@ interface ConfigItemWrapperProp {
 
 function ConfigItemWrapper ({ configLabel, configType, children }: ConfigItemWrapperProp) {
     
-    const [type, setType] = useState<string>(configType) // the type will be taken from the data collected from created service
     const isGridType = ['select', 'text', 'number'].includes(configType);
 
-    console.log('type: ', type);
     return (
         <div className="flex flex-col w-full gap-[0.5rem]">
             <span className="text-[14px] text-[#575757] font-bold leading-none">{configLabel}</span>

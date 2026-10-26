@@ -24,6 +24,7 @@ type DisplayFilesProp =  {
     setError: React.Dispatch<SetStateAction<string>>;
     slug: string;
     handleCheckoutAttemp: () => void;
+    setFileSetupModalOpen: React.Dispatch<SetStateAction<boolean>>
 }
 
 function DisplayFiles ({
@@ -33,7 +34,8 @@ function DisplayFiles ({
     files,
     setError,
     slug,
-    handleCheckoutAttemp
+    handleCheckoutAttemp,
+    setFileSetupModalOpen
 }:DisplayFilesProp) {
 
     const navigate = useNavigate()
@@ -155,18 +157,11 @@ function DisplayFiles ({
 
     const handleRemoveAllFiles = () => setFiles([]) ;
 
-    const handleProceedToCheckout = () => {
-        // upload the filename to the database
-        // transfer the file to a dedicated cloud storage
-        // remove the files from the setFile state at /fileContext
-        // the files will also be saved on the database at this point so the cart can be left and user can come back later to it
-        // handleProceed();
-        navigate('/cart');
 
-        setItems(items=>[...files, ...items]);
-        setFiles([]);
+    const handleOpenFileConfigurationSetupModal = (file: fileItem) => {
+        setSelectedFile(file);
+        setFileSetupModalOpen(true);
     }
-
 
 
     return (
@@ -220,7 +215,8 @@ function DisplayFiles ({
                                 return (
                                     <DocumentItem key={file?.id} 
                                         file={file} 
-                                        onSelectFile={()=>setSelectedFile(file)}
+                                        onSelectFile={()=>handleOpenFileConfigurationSetupModal(file)}
+                                        onCancel={()=>setFileSetupModalOpen(false)}
                                         handleRemoveFile={()=>handleRemoveFile(index)}
                                     />
                                 )}

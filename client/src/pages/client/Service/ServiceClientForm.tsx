@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useBlocker, useNavigate } from "react-router-dom";
 
 
@@ -11,7 +11,6 @@ import type { fileItem } from "../../../types/FileType";
 import RedirectAlert from "../../../components/ui/RedirectAlert";
 import type { Configuration } from "../../../types/service/service";
 import { useCartContext } from "../../../context/cartContext";
-
 
 
 type fileRequirement = {
@@ -33,10 +32,10 @@ type fileConfigType = {
 
 type ServiceClientFormProp = {
     service: ServiceType
-    configuration: fileConfigType
+    configurations: fileConfigType
 }
 
-function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
+function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) {
 
     const { slug } = useParams();   
     const { setItems } = useCartContext();
@@ -46,6 +45,8 @@ function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
     const [files, setFiles] = useState<fileItem[]>([]);
     const [error, setError] = useState<string>('');
 
+    const [fileSetupModalOpen, setFileSetupModalOpen] = useState<boolean>(false);
+    
 
     const requiredFiles = service?.file_requirements.map(
         (req: { extension: string }) => req.extension
@@ -54,7 +55,6 @@ function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
 
     // TODO: use useBlocker from react-router to alert user when navigating away from /service/[selected service slug]
     const filesSlugCheckExist = files.some(file => file.slug === slug); // check the slug of files if it's similar to the current service
-
     const shouldBlock = files.length > 0 && filesSlugCheckExist; // change later to have configuration under the condition
     
     const blocker = useBlocker(({ currentLocation, nextLocation }) => 
@@ -68,12 +68,17 @@ function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
         setItems(items=>[...files, ...items]);
         // setFiles([]);
     } 
+    
 
+    useEffect(() => {
+        console.log("Saved file configuration:", selectedFile?.configuration);
+        console.log("Available configurations:", configurations.configuration);
+    }, [selectedFile, configurations])
 
 
     return (
         <>
-            <div className="relative flex flex-col w-full h-full items-center gap-[1rem] py-[2rem]">
+            <div className="relative flex flex-col w-full h-full items-center gap-[1rem] py-[4rem]">
                 <div className="flex flex-col w-full items-center gap-[0.5rem]">
                     <span className="text-6xl text-[#292929] font-bold leading-none">{service.name}</span>
                     <p>{service.description}</p>
@@ -87,17 +92,21 @@ function ServiceClientForm ({ service, configuration }: ServiceClientFormProp) {
                     setError={setError}
                     slug={String(slug)}
                     handleCheckoutAttemp={proceedToCheckOut}
+                    setFileSetupModalOpen={setFileSetupModalOpen}
                 />
 
                 {error && <Toast message={error} />}
             </div>
 
-            {selectedFile && (
+            {fileSetupModalOpen && (
                 <ModalWrapper>
                     <ConfigurationSetupModal 
                         selectedFile={selectedFile}
-                        closeModal={()=>setSelectedFile(null)}
-                        configuration={configuration}
+                        setFiles={setFiles}
+                        setSelectedFile={setSelectedFile}
+                        closeModal={()=>setFileSetupModalOpen(false)}
+                        configurations={configurations}
+                        setFileSetupModalOpen={setFileSetupModalOpen}
                     />
                 </ModalWrapper>
             )}
