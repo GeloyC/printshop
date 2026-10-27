@@ -29,7 +29,8 @@ function CartItem ({
     openAlert,
     openConfiguration
 }: CartItemProp) {
-
+    
+    const config = file?.configuration?.map(config => config.option).join(', ')
 
     const handleAddQuantity = (id: string) => {
         setItems(files => 
@@ -77,7 +78,7 @@ function CartItem ({
 
                     <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] opacity-50 hover:opacity-100 cursor-pointer'>
                         <ConfigIcon className='size-4' />
-                        <span className="text-[14px] leading-tight">Long, Black & White</span>
+                        <span className="text-[14px] leading-tight">{config}</span>
 
                         <Arrow className="size-4 rotate-180 group-hover:translate-x-1 group-active:translate-x-2 transition-all duration-100" />
                     </button>

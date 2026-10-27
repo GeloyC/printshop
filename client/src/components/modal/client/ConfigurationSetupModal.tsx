@@ -33,7 +33,7 @@ fileItem = {
 }
 */
 
-type SelectedOptions = Record<string, SelectedOption[]>;
+export type SelectedOptions = Record<string, SelectedOption[]>;
 
 interface ModalProp {
     selectedFile: fileItem | null
@@ -61,7 +61,7 @@ function ConfigurationSetupModal ({
         const savedOptions = selectedFile?.configuration ?? [];
 
         return savedOptions.reduce<SelectedOptions>((acc, option) => {
-            const config = configurations.configuration.find((config: any) =>
+            const config = configurations?.configuration.find((config: any) =>
                 config.options.some((opt: any) => opt.id === option.id)
             );
 
@@ -194,6 +194,9 @@ function ConfigurationSetupModal ({
                             <ConfigItemWrapper configLabel={config.label} configType={config.type}>
                                 <DropdownType
                                     options={config.options}
+                                    config={config}
+                                    selectedOptions={selectedOptions}
+                                    setSelectedOptions={setSelectedOptions}
                                 />
                             </ConfigItemWrapper>
                         )}

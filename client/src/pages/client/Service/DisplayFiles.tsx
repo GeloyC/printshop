@@ -1,6 +1,5 @@
 import { type SetStateAction } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 // components
 import DocumentItem from "./DocumentItem";
@@ -37,8 +36,6 @@ function DisplayFiles ({
     handleCheckoutAttemp,
     setFileSetupModalOpen
 }:DisplayFilesProp) {
-
-    const navigate = useNavigate()
 
     // ----------------------------------  ---------------------------------- //
 

@@ -16,16 +16,9 @@ export type fileItem = {
     additional_instruction?: string
 }
 
-
 export type SelectedOption = { // for confiugred file
     id: string,
     category: string,
     option: string,
     price: number
-}
-
-export type FileWithConfig = {
-    id: string,
-    file: File,
-    configuration: SelectedOption[]
 }

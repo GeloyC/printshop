@@ -12,6 +12,7 @@ import Toast from "../../../components/ui/Toast"
 
 import { useCartContext } from "../../../context/cartContext"
 import type { fileItem } from "../../../types/FileType"
+import { useClientSelectedService } from "../../../hooks/services/useSelectedService"
 
 
 /*
@@ -26,7 +27,6 @@ import type { fileItem } from "../../../types/FileType"
 function Cart () {
     
     const { items, setItems } = useCartContext();
-    console.log('items: ', items);
 
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState<boolean>(false);
     const [isConfigurationOpen, setIsConfigurationOpen] = useState<boolean>(false);
@@ -92,6 +92,16 @@ function Cart () {
 
             {isConfigurationOpen && (
                 <ModalWrapper>
+                    {/* 
+                        TODO: add all these required props
+                        selectedFile,
+                        setFiles,
+                        setSelectedFile,
+                        closeModal,
+                        configurations,
+                        setFileSetupModalOpen
+                    */}
+
                     <ConfigurationSetupModal 
                         selectedFile={selectedFile}
                         closeModal={()=>setIsConfigurationOpen(false)}

@@ -55,25 +55,24 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
 
     // TODO: use useBlocker from react-router to alert user when navigating away from /service/[selected service slug]
     const filesSlugCheckExist = files.some(file => file.slug === slug); // check the slug of files if it's similar to the current service
-    const shouldBlock = files.length > 0 && filesSlugCheckExist; // change later to have configuration under the condition
+
+    const checkFile = files.map(file => (file.configuration?.length ?? 0) > 0);
+    const checkFileAllTrue = checkFile.every(file => file === true)
+
+    const shouldBlock = checkFileAllTrue && filesSlugCheckExist; // change later to have configuration under the condition
     
     const blocker = useBlocker(({ currentLocation, nextLocation }) => 
-        shouldBlock && currentLocation.pathname !== nextLocation.pathname
+        !shouldBlock && files.length > 0 &&  currentLocation.pathname !== nextLocation.pathname
     );
 
 
     const proceedToCheckOut = () => {
+        if (shouldBlock) {
+            setItems(items=>[...files, ...items]);
+            setFiles([]);
+        }
         navigate('/cart');
-
-        setItems(items=>[...files, ...items]);
-        // setFiles([]);
     } 
-    
-
-    useEffect(() => {
-        console.log("Saved file configuration:", selectedFile?.configuration);
-        console.log("Available configurations:", configurations.configuration);
-    }, [selectedFile, configurations])
 
 
     return (
