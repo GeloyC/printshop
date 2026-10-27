@@ -69,9 +69,12 @@ function ConfigurationSetupModal ({
 
             acc[config.id] = [...(acc[config.id] ?? []), option];
 
+            
+
             return acc;
         }, {});
     });
+
 
 
     
@@ -84,12 +87,16 @@ function ConfigurationSetupModal ({
         if (!selectedFile) return;
 
         const formattedConfiguration = Object.values(configuration).flat();
+        const totalPricePerItem = formattedConfiguration.reduce((acc, config) => acc + config.price, 0);
+
 
         const updatedFile: fileItem = {
             ...selectedFile,
             quantity,
             configuration: formattedConfiguration,
-            additional_instruction: additionalInstruction
+            additional_instruction: additionalInstruction,
+            unit_price: totalPricePerItem,
+            total_price: totalPricePerItem * quantity
         };
 
         // Update the currently selected file
@@ -106,9 +113,6 @@ function ConfigurationSetupModal ({
     };
 
 
-    useEffect(() => {
-        console.log('confiuration from Modal: ', configurations);
-    }, [configurations])
 
     return (
         <div className="fade-up flex flex-col items-center w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[5px]">

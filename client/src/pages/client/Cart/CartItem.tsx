@@ -13,6 +13,7 @@ import Arrow from '/src/assets/icon/arrow-no-tail.svg?react';
 
 import type { SetStateAction } from 'react'
 import type { fileItem } from '../../../types/FileType'
+import currencyFormat from '../../../utils/currencyFormat'
 
 
 
@@ -33,24 +34,35 @@ function CartItem ({
     const config = file?.configuration?.map(config => config.option).join(', ')
 
     const handleAddQuantity = (id: string) => {
-        setItems(files => 
-            files.map(file =>
-                file.id === id 
-                    ? { ...file, quantity: ++file.quantity } 
-                    : file
+        setItems(items => 
+            items.map(item =>
+                item.id === id 
+                    ? { 
+                        ...item, 
+                        quantity: item.quantity + 1, 
+                        total_price: ((item.unit_price ?? 0) * (item.quantity + 1)) 
+                    } 
+                    : item
             )
         )
     }
 
     const handleSubtractQuantity = (id: string) => {
-        setItems(files => 
-            files.map(file =>
-                file.id === id 
-                    ? { ...file, quantity: --file.quantity } 
-                    : file
+        setItems(items => 
+            items.map(item =>
+                item.id === id 
+                    ? { 
+                        ...item, 
+                        quantity: item.quantity - 1, 
+                        total_price: ((item.unit_price ?? 0) * (item.quantity - 1)) 
+                    } 
+                    : item
             )
         )
     }
+
+
+
 
     return (
         <div className={`flex flex-col w-full py-[0.75rem] gap-[0.3rem] bg-[#fff] border-b border-[#292929]/15`}>
@@ -66,7 +78,7 @@ function CartItem ({
                     <span className="text-[16px] text-[#292929] font-bold leading-none">{file.file.name}</span>
                 </div>
 
-                <span className="text-[16px] font-bold text-[#ff6b00] leading-none">Php 10.00</span>
+                <span className="text-[16px] font-bold text-[#ff6b00] leading-none">{currencyFormat(Number(file?.total_price))}</span>
             </div>
 
             <div className="flex items-center justify-between w-full">
@@ -76,12 +88,16 @@ function CartItem ({
                         <span className="text-[14px] leading-tight">{file?.slug}</span>
                     </div> 
 
+                    <div className='flex items-center gap-[0.3rem] opacity-50'>
+                        <span>Unit price: {file?.unit_price}</span>
+                    </div>
+
                     <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] opacity-50 hover:opacity-100 cursor-pointer'>
                         <ConfigIcon className='size-4' />
                         <span className="text-[14px] leading-tight">{config}</span>
-
                         <Arrow className="size-4 rotate-180 group-hover:translate-x-1 group-active:translate-x-2 transition-all duration-100" />
                     </button>
+
                 </div>
 
                 {/* add quantity and delete button */}

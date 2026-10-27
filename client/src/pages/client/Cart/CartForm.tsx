@@ -61,10 +61,9 @@ function CartForm ({ configurations }: CartFormProp) {
         setTimeout(()=>setDeleteMessage(''), 3000)
     }
 
+    // const subTotalPrice = items.reduce((a, b) => a + (b.total_price ?? 0), 0);
 
-    useEffect(() => {
-        console.log('selectedCOnfiguration: ', selectedConfiguration);
-    },);
+    const subTotalPrice = items.reduce((a, b) => a + (b.total_price ?? 0), 0);
 
     return (
         <>
@@ -87,7 +86,10 @@ function CartForm ({ configurations }: CartFormProp) {
                     )}
                 </section>
 
-                <OrderSummary />
+                <OrderSummary 
+                    fileQuantity={items.length}
+                    subTotalPrice={subTotalPrice}
+                />
             </div>
 
             
@@ -105,16 +107,6 @@ function CartForm ({ configurations }: CartFormProp) {
 
             {isConfigurationOpen && (
                 <ModalWrapper>
-                    {/* 
-                        TODO: add all these required props
-                        selectedFile,
-                        setFiles,
-                        setSelectedFile,
-                        closeModal,
-                        configurations,
-                        setFileSetupModalOpen
-                    */}
-
                     <ConfigurationSetupModal 
                         setFiles={setItems}
                         selectedFile={selectedFile}

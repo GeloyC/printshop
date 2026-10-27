@@ -5,7 +5,6 @@ import CartForm from "./CartForm"
 function Cart () {
 
     const {data: configurations = []} = useServiceConfigurations();
-    console.log('configurations from Cart: ', configurations);
 
 
     return <CartForm 
