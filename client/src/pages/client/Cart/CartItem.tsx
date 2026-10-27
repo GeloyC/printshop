@@ -73,7 +73,7 @@ function CartItem ({
                 <div className="flex items-center w-full gap-[1rem]">
                     <div className='flex items-center gap-[0.3rem] opacity-50'>
                         <Service className='size-4' />
-                        <span className="text-[14px] leading-tight">Document Print</span>
+                        <span className="text-[14px] leading-tight">{file?.slug}</span>
                     </div> 
 
                     <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] opacity-50 hover:opacity-100 cursor-pointer'>

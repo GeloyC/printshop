@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllService, getServiceConfiguration } from "../../api/service";
+import { getAllService, getServiceConfiguration, getServiceConfigurations } from "../../api/service";
 
 export const useServices = () => {
     return useQuery({
@@ -16,4 +16,11 @@ export const useServiceConfiguration = (slug: string) => {
             return await getServiceConfiguration(slug);
         }
     });
+}
+
+export const useServiceConfigurations = () => {
+    return useQuery({
+        queryKey: ['service-configs'],
+        queryFn: getServiceConfigurations
+    })
 }

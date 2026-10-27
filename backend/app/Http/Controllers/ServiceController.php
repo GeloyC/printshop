@@ -81,10 +81,19 @@ class ServiceController extends Controller
     }
 
 
+    public function getConfigurations () {
+        $service = Service::query()
+            ->select('id', 'configuration', 'slug')
+            ->get();
+        return response()->json($service);
+    }
+
+
     public function getConfiguration (String $slug) {
         $service = Service::query()
             ->select(
                 'id',
+                'name',
                 'configuration',
                 'slug'
             )

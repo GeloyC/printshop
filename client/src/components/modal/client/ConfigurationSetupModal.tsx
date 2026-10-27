@@ -40,7 +40,7 @@ interface ModalProp {
     setFiles: React.Dispatch<SetStateAction<fileItem[]>>
     setSelectedFile: React.Dispatch<SetStateAction<fileItem|null>>
     closeModal: () => void;
-    configurations: fileConfigType,
+    configurations?: fileConfigType,
     setFileSetupModalOpen: React.Dispatch<SetStateAction<boolean>>
 }
 
@@ -72,6 +72,8 @@ function ConfigurationSetupModal ({
             return acc;
         }, {});
     });
+
+
     
 
     const handleSaveFileConfiguration = (
@@ -104,6 +106,10 @@ function ConfigurationSetupModal ({
     };
 
 
+    useEffect(() => {
+        console.log('confiuration from Modal: ', configurations);
+    }, [configurations])
+
     return (
         <div className="fade-up flex flex-col items-center w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[5px]">
             <span className='text-3xl text-[#292929] font-bold leading-none'>File setup</span>
@@ -124,7 +130,7 @@ function ConfigurationSetupModal ({
 
 
             <div className="flex flex-col w-full gap-[1rem]">
-                {configurations.configuration.map(config => (
+                {configurations?.configuration.map(config => (
                     <div key={config.id}>  
                         {config.type === 'checkbox' ? (
                             <ConfigItemWrapper configLabel={config.label} configType={config.type}>

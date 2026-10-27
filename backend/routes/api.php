@@ -16,6 +16,7 @@ Route::get('/auth/me', [AuthController::class, 'me']);
 Route::get('/services', [ServiceController::class, 'index']);
 Route::get("/client/service/{slug}", [ServiceController::class, 'getClientService']);
 Route::get("/services/names", [ServiceController::class, 'getNames']);
+Route::get("service/configurations", [ServiceController::class, 'getConfigurations']);
 Route::get("/service/{slug}/configuration", [ServiceController::class, 'getConfiguration']);
 
 

@@ -41,3 +41,9 @@ export const getServiceConfiguration = async (slug: string) => {
     const response = await api.get(`/api/service/${slug}/configuration`);
     return response.data;
 }
+
+
+export const getServiceConfigurations = async () => {
+    const response = await api.get('/api/service/configurations');
+    return response.data;
+}
