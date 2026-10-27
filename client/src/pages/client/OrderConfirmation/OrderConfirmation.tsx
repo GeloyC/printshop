@@ -5,6 +5,8 @@ import { useLocation, Link } from 'react-router-dom';
 import BoxCheck from '/src/assets/icon/box-with-check.svg?react'
 import ArrowBack from '/src/assets/icon/arrow-no-tail.svg?react'
 import Exclamation from '/src/assets/icon/exclamation-mark.svg?react'
+import currencyFormat from '../../../utils/currencyFormat';
+import type { fileItem } from '../../../types/FileType';
 
 
 // Retrieve the order items from the server and display all the files included on the order
@@ -16,6 +18,10 @@ function OrderConfirmation () {
     const ADDRESS = 'The Raket Print, Blk 9, Lot 13 Ilang-ilang St, Pembo, Taguig City, Metro Manila'
 
     const { orders } = location.state || {};
+
+    const totalAmountToPay = orders.reduce((acc: any, file: fileItem) =>
+        acc + file.total_price, 0
+    );
 
     return (
         <div className='fade-up flex flex-col w-full h-full'>
@@ -52,7 +58,7 @@ function OrderConfirmation () {
 
                             <div className="flex items-center justify-between w-full">
                                 <span className="text-[14px] text-[#292929] font-bold opacity-75">Total Amount to pay</span>
-                                <span className="text-[14px] text-[#ff6b00] font-bold">Php 20.00</span>
+                                <span className="text-[14px] text-[#ff6b00] font-bold">{currencyFormat(Number(totalAmountToPay))}</span>
                             </div>
 
                             <div className="flex items-start justify-between w-full border-t border-dashed border-[#292929]/25 pt-[0.3rem]">
@@ -60,7 +66,7 @@ function OrderConfirmation () {
 
                                 <div className="flex flex-col items-end gap-[0.3rem]">
                                     {orders.map((order: any) => (
-                                        <span key={order.id} className="text-[14px] font-bold text-right text-wrap">{order.file.name} ({order.quantity}x) Php 2.00</span>
+                                        <span key={order.id} className="text-[14px] font-bold text-right text-wrap">{order.file.name} ({order.quantity}x) {currencyFormat(Number(order.total_price))}</span>
                                     ))}
                                 </div>
                             </div>
