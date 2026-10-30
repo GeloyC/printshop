@@ -1,5 +1,4 @@
 
-import { useParams } from 'react-router-dom';
 
 // icon 
 import UploadBig from '/src/assets/icon/upload_big.svg?react'
@@ -8,13 +7,24 @@ import type { fileItem } from "../../../types/FileType";
 import type { SetStateAction } from "react";
 
 type NoFilesWrapperProp = {
+    serviceName: string,
+    serviceDescription: string,
     requiredFiles: string[],
     setFiles: React.Dispatch<SetStateAction<fileItem[]>>,
     setError: React.Dispatch<SetStateAction<string>>,
     slug: string
+    dragOver: boolean;
 }
 
-function NoFilesWrapper ({ requiredFiles, setFiles, setError, slug }: NoFilesWrapperProp) {
+function NoFilesWrapper ({ 
+    serviceName, 
+    serviceDescription, 
+    requiredFiles, 
+    setFiles, 
+    setError, 
+    slug, 
+    dragOver 
+}: NoFilesWrapperProp) {
 
     const stringedRequiredFiles = requiredFiles.join(', ');
     
@@ -44,27 +54,38 @@ function NoFilesWrapper ({ requiredFiles, setFiles, setError, slug }: NoFilesWra
         })
     }
 
+    console.log('asdasd: ', requiredFiles);
+
     return (
-        <div className="flex flex-col items-center gap-[1rem]">
-            <UploadBig className="w-[100px] h-auto opacity-75"/>
+        <div className={`flex flex-col items-center justify-center gap-[4rem] w-full h-full rounded-[15px] transition-all duration-400`}>
 
-            <div className="flex flex-col items-center gap-[0.5rem]">
+            <div className='flex flex-col items-center gap-[0.75rem]'>
+                <span className='text-5xl text-[#292929] font-bold'>{serviceName}</span>
+                <span className='text-lg text-[#292929]'>{serviceDescription}</span>
+            </div>
+            
+            <div className={`flex flex-col items-center gap-[1rem] ${dragOver ? 'bg-[#ffc36d] p-[4rem]' : 'p-[2rem]'} bg-[#ffdca5] rounded-[15px] transition-all duration-200`}>
+                <UploadBig className="w-[100px] h-auto opacity-75"/>
 
-                <div className='w-fit'>
-                    {/* insert the slug name or service_id on the attr name and id later */}
-                    <input type="file" onChange={handleFileChange} accept={stringedRequiredFiles}
-                            name={`service_`} id={`service_`} multiple hidden />
+                <div className="flex flex-col items-center gap-[0.5rem]">
 
-                    {/* insert the slug name or service_id on the attr htmlFor later */}
-                    <label htmlFor={'service_'}
-                    className="flex items-center gap-[0.5rem] bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] cursor-pointer p-[0.75rem] rounded-[5px] transition-all duration-200">
-                        <Document className="size-5" color="#fff" />
-                        <span className="text-[#fff] text-[14px] font-bold leading-none">Choose file</span>
-                    </label>
+                    <div className='w-fit'>
+                        {/* insert the slug name or service_id on the attr name and id later */}
+                        <input type="file" onChange={handleFileChange} accept={stringedRequiredFiles}
+                                name={`service_`} id={`service_`} multiple hidden />
+
+                        {/* insert the slug name or service_id on the attr htmlFor later */}
+                        <label htmlFor={'service_'}
+                        className="flex items-center gap-[0.5rem] bg-[#ff6b00] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] cursor-pointer p-[1rem] px-[1.5rem] rounded-[10px] transition-all duration-200">
+                            <Document className="size-5" color="#fff" />
+                            <span className="text-[#fff] text-[14px] font-bold leading-none">SELECT YOUR FILE/S</span>
+                        </label>
+                    </div>
+
+
+                    <span className="text-[14px] text-[#292929] font-[600] opacity-75">or drop your files here</span>
+                    <span className="text-[14px] text-[#292929] font-[600] opacity-50">(Only{requiredFiles.join(', ')} allowed)</span>
                 </div>
-
-
-                <span className="text-[14px] text-[#292929] font-[600] opacity-75">or drop your files here</span>
             </div>
         </div>
     )

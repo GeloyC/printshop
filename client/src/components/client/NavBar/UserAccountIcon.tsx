@@ -36,7 +36,7 @@ function UserAccountIcon ({
             <button onClick={()=>{
                 setIsAccountDropdownOpen(open=>!open)
                 closeNotif()
-            }} className="flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded-[10px] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] cursor-pointer transition-all duration-200">
+            }} className="flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded-[10px] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] border-2 border-[#fff] cursor-pointer transition-all duration-200">
                 {user?.profile_url ? (
                     // add the url image from cloudinary or other cloud service provider later
                     <img src="" alt="" />
@@ -46,7 +46,7 @@ function UserAccountIcon ({
             </button>
 
             {isAccountDropdownOpen && (
-                <div className="fade-up absolute top-[2.75rem] right-0 bg-[#fff] border border-[#292929]/25 rounded-[5px] min-w-[150px] shadow-lg">
+                <div className="fade-up absolute top-[2.75rem] right-0 bg-[#fff] border border-[#292929]/25 rounded-[10px] min-w-[150px] shadow-lg">
                     <div className="flex flex-col items-start p-[1rem] gap-[0.2rem] border-b border-[#292929]/25">
                         <span className="text-nowrap text-[#292929] text-[16px] font-bold leading-none">{user?.name}</span>
                         <span className="text-[#292929] text-[14px] leading-none opacity-50">{user?.email}</span>

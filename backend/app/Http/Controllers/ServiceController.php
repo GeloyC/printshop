@@ -95,7 +95,7 @@ class ServiceController extends Controller
                 'id',
                 'name',
                 'configuration',
-                'slug'
+                'slug'  
             )
             ->where('slug', $slug)
             ->firstOrFail();
@@ -173,9 +173,6 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function edit () {
-        
-    }
 
     public function update (Request $request, String $id) {
         $service = DB::table('services')

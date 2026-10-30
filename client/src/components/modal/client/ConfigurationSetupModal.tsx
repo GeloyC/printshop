@@ -115,7 +115,7 @@ function ConfigurationSetupModal ({
 
 
     return (
-        <div className="fade-up flex flex-col items-center w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[5px]">
+        <div className="fade-up flex flex-col items-center w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[15px]">
             <span className='text-3xl text-[#292929] font-bold leading-none'>File setup</span>
 
             <div className='flex flex-col w-full '>

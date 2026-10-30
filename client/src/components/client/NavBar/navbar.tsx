@@ -3,6 +3,7 @@ import { useState } from "react";
 
 // icons
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
+import Home from '/src/assets/icon/home.svg?react'
 
 import ModalWrapper from "../../wrapper/ModalWrapper";
 import Signup from "../../modal/client/Signup";
@@ -27,12 +28,16 @@ function NavBar () {
     const [loginOpen, setLoginOpen] = useState<boolean>(false);
     const [signupOpen, setSignupOpen] = useState<boolean>(false);
 
+    const [isServoceDropdownOpen, setIsServiceDropdownOpen] = useState<boolean>(false);
     const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
     const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState<boolean>(false);
 
     const handleCloseDropdowns = () => {
         setIsNotifDropdownOpen(false);
         setIsAccountDropdownOpen(false);
+        setIsServiceDropdownOpen(false);
+
+        console.log('clicked');
     }
 
     
@@ -41,29 +46,35 @@ function NavBar () {
     
     return (
         <>
-            {(isNotifDropdownOpen || isAccountDropdownOpen) && (
-                <div onClick={handleCloseDropdowns} className="absolute inset-0 z-10"/>
+            {(isNotifDropdownOpen || isAccountDropdownOpen || isServoceDropdownOpen) && (
+                <div onClick={handleCloseDropdowns} className="fixed inset-0 z-10"/>
             )}
-            <section className="sticky top-0 backdrop-blur flex w-full items-center justify-between h-[4rem] py-[0.75rem] z-10">
-                <div className="flex items-center h-full gap-[1rem]">
-                    <Link to="/" onClick={handleCloseDropdowns} className="text-[#ff6b00] font-bold">PRINT SHOP</Link>
+            <section className="sticky top-0 backdrop-blur grid grid-cols-3 w-full h-[4rem] py-[0.75rem]  z-10">
 
-                    <div className="group relative flex h-full">
-                        <div className="flex h-full items-center cursor-pointer">
-                            <div className="flex items-center gap-[0.2rem] px-[1rem] py-[0.5rem] hover:bg-[#B1B2B5]/25 rounded-[5px] text-[#272727]">
-                                <span className="font-bold text-[#272727]">Services</span>
-                                <Arrow className="size-5 rotate-270 group-hover:rotate-90 transition-all duration-100"/>
-                            </div>
-                        </div>
+                <div className="flex w-full">
+                    <Link to="/" onClick={handleCloseDropdowns} className="flex items-center bg-[#ffc36d]/50 hover:bg-[#ff6b00] px-[0.5rem] gap-[0.3rem] rounded-[10px]">
+                        <Home className="size-5" color="#fff"/>
+                        <span className="text-[16px] text-[#fff] font-bold">Home</span>
+                    </Link>
+                </div>
 
+
+                <div className="flex items-center justify-center w-full h-full gap-[1rem]">
+                    <button onClick={()=>setIsServiceDropdownOpen(true)} className="relative flex items-center h-full bg-[#cc4c02] hover:bg-[#ffc36d]/50 gap-[1rem] px-[1rem] rounded-[10px] text-[#272727] cursor-pointer transition-all duration-200">
+                        <span className="text-xl font-bold text-[#fff]">PRINT SHOP</span>
+                        <Arrow className="size-6 rotate-270" color="#fff"/>
+                    </button>
+
+                    {isServoceDropdownOpen && (
                         <ServiceContainer
                             handleCloseDropdowns={handleCloseDropdowns}
                             serviceNames={serviceNames}
                         />
-                    </div>
+                    )}
                 </div>
 
-                <div className="relative flex items-center h-full gap-[0.5rem]">
+
+                <div className="relative flex items-center justify-end w-full h-full gap-[0.5rem]">
                     <CartButton 
                         closeDropdowns={handleCloseDropdowns}
                         itemCount={items.length}
@@ -101,8 +112,8 @@ function NavBar () {
                             </button>
                         </>
                     )}
-
                 </div>
+
             </section>
 
 

@@ -1,6 +1,6 @@
 
 
-#fff8ec
+#fff8ec // background
 #fff0d3
 #ffdca5
 #ffc36d
@@ -9,6 +9,7 @@
 #292929
 #404040
 #f2f2f2
+#e5e5e5
 #B1B2B5
 
 
@@ -17,4 +18,5 @@
 #CCFFCC
 
 -- warning
+#b90000
 #FF5F15

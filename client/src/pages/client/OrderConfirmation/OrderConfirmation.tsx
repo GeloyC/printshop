@@ -24,25 +24,20 @@ function OrderConfirmation () {
     );
 
     return (
-        <div className='fade-up flex flex-col w-full h-full'>
-            <div className='flex items-center justify-start gap-[0.3rem] w-full'>
-                <Link to="/" className='flex items-center'>
-                    <ArrowBack className="size-5" />
-                    <span className='text-[16px] text-[#292929] font-bold'>Go back to Home</span>
-                </Link>
-            </div>
+        <div className='fade-up flex flex-1 flex-col items-center w-full h-full'>
+            
+            <div className="flex items-stretch w-[800px] pt-[2rem]">
 
-            <div className="grid grid-cols-2 w-full h-full py-[2rem]">
-                <div className="flex flex-col items-center justify-start gap-[2rem] px-[2rem]">
+                <div className="flex flex-col items-center justify-start min-h-full gap-[2rem] p-[1rem] px-[2rem] bg-[#fff0d3] rounded-t-[15px]">
                     <div className="flex flex-col items-center justify-center gap-[1rem] w-full">
                         <div className="flex flex-col items-center gap-[0.3rem]">
-                            <BoxCheck className="size-20 opacity-75 bg-[#ffc36d] rounded-full p-[0.3rem]" />
+                            <BoxCheck className="size-20 opacity-75 bg-[#fff0d3] rounded-full p-[0.3rem]" />
                             <span className="text-[36px] text-[#292929] font-bold leading-none">Thank you!</span>
                         </div>
                         <span className="text-[#292929] text-center">We've received your order and we'll let you know when it's ready for pickup.</span>
                     </div>
 
-                    <div className="flex flex-col items-center w-full h-auto pt-[1rem] bg-[#f2f2f2]/50 rounded-[5px] border-2 border-dashed border-[#B1B2B5]/50">
+                    <div className="flex flex-col items-center w-full h-auto pt-[1rem] bg-[#ffdca5] rounded-[15px] border-2 border-dashed border-[#ffc36d]">
                         <span className="w-full text-[16px] text-center font-bold leading-none pb-[0.5rem]">Order details</span>
 
                         <div className="flex flex-col w-full gap-[0.3rem] max-h-[300px] overflow-y-auto thin-scrollbar p-[1rem]">
@@ -73,25 +68,26 @@ function OrderConfirmation () {
                         </div>
                     </div>
 
-                    <div className='relative flex p-[1rem] bg-[#fff8ec] border-2 border-[#ff6b00]/50 rounded-[5px]'>
-                        <div className='absolute -top-5 left-3 rounded-full bg-[#fff] border-2 border-[#ff6b00] p-[0.3rem]'>
+                    <div className='relative flex p-[1rem] bg-[#fff8ec] border-2 border-[#ff6b00]/50 rounded-[15px]'>
+                        <div className='absolute -top-5 left-2 rounded-full bg-[#fff] border-2 border-[#ff6b00] p-[0.3rem]'>
                             <Exclamation className='size-5 -rotate-10' />
                         </div>
                         <span className="text-[14px] text-[#292929] text-center font-bold leading-normal">When your order is ready, you may pick it up on our shop at <strong className="text-[#ff6b00]">{ADDRESS}</strong> at the convenience of your time and during our working hours. Make sure to have the copy of your reference number</span>
                     </div>
-                </div>
 
-                <div className="flex flex-col items-center justify-center w-full h-full gap-[1rem] px-[2rem]">
-                    <span className='text-[28px] text-[#292929] font-bold'>Check our shop's location here</span>
-                    <div className="flex w-full h-[500px]">
-                        <iframe
-                            className="w-full h-full rounded-[10px]"
-                            loading="lazy"
-                            allowFullScreen
-                            src={`https://www.google.com/maps?q=${ADDRESS}&output=embed`}
-                        />
+                    <div className="flex flex-col items-center justify-start w-full gap-[1rem]">
+                        <span className='text-[28px] text-[#cc4c02] font-bold leading-none'>Check our shop's location here</span>
+                        <div className="flex w-full h-[500px] border-2 border-[#ffc36d] rounded-[15px] overflow-hidden">
+                            <iframe
+                                className="w-full h-full"
+                                loading="lazy"
+                                allowFullScreen
+                                src={`https://www.google.com/maps?q=${ADDRESS}&output=embed`}
+                            />
+                        </div>
                     </div>
                 </div>
+
 
             </div>
         </div>

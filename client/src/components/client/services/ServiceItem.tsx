@@ -30,7 +30,7 @@ function ServiceItem ({ service }: ServiceItemProp) {
             </div>
 
             <div className="flex flex-col justify-center w-full h-full py-[0.5rem]">
-                <span className="text-[18px] text-[#292929] text-wrap font-bold transition-all duration-100">{service.name}</span>
+                <span className="text-[18px] text-[#fff] group-hover:text-[#cc4c02] text-wrap font-bold transition-all duration-100">{service.name}</span>
             </div>
         </Link>
     )

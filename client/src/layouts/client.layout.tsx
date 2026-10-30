@@ -1,12 +1,17 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import NavBar from "../components/client/NavBar/navbar"
 
 function ClientLayout () {
 
+    const location = useLocation();
+
     return (
-        <div className="relative flex flex-col w-full h-screen items-center bg-[#fff] px-[12rem]">
+        <div className={`flex min-h-screen w-full flex-col items-center gap-[1rem] px-[1rem] bg-[#ff6b00]`}>
             <NavBar />
-            <Outlet />
+
+            <div className="relative flex flex-1 w-full flex-col px-[12rem]">
+                <Outlet />
+            </div>
         </div>
     )
 }   

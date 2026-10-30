@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useBlocker, useNavigate } from "react-router-dom";
-
+import type { BlockerFunction } from 'react-router-dom';
 
 import DisplayFiles from "./DisplayFiles"
 import ModalWrapper from "../../../components/wrapper/ModalWrapper";
@@ -54,16 +54,25 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
 
 
     // TODO: use useBlocker from react-router to alert user when navigating away from /service/[selected service slug]
-    const filesSlugCheckExist = files.some(file => file.slug === slug); // check the slug of files if it's similar to the current service
+    const hasCurrentServiceFiles = files.some(file => file.slug === slug); // check the slug of files if it's similar to the current service
 
     const checkFile = files.map(file => (file.configuration?.length ?? 0) > 0);
     const checkFileAllTrue = checkFile.every(file => file === true)
 
-    const shouldBlock = checkFileAllTrue && filesSlugCheckExist; // change later to have configuration under the condition
-    
-    const blocker = useBlocker(({ currentLocation, nextLocation }) => 
-        !shouldBlock && files.length > 0 &&  currentLocation.pathname !== nextLocation.pathname
+
+    const shouldBlock = checkFileAllTrue && hasCurrentServiceFiles; 
+
+    const shouldBlockNavigation = useCallback<BlockerFunction> (
+        ({ currentLocation, nextLocation }) =>
+            currentLocation.pathname.startsWith('/service/') &&
+            !shouldBlock &&
+            files.length > 0 &&
+            currentLocation.pathname !== nextLocation.pathname,
+            
+        [shouldBlock, files.length]
     );
+    
+    const blocker = useBlocker(shouldBlockNavigation);
 
 
     const proceedToCheckOut = () => {
@@ -79,12 +88,8 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
 
     return (
         <>
-            <div className="relative flex flex-col w-full h-full items-center gap-[1rem] py-[4rem]">
-                <div className="flex flex-col w-full items-center gap-[0.5rem]">
-                    <span className="text-6xl text-[#292929] font-bold leading-none">{service.name}</span>
-                    <p>{service.description}</p>
-                </div>
-
+            <div className={`relative flex w-full flex-1 ${!files.length ? 'items-center p-[1rem]' : 'items-start'} rounded-t-[15px] bg-[#fff8ec] gap-[2rem] `}>
+                
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}
                     requiredFiles={requiredFiles}
@@ -94,6 +99,8 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
                     slug={String(slug)}
                     handleCheckoutAttemp={proceedToCheckOut}
                     setFileSetupModalOpen={setFileSetupModalOpen}
+                    serviceName={service.name}
+                    serviceDescription={service.description}
                 />
 
                 {error && <Toast message={error} />}

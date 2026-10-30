@@ -20,6 +20,8 @@ Route::get("service/configurations", [ServiceController::class, 'getConfiguratio
 Route::get("/service/{slug}/configuration", [ServiceController::class, 'getConfiguration']);
 
 
+
+
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/service/new', [ServiceController::class, 'store']);
     Route::get("/admin/service/{slug}", [ServiceController::class, 'show']);

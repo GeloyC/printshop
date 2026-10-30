@@ -67,23 +67,28 @@ function CartForm ({ configurations }: CartFormProp) {
 
     return (
         <>
-            <div className="fade-up relative flex items-start w-full py-[1rem] gap-[1rem]">
-                <section className="flex flex-3 flex-col items-start w-full h-full pb-[1rem] gap-[0.5rem]">
+            <div className="fade-up relative grid flex-1 grid-cols-[6fr_2fr] items-stretch w-full gap-[1rem]">
+
+                <section className="flex flex-col items-start w-full min-h-full gap-[1rem] rounded-t-[15px]">
                     <div className="flex items-center gap-[0.5rem]">
-                        <ReturnButton />
-                        <span className="text-[24px] text-[#292929] font-bold leading-none">Cart</span>
+                        <ReturnButton 
+                            color="#fff"
+                        />
+                        <span className="text-[24px] text-[#fff] font-bold leading-none">Cart</span>
                     </div>
 
                     {/* Item block */}
-                    {items.map(file => (
-                            <CartItem key={file.id}
-                                file={file}
-                                openAlert={()=>handleOpenDeleteAlert(file)}
-                                openConfiguration={()=>handleOpenConfiguration(file)}
-                                setItems={setItems}
-                            />
-                        )
-                    )}
+                    <div className="flex flex-col w-full gap-[0.5rem]">
+                        {items.map(file => (
+                                <CartItem key={file.id}
+                                    file={file}
+                                    openAlert={()=>handleOpenDeleteAlert(file)}
+                                    openConfiguration={()=>handleOpenConfiguration(file)}
+                                    setItems={setItems}
+                                />
+                            )
+                        )}
+                    </div>
                 </section>
 
                 <OrderSummary 

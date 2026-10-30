@@ -65,7 +65,7 @@ function CartItem ({
 
 
     return (
-        <div className={`flex flex-col w-full py-[0.75rem] gap-[0.3rem] bg-[#fff] border-b border-[#292929]/15`}>
+        <div className={`flex flex-col w-full p-[1rem] gap-[0.3rem] bg-[#fff0d3] rounded-[10px]`}>
             <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-[0.5rem]">
                     {/* conditionally display icon for pdf or docx file based on file extension later */}
@@ -104,13 +104,13 @@ function CartItem ({
 
                 <div className="flex items-center gap-[1rem]">
                     <div className='flex items-center gap-[0.2rem]'>
-                        <button onClick={()=>handleSubtractQuantity(file.id)} disabled={file.quantity === 1} className={`group ${file.quantity == 1 ? 'opacity-25' : 'cursor-pointer'} bg-[#f2f2f2] p-[0.3rem] rounded-[5px]`}>
+                        <button onClick={()=>handleSubtractQuantity(file.id)} disabled={file.quantity === 1} className={`group ${file.quantity == 1 ? 'opacity-25' : 'cursor-pointer'} bg-[#fff] p-[0.3rem] rounded-[5px]`}>
                             <Subtract className={`size-5 opacity-50 ${file.quantity > 1 && 'group-hover:opacity-100 group-active:opacity-50'}`} color='#292929'/>
                         </button>
                         <div className='flex items-center justify-center p-[0.5rem] w-[2rem] bg-[#ffdca5] rounded-[5px]'>
                             <span className='text-[16px] text-[#292929]/80 font-bold leading-none'>{file.quantity}</span>
                         </div>
-                        <button onClick={()=>handleAddQuantity(file.id)} className='group cursor-pointer bg-[#f2f2f2] p-[0.3rem] rounded-[5px]'>
+                        <button onClick={()=>handleAddQuantity(file.id)} className='group cursor-pointer bg-[#fff] p-[0.3rem] rounded-[5px]'>
                             <Add className="size-5 opacity-50 group-hover:opacity-100 group-active:opacity-50" color='#292929'/>
                         </button>
                     </div>

@@ -36,10 +36,15 @@ return new class extends Migration
                 ->default(DB::raw('uuidv7()'));
             $table->foreignUuid('order_id')
                 ->constrained('orders');
-            $table->string('filename');
-            $table->decimal('price', 10, 2);
+            $table->string('file_url');
             $table->jsonb('configuration');
+            $table->string('slug');
+            $table->longtext('additional_instruction')
+                ->nullable();
             $table->integer('quantity');
+            $table->decimal('unit_price', 10, 2);
+            $table->decimal('total_price', 10, 2);
+            $table->timestamps();
         });
 
         Schema::create('order_status_histories', function(Blueprint $table) {
