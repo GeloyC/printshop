@@ -2,6 +2,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useParams, useBlocker, useNavigate } from "react-router-dom";
 import type { BlockerFunction } from 'react-router-dom';
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+
 import DisplayFiles from "./DisplayFiles"
 import ModalWrapper from "../../../components/wrapper/ModalWrapper";
 import ConfigurationSetupModal from "../../../components/modal/client/ConfigurationSetupModal";
@@ -11,6 +14,8 @@ import type { fileItem } from "../../../types/FileType";
 import RedirectAlert from "../../../components/ui/RedirectAlert";
 import type { Configuration } from "../../../types/service/service";
 import { useCartContext } from "../../../context/cartContext";
+import { AddItemToCart } from "../../../api/orderItem";
+import { useUserContext } from "../../../context/userContext";
 
 
 type fileRequirement = {
@@ -37,8 +42,10 @@ type ServiceClientFormProp = {
 
 function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) {
 
-    const { slug } = useParams();   
     const { setItems } = useCartContext();
+    const { user } = useUserContext(); 
+
+    const { slug } = useParams();   
     const navigate = useNavigate();
 
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
@@ -71,7 +78,6 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     
     const blocker = useBlocker(shouldBlockNavigation);
 
-
     const proceedToCheckOut = () => {
         if (shouldBlock) {
             setItems(items=>[...files, ...items]);
@@ -80,12 +86,54 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
         navigate('/cart');
     } 
 
+    const queryClient = useQueryClient();
+    const handleAddToCart = useMutation({
+        mutationFn: async () => {
+            const responses = [];
 
+            for (const file of files) {
+                const formData = new FormData();
+
+                formData.append('configuration', JSON.stringify(file.configuration));
+                formData.append('file', file.file);
+
+                if (file.additional_instruction) {
+                    formData.append('additional_instruction', file.additional_instruction);
+                }
+                
+                formData.append('slug', file.slug);
+                formData.append('service_slug', file.slug);
+                formData.append('quantity', String(file.quantity));
+                formData.append('unit_price', String(file.unit_price));
+                formData.append('total_price', String(file.total_price));
+
+                responses.push(await AddItemToCart(formData, user.id));
+            }
+
+            return responses;
+        },
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey:['cart-items'] })
+
+            proceedToCheckOut();
+        },
+        onError: (err: unknown) => {
+            if (axios.isAxiosError(err)) {
+                console.error('Status:', err.response?.status);
+                console.error('Response:', err.response?.data);
+            } else {
+                console.error('Unexpected error:', err);
+            }
+        }
+    });
+
+
+    
 
 
     return (
         <>
-            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch p-[rem]' : 'bg-[#ffdca5] border-2 border-[#ffc36d]'} rounded-t-[15px] overflow-hidden  gap-[2rem] `}>
+            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch p-[rem]' : 'bg-[#ffdca5] border-4 border-[#ffc36d]'} rounded-t-[15px] overflow-hidden  gap-[2rem] `}>
                 
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}
@@ -94,10 +142,10 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
                     files={files}
                     setError={setError}
                     slug={String(slug)}
-                    handleCheckoutAttemp={proceedToCheckOut}
+                    handleAddToCart={handleAddToCart}
                     setFileSetupModalOpen={setFileSetupModalOpen}
-                    serviceName={service.name}
-                    serviceDescription={service.description}
+                    serviceName={service?.name}
+                    serviceDescription={service?.description}
                     shouldBlock={shouldBlock}
                 />
 

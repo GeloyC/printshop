@@ -12,6 +12,8 @@ import AddIcon from '/src/assets/icon/add.svg?react'
 
 import { useCartContext } from "../../../context/cartContext";
 import type { fileItem } from "../../../types/FileType";
+import type { UseMutationResult } from "@tanstack/react-query";
+import type { AxiosResponse } from "axios";
 
 // services
 
@@ -22,7 +24,7 @@ type DisplayFilesProp =  {
     files: fileItem[];
     setError: React.Dispatch<SetStateAction<string>>;
     slug: string;
-    handleCheckoutAttemp: () => void;
+    handleAddToCart: UseMutationResult<AxiosResponse, Error, void>;
     setFileSetupModalOpen: React.Dispatch<SetStateAction<boolean>>,
     serviceName: string
     serviceDescription: string
@@ -36,11 +38,11 @@ function DisplayFiles ({
     files,
     setError,
     slug,
-    handleCheckoutAttemp,
+    handleAddToCart,
     setFileSetupModalOpen,
     serviceName,
     serviceDescription,
-    shouldBlock
+    shouldBlock,
 }:DisplayFilesProp) {
 
     // ----------------------------------  ---------------------------------- //
@@ -168,7 +170,6 @@ function DisplayFiles ({
 
     return (
         <div className={`flex flex-col flex-1 w-full`}>   
-
             {files.length > 0 && (
                 <div className="flex items-center justify-between w-full gap-[0.3rem] p-[1rem] px-[2rem]">
 
@@ -196,8 +197,13 @@ function DisplayFiles ({
                             </label>
                         </div>
 
-                        <button onClick={handleCheckoutAttemp} disabled={!shouldBlock} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock ? 'cursor-not-allowed opacity-50' : 'hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} bg-[#cc4c02] rounded-[10px] transition-all duration-100`}>
-                            <span className="text-[14px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">Proceed</span>
+                        <button onClick={()=>handleAddToCart.mutate()} disabled={!shouldBlock} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock ? 'cursor-not-allowed opacity-50' : 'hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} bg-[#cc4c02] rounded-[10px] transition-all duration-100`}>
+                            <span className="text-[14px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">
+                                {handleAddToCart.isPending
+                                    ? 'Adding to Cart'
+                                    : 'Add to Cart'
+                                }
+                            </span>
                             <ArrowWithTail className="size-4 group-hover:translate-x-1 transition-all duration-200" color="#fff" />
                         </button>
                     </div>

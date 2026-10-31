@@ -34,8 +34,8 @@ return new class extends Migration
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('uuidv7()'));
-            $table->foreignUuid('order_id')
-                ->constrained('orders');
+            $table->foreignUuid('user_id')
+                ->constrained('users');
             $table->string('file_url');
             $table->jsonb('configuration');
             $table->string('slug');
