@@ -26,6 +26,7 @@ type DisplayFilesProp =  {
     setFileSetupModalOpen: React.Dispatch<SetStateAction<boolean>>,
     serviceName: string
     serviceDescription: string
+    shouldBlock: boolean
 }
 
 function DisplayFiles ({
@@ -38,7 +39,8 @@ function DisplayFiles ({
     handleCheckoutAttemp,
     setFileSetupModalOpen,
     serviceName,
-    serviceDescription
+    serviceDescription,
+    shouldBlock
 }:DisplayFilesProp) {
 
     // ----------------------------------  ---------------------------------- //
@@ -165,15 +167,10 @@ function DisplayFiles ({
 
 
     return (
-        <div className={`flex flex-col w-full h-full
-            ${files.length !== 0 
-                ? 'items-start justify-start'
-                : 'items-center justify-center'
-            }
-        `}>   
+        <div className={`flex flex-col flex-1 w-full`}>   
 
             {files.length > 0 && (
-                <div className="flex items-center justify-between w-full gap-[0.3rem] p-[1rem] rounded-t-[15px] bg-[#fff8ec] border-b border-[#ffc36d]">
+                <div className="flex items-center justify-between w-full gap-[0.3rem] p-[1rem] px-[2rem]">
 
                     {/* <span className="text-center text-[14px] text-[#82330c] font-bold w-fit">Total file/s: {files.length}</span> */}
 
@@ -184,24 +181,24 @@ function DisplayFiles ({
 
                     <div className="flex items-center gap-[0.5rem]">
                         <div className="flex items-center">
-                            <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer hover:bg-[#ff0000]/65 active:bg-transparent rounded-[5px] transition-all duration-100">
+                            <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer hover:bg-[#ff0000]/65 active:bg-transparent rounded-[5px] transition-all duration-100">
                                 <Delete className="size-4 rotate-45" />
-                                <span className="text-[12px] text-[#292929] font-bold leading-none">Remove all files</span>
+                                <span className="text-[14px] text-[#292929] font-bold leading-none">Remove all files</span>
                             </button>
                             
                             <input type="file" name="service_addmore" id="service_addmore" accept={stringedRequiredFiles} multiple hidden onChange={handleAddFiles} />
 
                             <label htmlFor="service_addmore"
-                                className="flex items-center gap-[0.3rem] p-[0.5rem] cursor-pointer hover:bg-[#ffdca5] active:bg-transparent rounded-[5px] transition-all duration-100"
+                                className="flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer hover:bg-[#ffdca5] active:bg-transparent rounded-[5px] transition-all duration-100"
                             >
                                 <AddIcon className='size-4' />
-                                <span className='text-[12px] text-[#292929] font-bold leading-none'>Add files</span>
+                                <span className='text-[14px] text-[#292929] font-bold leading-none'>Add files</span>
                             </label>
                         </div>
 
-                        <button onClick={handleCheckoutAttemp} className="group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ffc36d] rounded-[10px] transition-all duration-100">
-                            <span className="text-[12px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">Proceed</span>
-                            <ArrowWithTail className="size-4" color="#fff" />
+                        <button onClick={handleCheckoutAttemp} disabled={!shouldBlock} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock ? 'cursor-not-allowed opacity-50' : 'hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} bg-[#cc4c02] rounded-[10px] transition-all duration-100`}>
+                            <span className="text-[14px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">Proceed</span>
+                            <ArrowWithTail className="size-4 group-hover:translate-x-1 transition-all duration-200" color="#fff" />
                         </button>
                     </div>
                 </div>  
@@ -209,20 +206,14 @@ function DisplayFiles ({
 
             
             <div onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={()=>setDragOver(false)}
-                className={
-                    `flex w-full h-full thin-scrollbar transition-all duration-400 p-[1rem]
-                    ${ files.length > 0 
-                        ? 'items-start justify-center' 
-                        : 'items-center justify-center'
+                className={`flex flex-1 w-full
+                    ${ dragOver && files.length > 0 
+                        ? 'bg-[#ff6b00]/50 rounded-t-[15px]'  // when dragging file
+                        : files.length === 0 
+                            ? 'bg-transparent'
+                            : 'bg-[#ffc36d] rounded-t-[15px]'  // default
                     } 
-                    ${ dragOver && files.length > 0
-                        ? 'bg-[#fff0d3]' 
-                        : files.length == 0 
-                            ? 'bg-transparent' : 
-                            'bg-[#fff8ec]'
-                    }  
-                    ${ files.length <= 0 && 'border-dashed' }`
-                }
+                `}
             >
                 {files.length == 0 ? (
                     <NoFilesWrapper 
@@ -235,7 +226,7 @@ function DisplayFiles ({
                         slug={slug}
                     />
                 ):(
-                    <div className="grid grid-cols-2 items-start justify-center gap-[1rem] w-full">
+                    <div className={`grid grid-cols-2 items-start gap-[1rem] w-full h-fit p-[2rem] rounded-t-[15px] transition-all duration-400`}>
                         {files.map((file, index) => {
                             if (file.slug === slug) {
                                 return (
@@ -251,9 +242,6 @@ function DisplayFiles ({
                     </div>
                 )}
             </div>
-
-
-            
         </div>
     )
 }

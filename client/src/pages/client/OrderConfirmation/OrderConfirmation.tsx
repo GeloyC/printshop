@@ -1,9 +1,8 @@
 
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 // icon
 import BoxCheck from '/src/assets/icon/box-with-check.svg?react'
-import ArrowBack from '/src/assets/icon/arrow-no-tail.svg?react'
 import Exclamation from '/src/assets/icon/exclamation-mark.svg?react'
 import currencyFormat from '../../../utils/currencyFormat';
 import type { fileItem } from '../../../types/FileType';
@@ -25,10 +24,10 @@ function OrderConfirmation () {
 
     return (
         <div className='fade-up flex flex-1 flex-col items-center w-full h-full'>
-            
+
             <div className="flex items-stretch w-[800px] pt-[2rem]">
 
-                <div className="flex flex-col items-center justify-start min-h-full gap-[2rem] p-[1rem] px-[2rem] bg-[#fff0d3] rounded-t-[15px]">
+                <div className="flex flex-col items-center justify-start min-h-full gap-[2rem] p-[1rem] px-[2rem] bg-[#fff0d3] border-2 border-dashed border-[#ffc36d] rounded-t-[15px]">
                     <div className="flex flex-col items-center justify-center gap-[1rem] w-full">
                         <div className="flex flex-col items-center gap-[0.3rem]">
                             <BoxCheck className="size-20 opacity-75 bg-[#fff0d3] rounded-full p-[0.3rem]" />
@@ -37,8 +36,8 @@ function OrderConfirmation () {
                         <span className="text-[#292929] text-center">We've received your order and we'll let you know when it's ready for pickup.</span>
                     </div>
 
-                    <div className="flex flex-col items-center w-full h-auto pt-[1rem] bg-[#ffdca5] rounded-[15px] border-2 border-dashed border-[#ffc36d]">
-                        <span className="w-full text-[16px] text-center font-bold leading-none pb-[0.5rem]">Order details</span>
+                    <div className="flex flex-col items-center w-full h-auto pt-[1rem] bg-[#ffdca5] rounded-[15px]">
+                        <span className="w-full text-[20px] text-[#292929] px-[1rem] text-center font-bold leading-none pb-[0.5rem]">Order details</span>
 
                         <div className="flex flex-col w-full gap-[0.3rem] max-h-[300px] overflow-y-auto thin-scrollbar p-[1rem]">
                             <div className="flex items-center justify-between w-full">
@@ -61,7 +60,7 @@ function OrderConfirmation () {
 
                                 <div className="flex flex-col items-end gap-[0.3rem]">
                                     {orders.map((order: any) => (
-                                        <span key={order.id} className="text-[14px] font-bold text-right text-wrap">{order.file.name} ({order.quantity}x) {currencyFormat(Number(order.total_price))}</span>
+                                        <span key={order.id} className="text-[14px] font-bold text-right text-wrap">{order.file.name} ({order.quantity}x) - {currencyFormat(Number(order.total_price))}</span>
                                     ))}
                                 </div>
                             </div>

@@ -65,7 +65,7 @@ function CartItem ({
 
 
     return (
-        <div className={`flex flex-col w-full p-[1rem] gap-[0.3rem] bg-[#fff0d3] rounded-[10px]`}>
+        <div className={`flex flex-col w-full p-[1rem] gap-[0.3rem] bg-[#fff0d3] border border-[#ffc36d] rounded-[5px]`}>
             <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-[0.5rem]">
                     {/* conditionally display icon for pdf or docx file based on file extension later */}
@@ -89,13 +89,13 @@ function CartItem ({
                     </div> 
 
                     <div className='flex items-center gap-[0.3rem] opacity-50'>
-                        <span>Unit price: {file?.unit_price}</span>
+                        <span className='text-[14px] leading-tight'>Unit price: {currencyFormat(Number(file?.unit_price))}</span>
                     </div>
 
-                    <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] opacity-50 hover:opacity-100 cursor-pointer'>
+                    <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] p-[0.3rem] px-[0.5rem] bg-[#ffc36d] active:bg-[#ffdca5] hover:opacity-100 rounded-[10px] cursor-pointer'>
                         <ConfigIcon className='size-4' />
-                        <span className="text-[14px] leading-tight">{config}</span>
-                        <Arrow className="size-4 rotate-180 group-hover:translate-x-1 group-active:translate-x-2 transition-all duration-100" />
+                        <span className="text-[14px] font-bold leading-tight">{config}</span>
+                        <Arrow className="size-4 rotate-180 group-hover:translate-x-1 group-active:translate-x-1 transition-all duration-100" />
                     </button>
 
                 </div>

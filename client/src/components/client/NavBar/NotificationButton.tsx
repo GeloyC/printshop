@@ -22,7 +22,7 @@ function NotificationButton ({
 
     return (
         <div className='relative'>
-            <button className="relative group flex items-center justify-center w-[2.5rem] h-[2.5rem] bg-[#f2f2f2] active:bg-[#f2f2f2] rounded-[10px] cursor-pointer"
+            <button className="relative group flex items-center justify-center w-[2.5rem] h-[2.5rem] bg-[#f2f2f2] active:bg-[#f2f2f2] rounded-[10px] shadow-lg cursor-pointer"
                 onClick={()=>{
                     setIsNotifDropdownOpen(open=>!open)
                     setItemDropdownId(false)

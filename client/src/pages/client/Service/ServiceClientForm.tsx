@@ -53,12 +53,9 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     ) ?? [];
 
 
-    // TODO: use useBlocker from react-router to alert user when navigating away from /service/[selected service slug]
-    const hasCurrentServiceFiles = files.some(file => file.slug === slug); // check the slug of files if it's similar to the current service
-
+    const hasCurrentServiceFiles = files.some(file => file.slug === slug); 
     const checkFile = files.map(file => (file.configuration?.length ?? 0) > 0);
     const checkFileAllTrue = checkFile.every(file => file === true)
-
 
     const shouldBlock = checkFileAllTrue && hasCurrentServiceFiles; 
 
@@ -88,7 +85,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
 
     return (
         <>
-            <div className={`relative flex w-full flex-1 ${!files.length ? 'items-center p-[1rem]' : 'items-start'} rounded-t-[15px] bg-[#fff8ec] gap-[2rem] `}>
+            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch p-[rem]' : 'bg-[#ffdca5] border-2 border-[#ffc36d]'} rounded-t-[15px] overflow-hidden  gap-[2rem] `}>
                 
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}
@@ -101,6 +98,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
                     setFileSetupModalOpen={setFileSetupModalOpen}
                     serviceName={service.name}
                     serviceDescription={service.description}
+                    shouldBlock={shouldBlock}
                 />
 
                 {error && <Toast message={error} />}

@@ -6,7 +6,7 @@ function ClientLayout () {
     const location = useLocation();
 
     return (
-        <div className={`flex min-h-screen w-full flex-col items-center gap-[1rem] px-[1rem] bg-[#ff6b00]`}>
+        <div className={`flex min-h-screen w-full flex-col items-center gap-[1rem] px-[1rem] bg-[#fff8ec]`}>
             <NavBar />
 
             <div className="relative flex flex-1 w-full flex-col px-[12rem]">

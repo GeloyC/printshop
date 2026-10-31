@@ -33,12 +33,12 @@ function OrderSummary ({ fileQuantity, subTotalPrice }: OrderSummaryProp) {
 
 
     return (
-        <section className="sticky top-[5rem] flex flex-col h-fit gap-[0.5rem] bg-[#fff0d3] p-[1rem] rounded-[10px]">
+        <section className="sticky top-[5rem] flex flex-col h-fit gap-[0.5rem] bg-[#ffc36d] p-[1rem] rounded-[10px]">
             <span className="text-[24px] text-[#292929] font-bold leading-none">Order summary</span>
 
             <div className="flex items-center justify-between py-[0.5rem]">
-                <span className="text-[16px] text-[#292929] font-bold">Total ({fileQuantity}x)</span>
-                <span className="text-[16px] text-[#cc4c02] font-bold">{currencyFormat(Number(subTotalPrice))}</span>
+                <span className="text-[16px] text-[#292929] opacity-80">Total ({fileQuantity}x)</span>
+                <span className="text-[16px] text-[#292929] font-bold">{currencyFormat(Number(subTotalPrice))}</span>
             </div>
 
             <button onClick={handleConfirmOrder} className="bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">

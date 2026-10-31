@@ -26,9 +26,9 @@ function DocumentItem ({
     const isConfigured = !!file.configuration?.length;
 
     return (
-        <div className={`fade-up relative group flex items-start w-full p-[1rem] gap-[0.5rem] bg-[#ffdca5] cursor-pointer rounded-[10px] transition-all duration-200`}>
+        <div className={`fade-up relative group flex items-start w-full p-[1rem] gap-[0.5rem] bg-[#fff8ec] shadow-lg cursor-pointer rounded-[5px] transition-all duration-200`}>
             
-            <span className={`absolute bottom-3 left-3 px-[0.5rem] py-[0.2rem] text-[10px]  font-bold leading-none ${isConfigured ? 'text-[#498d49] bg-[#CCFFCC]' : 'text-[#292929]/75 bg-[#fff]'} rounded-full text-nowrap`}>
+            <span className={`absolute bottom-3 left-3 px-[0.5rem] py-[0.2rem] text-[10px] font-bold leading-none ${isConfigured ? 'text-[#fff] bg-[#498d49]' : 'text-[#292929]/75 bg-[#fff]'} rounded-full text-nowrap`}>
                 {
                     isConfigured
                         ? 'CONFIGURED'
@@ -53,6 +53,11 @@ function DocumentItem ({
                 </div>
 
                 <div className="flex justify-end w-full gap-[0.2rem]  transition-all duration-100">
+                    <button type="button" title="Remove file" onClick={handleRemoveFile} className="flex items-center justify-center hover:bg-[#fff0d3] active:bg-transparent p-[0.5rem] px-[1rem] rounded-full cursor-pointer transition-all duration-100">
+                        {/* <Close className="size-5 opacity-90" /> */}
+                        <span className='text-[12px] font-bold text-[#ff0000] leading-none'>REMOVE</span>
+                    </button>
+
                     <button type="button" title="Configure file" onClick={onSelectFile} className="flex items-center justify-center bg-[#292929] hover:bg-[#141414] active:bg-[#292929]/90 p-[0.5rem] px-[1rem] rounded-full cursor-pointer transition-all duration-100">
                         {/* <Settings className="size-5" /> */}
                         <span className='text-[12px] text-[#fff] leading-none'>
@@ -62,15 +67,10 @@ function DocumentItem ({
                             }
                         </span>
                     </button>
-                    <button type="button" title="Remove file" onClick={handleRemoveFile} className="flex items-center justify-center bg-[#ff0000] hover:bg-[#b90000] active:bg-[#ff0000] p-[0.5rem] px-[1rem] rounded-full cursor-pointer transition-all duration-100">
-                        {/* <Close className="size-5 opacity-90" /> */}
-                        <span className='text-[12px] text-[#fff] leading-none'>REMOVE</span>
-                    </button>
                 </div>
             </div>
-
         </div>
-)
+    )
 }
 
 export default DocumentItem

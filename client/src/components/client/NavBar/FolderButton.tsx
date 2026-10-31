@@ -13,7 +13,7 @@ function FolderButton ({closeDropdowns}:FolderButtonProp) {
 
     return (
         <div onClick={closeDropdowns} className='relative'>
-            <Link to="/folder" className={`relative flex items-center justify-center w-[2.5rem] h-[2.5rem] bg-[#fff] active:bg-[#f2f2f2] rounded-[10px] cursor-pointer transition-all duration-100`}>
+            <Link to="/folder" className={`relative flex items-center justify-center w-[2.5rem] h-[2.5rem] bg-[#fff] active:bg-[#f2f2f2] rounded-[10px] shadow-lg cursor-pointer transition-all duration-100`}>
                 <div className="flex items-center gap-[0.3rem]">
                     <Folder className="size-6 opacity-80" />
                     {/* <span className="text-[14px] text-[#292929] font-bold leading-none">Folder</span> */}

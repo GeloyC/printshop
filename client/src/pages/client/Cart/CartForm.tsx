@@ -67,14 +67,14 @@ function CartForm ({ configurations }: CartFormProp) {
 
     return (
         <>
-            <div className="fade-up relative grid flex-1 grid-cols-[6fr_2fr] items-stretch w-full gap-[1rem]">
+            <div className="relative grid flex-1 grid-cols-[5fr_2fr] items-stretch w-full gap-[1rem]">
 
                 <section className="flex flex-col items-start w-full min-h-full gap-[1rem] rounded-t-[15px]">
                     <div className="flex items-center gap-[0.5rem]">
                         <ReturnButton 
-                            color="#fff"
+                            color="#292929"
                         />
-                        <span className="text-[24px] text-[#fff] font-bold leading-none">Cart</span>
+                        <span className="text-[24px] text-[#292929] font-bold leading-none">Cart</span>
                     </div>
 
                     {/* Item block */}

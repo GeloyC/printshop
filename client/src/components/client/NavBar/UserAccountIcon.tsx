@@ -32,11 +32,11 @@ function UserAccountIcon ({
     }); 
 
     return (
-        <div className="relative flex items-center gap-[0.5rem]">
+        <div className="relative flex items-center gap-[0.5rem] ">
             <button onClick={()=>{
                 setIsAccountDropdownOpen(open=>!open)
                 closeNotif()
-            }} className="flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded-[10px] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] border-2 border-[#fff] cursor-pointer transition-all duration-200">
+            }} className="flex items-center justify-center w-[2.5rem] h-[2.5rem] rounded-[10px] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] border-2 border-[#ff6b00] shadow-lg cursor-pointer transition-all duration-200">
                 {user?.profile_url ? (
                     // add the url image from cloudinary or other cloud service provider later
                     <img src="" alt="" />
