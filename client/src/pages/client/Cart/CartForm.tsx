@@ -24,9 +24,10 @@ import type { fileConfigType, fileItem } from "../../../types/FileType"
 
 type CartFormProp = {
     configurations: fileConfigType[]
+    orderItems: fileItem[]
 }
 
-function CartForm ({ configurations }: CartFormProp) {
+function CartForm ({ configurations, orderItems }: CartFormProp) {
     
     const { items, setItems } = useCartContext();
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
@@ -79,15 +80,23 @@ function CartForm ({ configurations }: CartFormProp) {
 
                     {/* Item block */}
                     <div className="flex flex-col w-full gap-[0.5rem]">
-                        {items.map(file => (
+                        {/* {items.map(file => (
                                 <CartItem key={file.id}
                                     file={file}
                                     openAlert={()=>handleOpenDeleteAlert(file)}
                                     openConfiguration={()=>handleOpenConfiguration(file)}
-                                    setItems={setItems}
+                                    // setItems={setItems}
                                 />
                             )
-                        )}
+                        )} */}
+
+                        {orderItems.map(order => (
+                            <CartItem key={order.id}
+                                order={order}
+                                openAlert={()=>handleOpenDeleteAlert(order)}
+                                openConfiguration={()=>handleOpenConfiguration(order)}
+                            />
+                        ))}
                     </div>
                 </section>
 

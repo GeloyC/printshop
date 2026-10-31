@@ -58,6 +58,12 @@ class OrderItemController extends Controller
         $orderFileItem = OrderFileItem::create([
             'user_id' => $user_id,
             'file_url' => $path,
+            'metadata' => [
+                'file_name' => $file->getClientOriginalName(),
+                'file_size' => $file->getSize(),
+                'file_type' => $file->getMimeType(),
+                'last_modified' => now()->toISOString(), 
+            ],
             'configuration' => $validated['configuration'],
             'additional_instruction' => $validated['additional_instruction'] ?? null,
             'slug' => $validated['slug'],
@@ -71,4 +77,13 @@ class OrderItemController extends Controller
             'data' => $orderFileItem 
         ]);
     } 
+
+
+    public function index(String $user_id) {
+        $orders = OrderFileItem::query()
+            ->where('user_id', $user_id)
+            ->get();
+
+        return response()->json($orders);
+    }
 }

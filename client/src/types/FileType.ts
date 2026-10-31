@@ -6,10 +6,17 @@ export type fileConfigType = {
     slug: string
 }
 
+type Metadata = {
+    file_name: string,
+    file_size: number,
+    file_type: string,
+    last_modified: string
+}
 
 export type fileItem = {
     id: string,
     file: File,
+    metadata?: Metadata,
     quantity: number,
     slug: string,
     configuration?: SelectedOption[],

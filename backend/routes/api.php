@@ -23,6 +23,7 @@ Route::get("/service/{slug}/configuration", [ServiceController::class, 'getConfi
 
 Route::middleware(['auth'])->group(function () {
     Route::post("/order/add-to-cart/{user_id}", [OrderItemController::class, 'store']);
+    Route::get("/order/cart/{user_id}", [OrderItemController::class, 'index']);
 });
 
 

@@ -87,7 +87,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     } 
 
     const queryClient = useQueryClient();
-    const handleAddToCart = useMutation({
+    const handleAddToCart = useMutation<any[], Error, void>({
         mutationFn: async () => {
             const responses = [];
 

@@ -37,6 +37,7 @@ return new class extends Migration
             $table->foreignUuid('user_id')
                 ->constrained('users');
             $table->string('file_url');
+            $table->jsonb('metadata');
             $table->jsonb('configuration');
             $table->string('slug');
             $table->longtext('additional_instruction')

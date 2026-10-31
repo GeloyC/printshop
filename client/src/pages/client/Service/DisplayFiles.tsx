@@ -10,10 +10,8 @@ import ArrowWithTail from '/src/assets/icon/arrow-with-tail.svg?react'
 import Delete from "/src/assets/icon/add.svg?react";
 import AddIcon from '/src/assets/icon/add.svg?react'
 
-import { useCartContext } from "../../../context/cartContext";
 import type { fileItem } from "../../../types/FileType";
 import type { UseMutationResult } from "@tanstack/react-query";
-import type { AxiosResponse } from "axios";
 
 // services
 
@@ -24,7 +22,7 @@ type DisplayFilesProp =  {
     files: fileItem[];
     setError: React.Dispatch<SetStateAction<string>>;
     slug: string;
-    handleAddToCart: UseMutationResult<AxiosResponse, Error, void>;
+    handleAddToCart: UseMutationResult<any[], Error, void, unknown>;
     setFileSetupModalOpen: React.Dispatch<SetStateAction<boolean>>,
     serviceName: string
     serviceDescription: string

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 #[Fillable([
     'user_id',
     'file_url', 
+    'metadata',
     'configuration', 
     'additional_instruction', 
     'slug', 
@@ -31,7 +32,8 @@ class OrderFileItem extends Model
             'updated_at' => 'datetime:M d, Y h:i A',
             'unit_price' => 'decimal:2',
             'total_price' => 'decimal:2',
-            'configuration' => 'array'
+            'configuration' => 'array',
+            'metadata' => 'array'
         ];
     }
 }
