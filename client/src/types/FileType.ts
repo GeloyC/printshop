@@ -6,7 +6,7 @@ export type fileConfigType = {
     slug: string
 }
 
-type Metadata = {
+export type Metadata = {
     file_name: string,
     file_size: number,
     file_type: string,

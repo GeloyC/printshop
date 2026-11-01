@@ -54,17 +54,11 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
         setIsConfigurationOpen(true)
     }
 
-    const handleDeleteFileFromCart = (filename:string, id: string) => {
-        setItems(files => files.filter(item => item.id === id ? null : item.id))
-        setIsDeleteAlertOpen(false)
 
-        setDeleteMessage(`${filename} deleted!`)
-        setTimeout(()=>setDeleteMessage(''), 3000)
-    }
 
-    // const subTotalPrice = items.reduce((a, b) => a + (b.total_price ?? 0), 0);
-
-    const subTotalPrice = items.reduce((a, b) => a + (b.total_price ?? 0), 0);
+    const subTotalPrice = orderItems.reduce(
+        (acc, items) => acc + (Number(items.total_price) 
+        ?? 0), 0);
 
     return (
         <>
@@ -93,7 +87,6 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
                         {orderItems.map(order => (
                             <CartItem key={order.id}
                                 order={order}
-                                openAlert={()=>handleOpenDeleteAlert(order)}
                                 openConfiguration={()=>handleOpenConfiguration(order)}
                             />
                         ))}
@@ -107,15 +100,6 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
             </div>
 
             
-            {isDeleteAlertOpen && (
-                <ModalWrapper>
-                    <DeleteItemFromCartAlert 
-                        file={selectedFile}
-                        closeAlert={()=>setIsDeleteAlertOpen(false)}
-                        handleDeleteFileFromCart={handleDeleteFileFromCart}
-                    />
-                </ModalWrapper>
-            )}
 
             {deleteMessage && <Toast message={deleteMessage} />} 
 

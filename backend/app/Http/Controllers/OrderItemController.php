@@ -82,8 +82,85 @@ class OrderItemController extends Controller
     public function index(String $user_id) {
         $orders = OrderFileItem::query()
             ->where('user_id', $user_id)
+            ->orderBy('created_at', 'asc')
             ->get();
 
         return response()->json($orders);
+    }
+
+    
+    public function addItemQuantity (String $id) {
+        $cart_item = OrderFileItem::findOrFail($id);
+
+        $currentQuantity = (int) $cart_item->quantity;
+        $unitPrice = (float) $cart_item->unit_price;
+
+        $newQuantity = $currentQuantity + 1;
+        $totalPrice = $unitPrice * $newQuantity;
+
+        $cart_item->refresh();
+
+        $cart_item->update([
+            'quantity' => $newQuantity,
+            'total_price' => $totalPrice
+        ]);
+
+
+        return response()->json($cart_item->fresh());
+    }
+
+
+    public function subtractItemQuantity (String $id) {
+        $cart_item = OrderFileItem::findOrFail($id);
+
+        $currentQuantity = (int) $cart_item->quantity;
+        $unitPrice = (float) $cart_item->unit_price;
+
+        $newQuantity = $currentQuantity - 1;
+        $totalPrice = $unitPrice * $newQuantity;
+
+        $cart_item->refresh();
+
+        $cart_item->update([
+            'quantity' => $newQuantity,
+            'total_price' => $totalPrice
+        ]);
+
+
+        return response()->json($cart_item->fresh());
+    }
+
+
+    public function destroy (String $id) {
+
+        $validator = Validator::make(
+            ['id' => $id],
+            [
+                'id' => ['required', 'uuid', 'exists:order_file_items,id'],
+            ]
+        );
+
+        if ($validator->fails()) {
+            return reponse()->json([
+                'message'=>'invalid id',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $file = OrderFileItem::query()
+            ->select('file_url')
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $disk = Storage::disk('r2');
+        $disk->delete($file->file_url);
+
+        $deleteItem = OrderFileItem::query()
+            ->where('id', $id)
+            ->delete($id);
+
+        return response()->json([
+            'message'=>'item delete'
+        ]);
     }
 }

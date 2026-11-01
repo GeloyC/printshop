@@ -24,6 +24,9 @@ Route::get("/service/{slug}/configuration", [ServiceController::class, 'getConfi
 Route::middleware(['auth'])->group(function () {
     Route::post("/order/add-to-cart/{user_id}", [OrderItemController::class, 'store']);
     Route::get("/order/cart/{user_id}", [OrderItemController::class, 'index']);
+    Route::patch("/order/cart/item/{id}/add", [OrderItemController::class, 'addItemQuantity']);
+    Route::patch("/order/cart/item/{id}/subtract", [OrderItemController::class, 'subtractItemQuantity']);
+    Route::delete("/order/cart/item/{id}/delete", [OrderItemController::class, 'destroy']);
 });
 
 

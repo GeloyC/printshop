@@ -20,7 +20,6 @@ function ServiceContainer ({
 
     return (
         <div className="fade-up absolute top-2 left-1/2 -translate-x-1/2 p-[0.5rem] flex flex-col min-w-0 bg-[#ff6b00] rounded-[15px] gap-[0.5rem]">
-            
                 <div className="flex items-center justify-between w-full p-[0.5rem] border-b border-[#fff]/50">
                     <span className="text-[14px] text-[#fff] font-bold leading-none">PICK A SERVICE</span>
 

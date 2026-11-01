@@ -1,18 +1,20 @@
 
 // icons
-import type { fileItem } from '../../../types/FileType'
+import type { SetStateAction } from 'react'
 import Warning from '/src/assets/icon/warning.svg?react'
 
 type DeleteItemFromCartAlertProp = {
-    file: fileItem | null
+    filename?: string
     closeAlert: () => void
-    handleDeleteFileFromCart: (filename: string, id: string) => void
+    setDeleteAlertOpen: React.Dispatch<SetStateAction<boolean>>
+    handleDeleteItem: () => void
 }
 
 function DeleteItemFromCartAlert ({
-    file,
+    filename,
     closeAlert,
-    handleDeleteFileFromCart
+    setDeleteAlertOpen,
+    handleDeleteItem
 }: DeleteItemFromCartAlertProp) {
 
 
@@ -24,7 +26,7 @@ function DeleteItemFromCartAlert ({
                 <Warning className="size-10" />
             </div>
 
-            <span className="text-[20px] text-[#292929] text-center font-bold w-[350px] text-wrap leading-none">Delete <strong className='text-[#ff6b00]'>{file?.file?.name}</strong> from cart?</span>
+            <span className="text-[20px] text-[#292929] text-center font-bold w-[350px] text-wrap leading-none">Delete <strong className='text-[#ff6b00]'>{filename}</strong> from cart?</span>
 
             <p className='text-[14px] text-[#292929] text-center opacity-75 w-[350px] text-wrap'>Just add an instruction/caution here later. Make it a bit long but not too long, ok?</p>
 
@@ -32,7 +34,7 @@ function DeleteItemFromCartAlert ({
                 <button onClick={closeAlert} className='w-[150px] rounded-[5px] py-[0.5rem] bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-transparent transition-all duration-100 cursor-pointer'>
                     <span className='text-[16px] text-[#292929] font-[600]'>Cancel</span>
                 </button>
-                <button onClick={()=>handleDeleteFileFromCart(String(file?.file?.name), String(file?.id))} className='w-[150px] rounded-[5px] py-[0.5rem] bg-[#ff0000] hover:bg-[#d50000] active:bg-[#ff0000] cursor-pointer'>
+                <button onClick={handleDeleteItem} className='w-[150px] rounded-[5px] py-[0.5rem] bg-[#ff0000] hover:bg-[#d50000] active:bg-[#ff0000] cursor-pointer'>
                     <span className='text-[16px] text-[#fff] font-[600]'>Delete</span>
                 </button>
             </div>

@@ -195,7 +195,7 @@ function DisplayFiles ({
                             </label>
                         </div>
 
-                        <button onClick={()=>handleAddToCart.mutate()} disabled={!shouldBlock} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock ? 'cursor-not-allowed opacity-50' : 'hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} bg-[#cc4c02] rounded-[10px] transition-all duration-100`}>
+                        <button onClick={()=>handleAddToCart.mutate()} disabled={!shouldBlock || handleAddToCart.isPending} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock || handleAddToCart.isPending ? 'cursor-not-allowed opacity-50' : 'hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} bg-[#cc4c02] rounded-[10px] transition-all duration-100`}>
                             <span className="text-[14px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">
                                 {handleAddToCart.isPending
                                     ? 'Adding to Cart'
