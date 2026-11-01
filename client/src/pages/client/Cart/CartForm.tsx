@@ -39,15 +39,11 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
 
     // ====================== AFTER CONFIGURATION SETUP MODAL BREAK ========================= //
 
-    const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState<boolean>(false);
+    const [skipDeleteConfirmation, setSkipDeleteConfirmation] = useState<boolean>(false);
     const [isConfigurationOpen, setIsConfigurationOpen] = useState<boolean>(false);
 
     const [deleteMessage, setDeleteMessage] = useState<string>('')
 
-    const handleOpenDeleteAlert = (file:fileItem) => {
-        setSelectedFile(file)
-        setIsDeleteAlertOpen(true)
-    }
 
     const handleOpenConfiguration = (file:fileItem) => {
         setSelectedFile(file)
@@ -88,6 +84,8 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
                             <CartItem key={order.id}
                                 order={order}
                                 openConfiguration={()=>handleOpenConfiguration(order)}
+                                setSkipDeleteConfirmation={setSkipDeleteConfirmation}
+                                skipDeleteConfirmation={skipDeleteConfirmation}
                             />
                         ))}
                     </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type SetStateAction } from 'react'
 import axios from 'axios'
 
 // icons
@@ -27,14 +27,20 @@ import LoadingSpinner from '../../../components/ui/LoadingSpinner/LoadingSpinner
 type CartItemProp = {
     order: fileItem
     openConfiguration: () => void
+    setSkipDeleteConfirmation: React.Dispatch<SetStateAction<boolean>>
+    skipDeleteConfirmation: boolean
 }
 
 function CartItem ({
     order,
-    openConfiguration
+    openConfiguration,
+    setSkipDeleteConfirmation,
+    skipDeleteConfirmation
 }: CartItemProp) {
     
     const [deleteAlertOpen, setDeleteAlertOpen] = useState<boolean>(false);
+
+    
 
     const { user } = useUserContext()
     const config = order?.configuration?.map(config => config.option).join(', ')
@@ -44,7 +50,20 @@ function CartItem ({
     const {mutate: deleteItem} = useDeleteCartItem(order.id, user.id);
     
 
+    const handleOpenAlert = () => {
+        if (skipDeleteConfirmation) {
+            deleteItem();
+            // setDeleteAlertOpen(false);
+            return;
+        }
+        
+        setDeleteAlertOpen(true)
+    }
 
+
+    useEffect(() => {
+        console.log('check status alert: ', skipDeleteConfirmation);
+    }, [skipDeleteConfirmation]);
 
     return (
         <>
@@ -105,7 +124,7 @@ function CartItem ({
                             </button>
                         </div>
 
-                        <button onClick={()=>setDeleteAlertOpen(true)} className='group cursor-pointer p-[0.3rem] bg-[#404040]/20 hover:bg-[#ffc36d] active:bg-[#404040]/20 rounded-[5px] transition-all duration-100'>
+                        <button onClick={handleOpenAlert} className='group cursor-pointer p-[0.3rem] bg-[#404040]/20 hover:bg-[#ffc36d] active:bg-[#404040]/20 rounded-[5px] transition-all duration-100'>
                             <Delete className='size-5 opacity-50 group-hover:opacity-100 group-active:opacity-50' color='#292929'/>
                         </button>
                     </div>
@@ -117,8 +136,12 @@ function CartItem ({
                     <DeleteItemFromCartAlert 
                         filename={order?.metadata?.file_name}
                         closeAlert={()=>setDeleteAlertOpen(false)}
-                        setDeleteAlertOpen={setDeleteAlertOpen}
-                        handleDeleteItem={()=>deleteItem()}
+                        setSkipDeleteConfirmation={setSkipDeleteConfirmation}
+                        skipDeleteConfirmation={skipDeleteConfirmation}
+                        handleDeleteItem={()=>{
+                            deleteItem()
+                            setDeleteAlertOpen(false);
+                        }}
                     />
                 </ModalWrapper>
             )}

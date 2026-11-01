@@ -1,22 +1,23 @@
 
 // icons
-import type { SetStateAction } from 'react'
+import { useEffect, type SetStateAction } from 'react'
 import Warning from '/src/assets/icon/warning.svg?react'
 
 type DeleteItemFromCartAlertProp = {
     filename?: string
     closeAlert: () => void
-    setDeleteAlertOpen: React.Dispatch<SetStateAction<boolean>>
+    setSkipDeleteConfirmation: React.Dispatch<SetStateAction<boolean>>
+    skipDeleteConfirmation: boolean,
     handleDeleteItem: () => void
 }
 
 function DeleteItemFromCartAlert ({
     filename,
     closeAlert,
-    setDeleteAlertOpen,
+    setSkipDeleteConfirmation,
+    skipDeleteConfirmation,
     handleDeleteItem
 }: DeleteItemFromCartAlertProp) {
-
 
 
     return (
@@ -37,6 +38,16 @@ function DeleteItemFromCartAlert ({
                 <button onClick={handleDeleteItem} className='w-[150px] rounded-[5px] py-[0.5rem] bg-[#ff0000] hover:bg-[#d50000] active:bg-[#ff0000] cursor-pointer'>
                     <span className='text-[16px] text-[#fff] font-[600]'>Delete</span>
                 </button>
+            </div>
+
+            <div className='flex items-center gap-[0.3rem]'>
+                <input type="checkbox" name="dont-show-check" id="dont-show-check" checked={skipDeleteConfirmation} 
+                onChange={(e)=>setSkipDeleteConfirmation(e.target.checked)}
+                className="cursor-pointer"/>
+                <label htmlFor="dont-show-check"
+                className='text-[14px] font-bold text-[#292929] leading-none opacity-75'>
+                    Don't show this again.
+                </label>
             </div>
         </div>
     )
