@@ -1,5 +1,5 @@
 import { useContext, createContext, useState, type SetStateAction } from "react";
-import type { fileItem } from "../types/FileType";
+import type { fileItem } from "../types/file.type";
 
 
 type cartContextProp = {

@@ -5,7 +5,7 @@ import SelectedServiceForm from "./SelectedServiceForm";
 
 // service
 
-import { useAdminSelectedService } from "../../../hooks/services/useSelectedService";
+import { useAdminSelectedService } from "../../../hooks/services/selected_service.hook";
 
 function SelectedService () {
 

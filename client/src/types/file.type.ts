@@ -1,14 +1,8 @@
-import type { Configuration } from "./service/service"
+import type { Configuration } from "./service/service.type"
 
 export type fileConfigType = {
     id: string,
     configuration: Configuration[],
-    slug: string
-}
-
-export type IndivFileConfigType = {
-    id: string,
-    configuration: Configuration,
     slug: string
 }
 
@@ -31,11 +25,18 @@ export type fileItem = {
     total_price?: number
 }
 
-
-
 export type SelectedOption = { // for confiugred file
     id: string,
     category: string,
     option: string,
     price: number
+}
+
+export type SelectedOptions = Record<string, SelectedOption[]>;
+
+
+export type UpdatedConfigPayload = {
+    configuration: SelectedOption[],
+    additional_instruction?: string,
+    quantity?: number
 }

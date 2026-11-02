@@ -20,7 +20,7 @@ function ConfigItemWrapper ({ configLabel, configType, children }: ConfigItemWra
                 className={`${
                     isGridType
                         ? 'flex items-center'
-                        : 'grid grid-cols-2'
+                        : 'flex flex-wrap'
                 } w-full gap-1`}
             >
                 { children }

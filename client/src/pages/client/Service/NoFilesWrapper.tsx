@@ -3,7 +3,7 @@
 // icon 
 import UploadBig from '/src/assets/icon/upload_big.svg?react'
 import Document from '/src/assets/icon/document.svg?react'
-import type { fileItem } from "../../../types/FileType";
+import type { fileItem } from "../../../types/file.type";
 import type { SetStateAction } from "react";
 
 type NoFilesWrapperProp = {

@@ -7,7 +7,7 @@ import Settings from '/src/assets/icon/settings.svg?react'
 import Close from '/src/assets/icon/delete.svg?react'
 
 
-import type { fileItem } from '../../../types/FileType'
+import type { fileItem } from '../../../types/file.type'
 
 
 interface DocumentItemProp  {

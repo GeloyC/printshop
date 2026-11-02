@@ -18,7 +18,7 @@ import CartButton from "./CartButton";
 // hooks
 import ServiceContainer from "./Services/ServiceContainer";
 import { useServiceNames } from "../../../hooks/services/UseServiceNames";
-import { useGetCartItems } from "../../../hooks/cart/orderItems";
+import { useGetCartItems } from "../../../hooks/cart/order_item.hook";
 import { useLoginContext } from "../../../context/loginContext";
 
 function NavBar () {

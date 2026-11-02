@@ -11,7 +11,7 @@ import Toast from "../../../components/ui/Toast"
 
 
 import { useCartContext } from "../../../context/cartContext"
-import type { fileConfigType, fileItem } from "../../../types/FileType"
+import type { fileConfigType, fileItem } from "../../../types/file.type"
 import ConfigurationSetupModalCart from "../../../components/modal/client/ConfigurationSetupModalCart"
 
 
@@ -29,14 +29,7 @@ type CartFormProp = {
 }
 
 function CartForm ({ configurations, orderItems }: CartFormProp) {
-    
-    const { items, setItems } = useCartContext();
-    // const [selectedFile, setSelectedFile] = useState<IndivFileItem|null>(null);
 
-
-    
-
-    // ====================== AFTER CONFIGURATION SETUP MODAL BREAK ========================= //
 
     const [skipDeleteConfirmation, setSkipDeleteConfirmation] = useState<boolean>(false);
     const [itemSetupModalOpen, setItemSetupModalOpen] = useState<boolean>(false);
@@ -82,7 +75,7 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
                 </section>
 
                 <OrderSummary 
-                    fileQuantity={items.length}
+                    fileQuantity={orderItems.length}
                     subTotalPrice={subTotalPrice}
                 />
             </div>

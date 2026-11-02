@@ -1,5 +1,5 @@
 import ServiceItem from "../../../components/client/services/ServiceItem"
-import type { ServiceItemType } from "../../../types/service/service"
+import type { ServiceItemType } from "../../../types/service/service.type"
 
 
 

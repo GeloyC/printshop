@@ -3,9 +3,9 @@ import { useEffect, useState, type SetStateAction } from 'react';
 
 // icons
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react'
-import type { ConfigurationOptions } from '../../../types/service/service';
-import type { SelectedOptions } from '../../modal/client/ConfigurationSetupModal';
-import type { fileConfigType } from '../../../types/FileType';
+import type { ConfigurationOptions } from '../../../types/service/service.type';
+import type { SelectedOptions } from '../../../types/file.type';
+import type { fileConfigType } from '../../../types/file.type';
 
 
 type DropdownTypeProp = {

@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import ServiceClientForm from "./ServiceClientForm";
-import { useClientSelectedService } from "../../../hooks/services/useSelectedService";
+import { useClientSelectedService } from "../../../hooks/services/selected_service.hook";
 import { useServiceConfiguration } from "../../../hooks/services/useServices";
 
 import TopLoadingBar from "../../../components/ui/TopLoadingBar";

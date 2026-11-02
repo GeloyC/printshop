@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUser } from '../api/user';
 
 
-import type { UserType } from '../types/UserType';
+import type { UserType } from '../types/user.type';
 
 type UserContextType = {
     user: UserType,

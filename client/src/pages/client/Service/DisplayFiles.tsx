@@ -10,7 +10,7 @@ import ArrowWithTail from '/src/assets/icon/arrow-with-tail.svg?react'
 import Delete from "/src/assets/icon/add.svg?react";
 import AddIcon from '/src/assets/icon/add.svg?react'
 
-import type { fileItem } from "../../../types/FileType";
+import type { fileItem } from "../../../types/file.type";
 import type { UseMutationResult } from "@tanstack/react-query";
 
 // services

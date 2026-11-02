@@ -33,7 +33,7 @@ function OrderSummary ({ fileQuantity, subTotalPrice }: OrderSummaryProp) {
 
 
     return (
-        <section className="sticky top-[5rem] flex flex-col h-fit gap-[0.5rem] bg-[#ffc36d] p-[1rem] rounded-[10px]">
+        <section className="sticky top-[5rem] flex flex-col h-fit gap-[0.5rem] rounded-[10px]">
             <span className="text-[24px] text-[#292929] font-bold leading-none">Order summary</span>
 
             <div className="flex items-center justify-between py-[0.5rem]">

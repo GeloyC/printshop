@@ -1,7 +1,7 @@
 import ConfigurationItem from "../../../components/admin/ServiceConfiguration/ConfigurationItem";
 
 // types
-import type { Configuration } from "../../../types/service/service";
+import type { Configuration } from "../../../types/service/service.type";
 import type { SetStateAction } from "react";
 
 interface SSConfigurationProp {

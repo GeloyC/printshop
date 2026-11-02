@@ -5,7 +5,7 @@ import type {
     Configuration,
     ConfigurationOptions,
     ConfigurationType
-} from "../../../types/service/service";
+} from "../../../types/service/service.type";
 
 import { useState, type SetStateAction } from "react";
 

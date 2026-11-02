@@ -12,30 +12,16 @@ import RadioType from '../../ui/ConfigurationType/RadioType';
 import DropdownType from '../../ui/ConfigurationType/DropdownType';
 import TextType from '../../ui/ConfigurationType/TextType';
 
-import type { fileItem, fileConfigType, SelectedOption } from '../../../types/FileType';
+import type { 
+    fileItem, 
+    fileConfigType, 
+    SelectedOptions 
+} from '../../../types/file.type';
 import { useUserContext } from '../../../context/userContext';
-import { useUpdateCartItemConfiguration } from '../../../hooks/cart/orderItems';
+import { useUpdateCartItemConfiguration } from '../../../hooks/cart/order_item.hook';
 
-/* 
-SelectedOption = {
-    id: string,
-    category: string,
-    option: string,
-    price: number
-}
-*/
 
-/*
-fileItem = {
-    id: string,
-    file: File,
-    quantity: number
-    slug: string,
-    configuration?: fileConfigType
-}
-*/
 
-export type SelectedOptions = Record<string, SelectedOption[]>;
 
 interface ModalProp {
     selectedFile: fileItem | null
@@ -55,13 +41,9 @@ function ConfigurationSetupModal ({
     setFileSetupModalOpen
 }: ModalProp ) {
 
-    const { user } = useUserContext();
-    // const { mutate: updatedItemConfiguration } = useUpdateCartItemConfiguration( user.id);
-
 
     const [quantity, setQuantity] = useState<number>(selectedFile?.quantity ?? 1);
     const [additionalInstruction, setAdditionalInstruction] = useState<string>(selectedFile?.additional_instruction ?? '');
-    // const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({});
 
     const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>(() => {
         const savedOptions = selectedFile?.configuration ?? [];
@@ -74,8 +56,6 @@ function ConfigurationSetupModal ({
             if (!config) return acc;
 
             acc[config.id] = [...(acc[config.id] ?? []), option];
-
-            
 
             return acc;
         }, {});

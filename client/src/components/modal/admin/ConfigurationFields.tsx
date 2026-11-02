@@ -13,7 +13,7 @@ import type {
     Configuration,
     ConfigurationOptions,
     ConfigurationType
-} from "../../../types/service/service"
+} from "../../../types/service/service.type"
 import TextType from "../../ui/ConfigurationType/TextType";
 
 interface ConfigurationProps {

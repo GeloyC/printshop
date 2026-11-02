@@ -1,6 +1,6 @@
 import TopLoadingBar from "../../../components/ui/TopLoadingBar";
 import { useUserContext } from "../../../context/userContext";
-import { useGetCartItems } from "../../../hooks/cart/orderItems";
+import { useGetCartItems } from "../../../hooks/cart/order_item.hook";
 import { useServiceConfigurations } from "../../../hooks/services/useServices"
 import CartForm from "./CartForm"
 

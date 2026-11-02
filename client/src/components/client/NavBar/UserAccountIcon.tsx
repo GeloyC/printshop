@@ -1,6 +1,6 @@
 
 import { logout } from "../../../api/user";
-import type { UserType } from "../../../types/UserType";
+import type { UserType } from "../../../types/user.type";
 import { type SetStateAction } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";

@@ -1,7 +1,7 @@
 
 
 import { Link } from 'react-router-dom';
-import type { ServiceItemType } from '../../../types/service/service';
+import type { ServiceItemType } from '../../../types/service/service.type';
 import { ThumbnailUrl } from '../../../utils/cloudflarePublicURL';
 
 type ServiceItemProp = {

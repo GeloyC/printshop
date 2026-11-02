@@ -9,7 +9,7 @@ import type {
     Configuration, 
     SelectedServiceType,
     fileRequirement
-} from "../../../types/service/service";
+} from "../../../types/service/service.type";
 
 // components
 import SelectedServiceBasicInformation from "./SelectedServiceBasicInformation";

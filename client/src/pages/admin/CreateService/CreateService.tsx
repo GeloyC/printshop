@@ -18,7 +18,7 @@ import ReturnButton from "../../../components/ui/ReturnButton";
 import type { 
     BasicInformationType,
     Configuration 
-} from "../../../types/service/service";
+} from "../../../types/service/service.type";
 
 // service
 import { createService } from "../../../api/service";

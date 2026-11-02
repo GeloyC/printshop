@@ -19,7 +19,7 @@ type OptionProp = {
 function CheckboxType ({ id, option, price, onSelect, selected, labelKey }: OptionProp) {
 
     return (
-        <div className={`group flex w-full z-20 rounded-[5px]
+        <div className={`group flex w-full z-20 rounded-full
             ${selected 
                 ? 'border border-[#ff6b00] bg-[#fff0d3]' 
                 : 'border border-[#292929]/15 hover:border-[#292929]/35 active:border-[#292929]/15 bg-[#f2f2f2]/50'

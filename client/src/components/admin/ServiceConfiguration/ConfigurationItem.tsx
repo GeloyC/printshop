@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import type { Configuration } from "../../../types/service/service";
+import type { Configuration } from "../../../types/service/service.type";
 
 // icons
 import Delete from '/src/assets/icon/delete.svg?react'

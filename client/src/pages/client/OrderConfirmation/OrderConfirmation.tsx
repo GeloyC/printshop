@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 import BoxCheck from '/src/assets/icon/box-with-check.svg?react'
 import Exclamation from '/src/assets/icon/exclamation-mark.svg?react'
 import currencyFormat from '../../../utils/currencyFormat';
-import type { fileItem } from '../../../types/FileType';
+import type { fileItem } from '../../../types/file.type';
 
 
 // Retrieve the order items from the server and display all the files included on the order

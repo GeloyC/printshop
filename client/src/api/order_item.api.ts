@@ -1,6 +1,6 @@
 import api from "./api";
 
-import type { Metadata, SelectedOption } from "../types/FileType";
+import type { fileConfigType, Metadata, SelectedOption, UpdatedConfigPayload } from "../types/file.type";
 
 interface CartItem {
     id: string,
@@ -41,7 +41,14 @@ export async function deleteCartItem (item_id: string) {
     return response.data;
 }
 
-export async function updateCartItemConfiguration (item_id: string) {
-    const response = await api.patch(`/api/order/cart/item/${item_id}/configuration`);
+
+
+export async function updateCartItemConfiguration (
+    item_id: string, 
+    payload: Partial<UpdatedConfigPayload>
+) {
+    const response = await api.patch(`/api/order/cart/item/${item_id}/configuration`, 
+        payload
+    );
     return response.data;
 }

@@ -10,11 +10,10 @@ import ModalWrapper from "../../../components/wrapper/ModalWrapper";
 import ConfigurationSetupModal from "../../../components/modal/client/ConfigurationSetupModal";
 import Toast from "../../../components/ui/Toast";
 
-import type { fileItem } from "../../../types/FileType";
+import type { fileItem } from "../../../types/file.type";
 import RedirectAlert from "../../../components/ui/RedirectAlert";
-import type { Configuration } from "../../../types/service/service";
-import { useCartContext } from "../../../context/cartContext";
-import { AddItemToCart } from "../../../api/orderItem";
+import type { Configuration } from "../../../types/service/service.type";
+import { AddItemToCart } from "../../../api/order_item.api";
 import { useUserContext } from "../../../context/userContext";
 import TopLoadingBar from "../../../components/ui/TopLoadingBar";
 import { useLoginContext } from "../../../context/loginContext";

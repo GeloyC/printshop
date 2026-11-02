@@ -170,18 +170,26 @@ class OrderItemController extends Controller
             ->where('id', $id)
             ->firstOrFail();
 
-        $request->configuration->json_decode([
-            $request->input('configuration', ''),
-            true
-        ]);
-        
+        $unitPrice = (float) $item->unit_price;
+
         $validated = $request->validate([
-            'configuration' => ['required', 'array']
+            'configuration' => ['sometimes', 'array'],
+            'additional_instruction' => ['sometimes', 'nullable', 'string'],
+            'quantity' => ['sometimes', 'integer', 'min:1']
         ]);
+
+        $quantity = (int) $validated['quantity'];
+        $totalPrice = (float) $quantity * $unitPrice;
 
         $updatedConfiguration = OrderFileItem::query()
             ->where('id', $id)
-            ->update('configuration', $request->configuration);
+            ->update([
+                'configuration' => $validated['configuration'] ?? null,
+                'additional_instruction' => $validated['additional_instruction'] ?? null,
+                'quantity' => $validated['quantity'] ?? null,
+                'total_price' => $totalPrice
+
+            ]);
 
         return response()->json([
             'message' => 'configuration updated',

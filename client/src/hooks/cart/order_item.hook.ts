@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addItemQuantity, deleteCartItem, getAllCartItems, subtractItemQuantity, updateCartItemConfiguration } from "../../api/orderItem";
+import { addItemQuantity, deleteCartItem, getAllCartItems, subtractItemQuantity, updateCartItemConfiguration } from "../../api/order_item.api";
 import axios from "axios";
+import type { UpdatedConfigPayload } from "../../types/file.type";
 
 
 
@@ -68,11 +69,28 @@ export function useDeleteCartItem (item_id: string,  user_id: string) {
 }
 
 
-export function useUpdateCartItemConfiguration (item_id: string, user_id:string) {
+
+export function useUpdateCartItemConfiguration (item_id: string,user_id: string ) {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ()=>updateCartItemConfiguration(item_id),
+        mutationFn: async (
+            payload: Partial<UpdatedConfigPayload>
+        ) => {
+            try {
+                return await updateCartItemConfiguration(
+                    item_id, 
+                    payload
+                );
+            } catch (err: unknown) {
+                if (axios.isAxiosError(err)) {
+                    console.error('Status:', err.response?.status);
+                    console.error('Response:', err.response?.data);
+                } else {
+                    console.error('Unexpected error: ', err);
+                }
+            }
+        },
         onSuccess: ()=>queryClient.invalidateQueries({ queryKey:['cart-items', user_id] }),
         onError: (err:unknown) => {
             if (axios.isAxiosError(err)) {

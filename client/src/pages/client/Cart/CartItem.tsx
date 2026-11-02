@@ -12,10 +12,10 @@ import Service from '/src/assets/icon/service.svg?react'
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react';
 
 
-import type { fileItem } from '../../../types/FileType'
+import type { fileConfigType, fileItem, SelectedOption } from '../../../types/file.type'
 import currencyFormat from '../../../utils/currencyFormat'
 import makeSlugCapital from '../../../utils/makeSlugCapital'
-import { useAddCartItemQuantity, useDeleteCartItem, useSubtractCartItemQuantity } from '../../../hooks/cart/orderItems'
+import { useAddCartItemQuantity, useDeleteCartItem, useSubtractCartItemQuantity } from '../../../hooks/cart/order_item.hook'
 import { useUserContext } from '../../../context/userContext'
 import ModalWrapper from '../../../components/wrapper/ModalWrapper'
 import DeleteItemFromCartAlert from '../../../components/modal/client/DeleteItemFromCartAlert'
@@ -39,11 +39,10 @@ function CartItem ({
 }: CartItemProp) {
     
     const [deleteAlertOpen, setDeleteAlertOpen] = useState<boolean>(false);
-
     
 
     const { user } = useUserContext()
-    const config = order?.configuration?.map(config => config.option).join(', ')
+    const configuration = order?.configuration?.map(config => config.option).join(', ')
 
     const {mutate: addQuantity, isPending: isAddPending} = useAddCartItemQuantity(order.id, user.id);
     const {mutate: subtractQuantity, isPending: isSubtractPending} = useSubtractCartItemQuantity(order.id, user.id);
@@ -53,18 +52,17 @@ function CartItem ({
     const handleOpenAlert = () => {
         if (skipDeleteConfirmation) {
             deleteItem();
-            // setDeleteAlertOpen(false);
             return;
         }
-        
         setDeleteAlertOpen(true)
     }
 
 
+    console.log('config on orderItem: ', order);
 
     return (
         <>
-            <div className={`flex flex-col w-full p-[1rem] gap-[0.3rem] bg-[#fff0d3] border border-[#ffc36d] rounded-[5px]`}>
+            <div className={`flex flex-col w-full p-[1rem] gap-[0.3rem] bg-[#fff] border border-[#292929]/25 rounded-[5px]`}>
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-[0.5rem]">
                         {order?.metadata?.file_type == 'application/pdf' ? (
@@ -90,11 +88,13 @@ function CartItem ({
                             <span className='text-[14px] leading-tight'>Unit price: {currencyFormat(Number(order?.unit_price))}</span>
                         </div>
 
-                        <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] p-[0.3rem] px-[0.5rem] bg-[#ffc36d] active:bg-[#ffdca5] hover:opacity-100 rounded-[10px] cursor-pointer'>
+                        <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] p-[0.3rem] px-[0.5rem] active:bg-[#ffdca5] hover:opacity-100 rounded-[10px] cursor-pointer'>
                             <ConfigIcon className='size-4' />
-                            <span className="text-[14px] font-bold leading-tight">{config}</span>
+                            <span className="text-[14px] font-bold leading-tight underline">{configuration}</span>
                             <Arrow className="size-4 rotate-180 group-hover:translate-x-1 group-active:translate-x-1 transition-all duration-100" />
                         </button>
+
+                        
 
                     </div>
 
@@ -121,7 +121,7 @@ function CartItem ({
                             </button>
                         </div>
 
-                        <button onClick={handleOpenAlert} className='group cursor-pointer p-[0.3rem] bg-[#404040]/20 hover:bg-[#ffc36d] active:bg-[#404040]/20 rounded-[5px] transition-all duration-100'>
+                        <button onClick={handleOpenAlert} className='group cursor-pointer p-[0.3rem]  rounded-[5px] transition-all duration-100'>
                             <Delete className='size-5 opacity-50 group-hover:opacity-100 group-active:opacity-50' color='#292929'/>
                         </button>
                     </div>

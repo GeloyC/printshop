@@ -3,7 +3,7 @@
 import ServiceItem from './ServiceItem';
 
 // type
-import type { ServiceItemType } from '../../../types/service/service';
+import type { ServiceItemType } from '../../../types/service/service.type';
 
 type ServiceListAdminProp = {
     services: ServiceItemType[]

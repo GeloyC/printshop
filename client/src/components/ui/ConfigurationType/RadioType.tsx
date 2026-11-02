@@ -15,7 +15,7 @@ function RadioType ({ id, option, price, onSelect, selected, labelKey }: OptionP
 
     return (
         <div 
-        className={`group flex w-full bg-[#f2f2f2]/50 rounded-[5px] z-20 
+        className={`group flex w-fit bg-[#f2f2f2]/50 rounded-full z-20
             ${selected 
                 ? 'border border-[#ff6b00] bg-[#fff0d3]' 
                 : 'border border-[#292929]/15 hover:border-[#292929]/35 active:border-[#292929]/15'
@@ -29,7 +29,7 @@ function RadioType ({ id, option, price, onSelect, selected, labelKey }: OptionP
 
             />
             <label htmlFor={id}
-            className={`flex items-center justify-between w-full gap-[0.5rem] p-[0.75rem] cursor-pointer`}>
+            className={`flex items-center justify-between w-full gap-[1rem] p-[0.75rem] cursor-pointer`}>
                 <div className="flex gap-[0.5rem]">
                     <div className={`w-3 h-2 border-2 p-[0.3rem] rounded-full
                         ${selected
@@ -40,7 +40,7 @@ function RadioType ({ id, option, price, onSelect, selected, labelKey }: OptionP
                     <span className={`text-[14px] ${selected ? 'text-[#ff6b00]' : 'text-[#292929]'} text-wrap font-bold leading-none`}>{option}</span>
                 </div>
 
-                <span className={`text-[14px] text-[#ff6b00] text-wrap font-bold leading-none`}>{currencyFormat(price)}</span>
+                <span className={`text-[14px] ${selected ? 'text-[#ff6b00]' : 'text-[#292929]'} text-wrap font-bold leading-none`}>{currencyFormat(price)}</span>
             </label>
         </div>
     )
