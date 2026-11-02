@@ -4,7 +4,7 @@
 * ServiceClient component must require a urlParams 'slug' to identify which service to display
 * TODO: create helper functions that will be called according to service selected.
 */
-
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 
 import ServiceClientForm from "./ServiceClientForm";
@@ -20,9 +20,9 @@ function ServiceClient () {
     const { data: service, isPending } = useClientSelectedService(String(slug));
     const { data: configurations = [] } = useServiceConfiguration(String(slug));
 
+    const [loginOpen, setLoginOpen] = useState<boolean>(false);
+    const [signUpOpen, setSignUpOpen] = useState<boolean>(false);
 
-    console.log('check content of configuration from ServiceClient.tsx: ', configurations);
-    
     
     if (isPending) {
         return (
@@ -36,10 +36,12 @@ function ServiceClient () {
     }
 
     return (
-        <ServiceClientForm  
-            service={service} 
-            configurations={configurations} // used to display the selections for configuration
-        />
+        <>
+            <ServiceClientForm  
+                service={service} 
+                configurations={configurations} // used to display the selections for configuration
+            />
+        </>
     )
 }
 

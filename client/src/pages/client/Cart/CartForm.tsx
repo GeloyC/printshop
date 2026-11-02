@@ -12,6 +12,7 @@ import Toast from "../../../components/ui/Toast"
 
 import { useCartContext } from "../../../context/cartContext"
 import type { fileConfigType, fileItem } from "../../../types/FileType"
+import ConfigurationSetupModalCart from "../../../components/modal/client/ConfigurationSetupModalCart"
 
 
 /*
@@ -30,31 +31,30 @@ type CartFormProp = {
 function CartForm ({ configurations, orderItems }: CartFormProp) {
     
     const { items, setItems } = useCartContext();
-    const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
+    // const [selectedFile, setSelectedFile] = useState<IndivFileItem|null>(null);
 
 
-    const selectedConfiguration = configurations?.find(
-        config => config?.slug === selectedFile?.slug
-    );
+    
 
     // ====================== AFTER CONFIGURATION SETUP MODAL BREAK ========================= //
 
     const [skipDeleteConfirmation, setSkipDeleteConfirmation] = useState<boolean>(false);
-    const [isConfigurationOpen, setIsConfigurationOpen] = useState<boolean>(false);
+    const [itemSetupModalOpen, setItemSetupModalOpen] = useState<boolean>(false);
 
-    const [deleteMessage, setDeleteMessage] = useState<string>('')
-
-
-    const handleOpenConfiguration = (file:fileItem) => {
-        setSelectedFile(file)
-        setIsConfigurationOpen(true)
-    }
-
-
+    const [selectedItemId, setSelectedItemId] = useState<string>('')
+    const selectedItem = orderItems.find(item => item.id === selectedItemId); // contains data of the selected item
+    const selectedConfigurationPerService = configurations.find(item => item.slug === selectedItem?.slug);
 
     const subTotalPrice = orderItems.reduce(
         (acc, items) => acc + (Number(items.total_price) 
         ?? 0), 0);
+
+
+    const handleOpenConfiguration = (item: fileItem) => {
+        setItemSetupModalOpen(true);
+        setSelectedItemId(item.id);
+    }
+
 
     return (
         <>
@@ -70,16 +70,6 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
 
                     {/* Item block */}
                     <div className="flex flex-col w-full gap-[0.5rem]">
-                        {/* {items.map(file => (
-                                <CartItem key={file.id}
-                                    file={file}
-                                    openAlert={()=>handleOpenDeleteAlert(file)}
-                                    openConfiguration={()=>handleOpenConfiguration(file)}
-                                    // setItems={setItems}
-                                />
-                            )
-                        )} */}
-
                         {orderItems.map(order => (
                             <CartItem key={order.id}
                                 order={order}
@@ -99,17 +89,13 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
 
             
 
-            {deleteMessage && <Toast message={deleteMessage} />} 
 
-            {isConfigurationOpen && (
+            {itemSetupModalOpen && (
                 <ModalWrapper>
-                    <ConfigurationSetupModal 
-                        setFiles={setItems}
-                        selectedFile={selectedFile}
-                        setSelectedFile={setSelectedFile}
-                        configurations={selectedConfiguration}
-                        closeModal={()=>setIsConfigurationOpen(false)}
-                        setFileSetupModalOpen={setIsConfigurationOpen}
+                    <ConfigurationSetupModalCart 
+                        closeModal={()=>setItemSetupModalOpen(false)}
+                        selectedItem={selectedItem}
+                        configurations={selectedConfigurationPerService}
                     />
                 </ModalWrapper>
             )}

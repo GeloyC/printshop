@@ -6,6 +6,12 @@ export type fileConfigType = {
     slug: string
 }
 
+export type IndivFileConfigType = {
+    id: string,
+    configuration: Configuration,
+    slug: string
+}
+
 export type Metadata = {
     file_name: string,
     file_size: number,
@@ -24,6 +30,8 @@ export type fileItem = {
     unit_price?: number,
     total_price?: number
 }
+
+
 
 export type SelectedOption = { // for confiugred file
     id: string,

@@ -3,7 +3,7 @@ import { logout } from "../../../api/user";
 import type { UserType } from "../../../types/UserType";
 import { type SetStateAction } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 type UserAccountIconProp = {
@@ -20,14 +20,13 @@ function UserAccountIcon ({
     closeNotif
 }: UserAccountIconProp) {
 
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const handleLogout = useMutation({
-        mutationFn: async () => {
-            await logout();
-        }, 
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['user'] })
-            console.log('logout ok');
+        mutationFn: () => logout(), 
+        onSuccess:  () => {
+            queryClient.invalidateQueries({ queryKey: ['user'] })
+            navigate('/');
         }
     }); 
 

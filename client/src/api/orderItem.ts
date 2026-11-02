@@ -40,3 +40,8 @@ export async function deleteCartItem (item_id: string) {
     const response = await api.delete(`/api/order/cart/item/${item_id}/delete`);
     return response.data;
 }
+
+export async function updateCartItemConfiguration (item_id: string) {
+    const response = await api.patch(`/api/order/cart/item/${item_id}/configuration`);
+    return response.data;
+}

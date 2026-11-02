@@ -28,7 +28,9 @@ function DropdownType ({ options, config, selectedOptions, setSelectedOptions }:
                 option: option.option,
                 price: option.price
             }]
-        }))
+        }));
+
+        setDropdownOpen(false);
     }
 
     return (

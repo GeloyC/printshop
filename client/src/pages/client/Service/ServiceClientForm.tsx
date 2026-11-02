@@ -17,6 +17,7 @@ import { useCartContext } from "../../../context/cartContext";
 import { AddItemToCart } from "../../../api/orderItem";
 import { useUserContext } from "../../../context/userContext";
 import TopLoadingBar from "../../../components/ui/TopLoadingBar";
+import { useLoginContext } from "../../../context/loginContext";
 
 
 type fileRequirement = {
@@ -43,8 +44,8 @@ type ServiceClientFormProp = {
 
 function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) {
 
-    const { setItems } = useCartContext();
     const { user } = useUserContext(); 
+    const { handleOpenLogin } = useLoginContext();
 
     const { slug } = useParams();   
     const navigate = useNavigate();
@@ -81,7 +82,6 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
 
     const proceedToCheckOut = () => {
         if (shouldBlock) {
-            setItems(items=>[...files, ...items]);
             setFiles([]);
         }
         navigate('/cart');
@@ -90,6 +90,10 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     const queryClient = useQueryClient();
     const handleAddToCart = useMutation<any[], Error, void>({
         mutationFn: async () => {
+            if (!user) {
+                throw new Error('UNAUTHENTICATED');
+            }
+
             const responses = [];
 
             for (const file of files) {
@@ -119,12 +123,25 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
             proceedToCheckOut();
         },
         onError: (err: unknown) => {
+
+            if (err instanceof Error && err.message === 'UNAUTHENTICATED') {
+                handleOpenLogin();
+                return;
+            }
+
             if (axios.isAxiosError(err)) {
+                if (err.response?.status === 401) {
+                    console.log('Error: ', err.response?.status);
+                    handleOpenLogin();
+                    return;
+                }
+                
                 console.error('Status:', err.response?.status);
                 console.error('Response:', err.response?.data);
             } else {
                 console.error('Unexpected error:', err);
             }
+
         }
     });
 

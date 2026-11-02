@@ -61,9 +61,6 @@ function CartItem ({
     }
 
 
-    useEffect(() => {
-        console.log('check status alert: ', skipDeleteConfirmation);
-    }, [skipDeleteConfirmation]);
 
     return (
         <>

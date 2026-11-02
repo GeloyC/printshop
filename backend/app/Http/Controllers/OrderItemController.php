@@ -163,4 +163,29 @@ class OrderItemController extends Controller
             'message'=>'item delete'
         ]);
     }
+
+
+    public function updateItemConfiguration (Request $request, String $id) {
+        $item = OrderFileItem::query()
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $request->configuration->json_decode([
+            $request->input('configuration', ''),
+            true
+        ]);
+        
+        $validated = $request->validate([
+            'configuration' => ['required', 'array']
+        ]);
+
+        $updatedConfiguration = OrderFileItem::query()
+            ->where('id', $id)
+            ->update('configuration', $request->configuration);
+
+        return response()->json([
+            'message' => 'configuration updated',
+            'data' => $updatedConfiguration
+        ]);
+    }
 }

@@ -12,7 +12,7 @@ import LoadingSpinner from '../../ui/LoadingSpinner/LoadingSpinner';
 
 interface LoginProp {
     close: () => void
-    setSignupOpen: React.Dispatch<SetStateAction<boolean>>
+    handleOpenSignup: ()=>void
 }
 
 type LoginType = {
@@ -22,14 +22,9 @@ type LoginType = {
 
 function Login ({
     close,
-    setSignupOpen
+    handleOpenSignup
 }: LoginProp) {
 
-    const handleSignupInstead = () => {
-        // reset input fields here
-        setSignupOpen(true)
-        close();
-    }
 
     const [account, setAccount] = useState<LoginType>({
         email: '',
@@ -102,7 +97,7 @@ function Login ({
 
                 <div className='flex items-center justify-center gap-[0.3rem] text-[12px] text-[#404040] font-bold'>
                     <span>No account yet?</span>
-                    <button type='button' onClick={handleSignupInstead}
+                    <button type='button' onClick={handleOpenSignup}
                     className='cursor-pointer hover:underline active:text-[#cc4c02]'>Sign in instead</button>
                 </div>
             </div>

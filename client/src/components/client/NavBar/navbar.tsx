@@ -18,8 +18,8 @@ import CartButton from "./CartButton";
 // hooks
 import ServiceContainer from "./Services/ServiceContainer";
 import { useServiceNames } from "../../../hooks/services/UseServiceNames";
-import { useCartContext } from "../../../context/cartContext";
 import { useGetCartItems } from "../../../hooks/cart/orderItems";
+import { useLoginContext } from "../../../context/loginContext";
 
 function NavBar () {
 
@@ -27,19 +27,19 @@ function NavBar () {
     const {data: serviceNames = [] } = useServiceNames();
     const { data: cartItems = []} = useGetCartItems(user?.id);
 
-    const [loginOpen, setLoginOpen] = useState<boolean>(false);
-    const [signupOpen, setSignupOpen] = useState<boolean>(false);
+    const { loginOpen, signupOpen, handleOpenLogin, handleOpenSignup, closeModal } = useLoginContext();
+
 
     const [isServoceDropdownOpen, setIsServiceDropdownOpen] = useState<boolean>(false);
     const [isNotifDropdownOpen, setIsNotifDropdownOpen] = useState<boolean>(false);
     const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState<boolean>(false);
 
+
+
     const handleCloseDropdowns = () => {
         setIsNotifDropdownOpen(false);
         setIsAccountDropdownOpen(false);
         setIsServiceDropdownOpen(false);
-
-        console.log('clicked');
     }
 
     
@@ -103,13 +103,13 @@ function NavBar () {
                     ):(
                         <div className="flex items-center gap-[0.3rem]">
                             <button onClick={()=>{
-                                setLoginOpen(true)
+                                handleOpenLogin()
                                 handleCloseDropdowns()
                             }} className="flex items-center border-2 border-[#fff8ec] bg-transparent hover:bg-[#ffdca5] hover:border-[#ffdca5] active:bg-transparent active:border-transparent px-[1rem] h-[2.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
                                 <span className="px-[1rem] text-[14px] text-[#292929] font-bold">Login</span>
                             </button>
                             <button onClick={()=>{
-                                setSignupOpen(true)
+                                handleOpenSignup()
                                 handleCloseDropdowns()
                             }} className="group flex items-center gap-[0.3rem] border-2 border-[#ff6b00] bg-[#ff6b00] hover:bg-[#cc4c02] hover:border-[#cc4c02] active:bg-[#9a3902] px-[1rem] h-[2.5rem] rounded-[10px] cursor-pointer transition-all duration-100">
                                 <span className="text-[#fff] text-[14px] font-[700]">Get Started</span>
@@ -125,7 +125,7 @@ function NavBar () {
             {signupOpen && (
                 <ModalWrapper>
                     <Signup 
-                        close={()=>setSignupOpen(false)}
+                        close={closeModal}
                     />
                 </ModalWrapper>
             )}
@@ -133,8 +133,8 @@ function NavBar () {
             {loginOpen && (
                 <ModalWrapper>
                     <Login 
-                        close={()=>setLoginOpen(false)}
-                        setSignupOpen={setSignupOpen}
+                        close={closeModal}
+                        handleOpenSignup={handleOpenSignup}
                     />
                 </ModalWrapper>
             )}

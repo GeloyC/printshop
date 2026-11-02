@@ -13,6 +13,8 @@ import DropdownType from '../../ui/ConfigurationType/DropdownType';
 import TextType from '../../ui/ConfigurationType/TextType';
 
 import type { fileItem, fileConfigType, SelectedOption } from '../../../types/FileType';
+import { useUserContext } from '../../../context/userContext';
+import { useUpdateCartItemConfiguration } from '../../../hooks/cart/orderItems';
 
 /* 
 SelectedOption = {
@@ -52,6 +54,10 @@ function ConfigurationSetupModal ({
     configurations,
     setFileSetupModalOpen
 }: ModalProp ) {
+
+    const { user } = useUserContext();
+    // const { mutate: updatedItemConfiguration } = useUpdateCartItemConfiguration( user.id);
+
 
     const [quantity, setQuantity] = useState<number>(selectedFile?.quantity ?? 1);
     const [additionalInstruction, setAdditionalInstruction] = useState<string>(selectedFile?.additional_instruction ?? '');

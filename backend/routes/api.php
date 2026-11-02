@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::patch("/order/cart/item/{id}/add", [OrderItemController::class, 'addItemQuantity']);
     Route::patch("/order/cart/item/{id}/subtract", [OrderItemController::class, 'subtractItemQuantity']);
     Route::delete("/order/cart/item/{id}/delete", [OrderItemController::class, 'destroy']);
+    Route::patch("order/cart/item/{id}/configuration", [OrderItemController::class, 'updateItemConfiguration']);
 });
 
 
