@@ -19,14 +19,7 @@ export const UserContextProvider = ({ children }: {children: React.ReactNode}) =
     
     const { data: user, isLoading } = useQuery({
         queryKey: ['user'],
-        queryFn: async () => {
-            try {
-                return await getUser(); 
-            } catch (err) {
-                console.log('error: ', err);
-                return null;
-            }
-        }
+        queryFn: () =>getUser(),
     })
 
 

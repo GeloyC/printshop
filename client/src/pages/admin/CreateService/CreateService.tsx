@@ -90,6 +90,12 @@ function CreateService () {
     const queryClient = useQueryClient();
     const handleCreateService = useMutation({
         mutationFn: async () => {
+            
+            console.log('Thumbnail:', thumbnailBlob);
+            console.log('Is File:', thumbnailBlob instanceof File); 
+            console.log('File name:', thumbnailBlob?.name);
+            console.log('File type:', thumbnailBlob?.type);
+
             const ServiceFormData = new FormData();
             ServiceFormData.append('name', basicInfo.name);
             ServiceFormData.append('description', basicInfo.description);
@@ -102,6 +108,8 @@ function CreateService () {
 
             ServiceFormData.append('configuration', JSON.stringify(configs));
             ServiceFormData.append('slug', basicInfo.name.split(' ').join('_').toLocaleLowerCase());
+
+            console.log('service form data: ', ServiceFormData);
             
             return createService(ServiceFormData);
         },

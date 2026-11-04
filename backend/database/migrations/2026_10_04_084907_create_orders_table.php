@@ -19,9 +19,6 @@ return new class extends Migration
             $table->foreignUuid('user_id')
                 ->constrained('users')
                 ->nullOnDelete();
-            $table->foreignUuid('service_id')
-                ->constrained('services')
-                ->nullOnDelete();
             $table->string('reference_number');
             $table->string('status', 25)
                 ->default("Order placed");
@@ -29,8 +26,9 @@ return new class extends Migration
             $table->timestamp('updated_at');
         });
 
+
         // will be retreived when opening an order item showing the files printed
-        Schema::create('order_file_items', function (Blueprint $table) {
+        Schema::create('cart_items', function (Blueprint $table) {
             $table->uuid('id')
                 ->primary()
                 ->default(DB::raw('uuidv7()'));
@@ -56,7 +54,7 @@ return new class extends Migration
                 ->constrained('orders')
                 ->nullOnDelete();
             $table->string('status');
-            $table->timestamp('changed_at');
+            $table->timestamp('updated_at');
         });
     }
 
@@ -66,7 +64,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('orders');
-        Schema::dropIfExists('order_file_items');
+        Schema::dropIfExists('cart_items');
         Schemia::dropIfExists('order_status_histories');
     }
 };

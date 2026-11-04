@@ -10,7 +10,7 @@ export function useGetCartItems (user_id: string) {
     return useQuery({
         queryKey: ['cart-items', user_id],
         queryFn: async () => {
-            return await getAllCartItems(user_id)
+            return await getAllCartItems()
         }
     });
 }

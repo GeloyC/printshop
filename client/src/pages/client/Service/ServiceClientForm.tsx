@@ -151,7 +151,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     return (
         <>
             <TopLoadingBar isLoading={handleAddToCart.isPending} />
-            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch p-[rem]' : 'bg-[#ffdca5] border-4 border-[#ffc36d]'} rounded-t-[15px] overflow-hidden  gap-[2rem] `}>
+            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch p-[rem]' : 'bg-[#ffdca5] border border-[#ffc36d]'} rounded-t-[15px] overflow-hidden  gap-[2rem] `}>
                 
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}

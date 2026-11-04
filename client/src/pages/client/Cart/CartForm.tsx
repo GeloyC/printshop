@@ -3,15 +3,11 @@ import { useEffect, useState } from "react"
 // component
 import CartItem from "./CartItem"
 import OrderSummary from "./OrderSummary"
-import DeleteItemFromCartAlert from "../../../components/modal/client/DeleteItemFromCartAlert"
 import ModalWrapper from "../../../components/wrapper/ModalWrapper"
 import ReturnButton from "../../../components/ui/ReturnButton"
-import ConfigurationSetupModal from "../../../components/modal/client/ConfigurationSetupModal"
-import Toast from "../../../components/ui/Toast"
 
 
-import { useCartContext } from "../../../context/cartContext"
-import type { fileConfigType, fileItem } from "../../../types/file.type"
+import type { fileConfigType, CartItemType } from "../../../types/file.type"
 import ConfigurationSetupModalCart from "../../../components/modal/client/ConfigurationSetupModalCart"
 
 
@@ -25,25 +21,25 @@ import ConfigurationSetupModalCart from "../../../components/modal/client/Config
 
 type CartFormProp = {
     configurations: fileConfigType[]
-    orderItems: fileItem[]
+    cartItems: CartItemType[]
 }
 
-function CartForm ({ configurations, orderItems }: CartFormProp) {
+function CartForm ({ configurations, cartItems }: CartFormProp) {
 
 
     const [skipDeleteConfirmation, setSkipDeleteConfirmation] = useState<boolean>(false);
     const [itemSetupModalOpen, setItemSetupModalOpen] = useState<boolean>(false);
 
     const [selectedItemId, setSelectedItemId] = useState<string>('')
-    const selectedItem = orderItems.find(item => item.id === selectedItemId); // contains data of the selected item
+    const selectedItem = cartItems?.find(item => item.id === selectedItemId); // contains data of the selected item
     const selectedConfigurationPerService = configurations.find(item => item.slug === selectedItem?.slug);
 
-    const subTotalPrice = orderItems.reduce(
+    const subTotalPrice = cartItems.reduce(
         (acc, items) => acc + (Number(items.total_price) 
-        ?? 0), 0);
+        || 0), 0);
 
 
-    const handleOpenConfiguration = (item: fileItem) => {
+    const handleOpenConfiguration = (item: CartItemType) => {
         setItemSetupModalOpen(true);
         setSelectedItemId(item.id);
     }
@@ -63,10 +59,10 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
 
                     {/* Item block */}
                     <div className="flex flex-col w-full gap-[0.5rem]">
-                        {orderItems.map(order => (
-                            <CartItem key={order.id}
-                                order={order}
-                                openConfiguration={()=>handleOpenConfiguration(order)}
+                        {cartItems.map(cartItem => (
+                            <CartItem key={cartItem.id}
+                                cartItem={cartItem}
+                                openConfiguration={()=>handleOpenConfiguration(cartItem)}
                                 setSkipDeleteConfirmation={setSkipDeleteConfirmation}
                                 skipDeleteConfirmation={skipDeleteConfirmation}
                             />
@@ -75,7 +71,8 @@ function CartForm ({ configurations, orderItems }: CartFormProp) {
                 </section>
 
                 <OrderSummary 
-                    fileQuantity={orderItems.length}
+                    fileQuantity={cartItems.length}
+                    cartItems={cartItems}
                     subTotalPrice={subTotalPrice}
                 />
             </div>

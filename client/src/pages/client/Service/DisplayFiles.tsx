@@ -171,8 +171,6 @@ function DisplayFiles ({
             {files.length > 0 && (
                 <div className="flex items-center justify-between w-full gap-[0.3rem] p-[1rem] px-[2rem]">
 
-                    {/* <span className="text-center text-[14px] text-[#82330c] font-bold w-fit">Total file/s: {files.length}</span> */}
-
                     <div className="flex">
                         <span className="text-3xl text-[#292929] font-bold leading-none">{serviceName}</span>
                     </div>
@@ -215,7 +213,7 @@ function DisplayFiles ({
                         ? 'bg-[#ff6b00]/50 rounded-t-[15px]'  // when dragging file
                         : files.length === 0 
                             ? 'bg-transparent'
-                            : 'bg-[#ffc36d] rounded-t-[15px]'  // default
+                            : 'bg-[#fff0d3] rounded-t-[15px]'  // default
                     } 
                 `}
             >

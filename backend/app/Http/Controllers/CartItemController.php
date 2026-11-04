@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\OrderFileItem;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 
-class OrderItemController extends Controller
+class CartItemController extends Controller
 {
     //
     public function store (Request $request, String $user_id) {
@@ -52,10 +52,10 @@ class OrderItemController extends Controller
         $file = $validated['file'];
         $path = null;
         if ($file) {
-            $path = $file->store('/orders/documents', 'r2');
+            $path = $file->store('/documents', 'r2');
         }
 
-        $orderFileItem = OrderFileItem::create([
+        $orderFileItem = CartItem::create([
             'user_id' => $user_id,
             'file_url' => $path,
             'metadata' => [
@@ -79,18 +79,28 @@ class OrderItemController extends Controller
     } 
 
 
-    public function index(String $user_id) {
-        $orders = OrderFileItem::query()
-            ->where('user_id', $user_id)
+    public function index() {
+
+        $orders = CartItem::query()
+            ->where('user_id', auth()->id())
             ->orderBy('created_at', 'asc')
             ->get();
 
         return response()->json($orders);
     }
 
+    public function cartItemCount() {
+
+        $cartItemCount = CartItem::query()
+            ->where('user_id', auth()->id())
+            ->count();
+
+        return response()->json($cartItemCount);
+    }
+
     
     public function addItemQuantity (String $id) {
-        $cart_item = OrderFileItem::findOrFail($id);
+        $cart_item = CartItem::findOrFail($id);
 
         $currentQuantity = (int) $cart_item->quantity;
         $unitPrice = (float) $cart_item->unit_price;
@@ -111,7 +121,7 @@ class OrderItemController extends Controller
 
 
     public function subtractItemQuantity (String $id) {
-        $cart_item = OrderFileItem::findOrFail($id);
+        $cart_item = CartItem::findOrFail($id);
 
         $currentQuantity = (int) $cart_item->quantity;
         $unitPrice = (float) $cart_item->unit_price;
@@ -147,7 +157,7 @@ class OrderItemController extends Controller
             ], 422);
         }
 
-        $file = OrderFileItem::query()
+        $file = CartItem::query()
             ->select('file_url')
             ->where('id', $id)
             ->firstOrFail();
@@ -155,7 +165,7 @@ class OrderItemController extends Controller
         $disk = Storage::disk('r2');
         $disk->delete($file->file_url);
 
-        $deleteItem = OrderFileItem::query()
+        $deleteItem = CartItem::query()
             ->where('id', $id)
             ->delete($id);
 
@@ -166,7 +176,7 @@ class OrderItemController extends Controller
 
 
     public function updateItemConfiguration (Request $request, String $id) {
-        $item = OrderFileItem::query()
+        $item = CartItem::query()
             ->where('id', $id)
             ->firstOrFail();
 
@@ -181,7 +191,7 @@ class OrderItemController extends Controller
         $quantity = (int) $validated['quantity'];
         $totalPrice = (float) $quantity * $unitPrice;
 
-        $updatedConfiguration = OrderFileItem::query()
+        $updatedConfiguration = CartItem::query()
             ->where('id', $id)
             ->update([
                 'configuration' => $validated['configuration'] ?? null,

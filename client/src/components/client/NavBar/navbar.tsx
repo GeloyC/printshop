@@ -18,14 +18,14 @@ import CartButton from "./CartButton";
 // hooks
 import ServiceContainer from "./Services/ServiceContainer";
 import { useServiceNames } from "../../../hooks/services/UseServiceNames";
-import { useGetCartItems } from "../../../hooks/cart/order_item.hook";
 import { useLoginContext } from "../../../context/loginContext";
+import { useGetCartItemCount } from "../../../hooks/cart/cart.hooks";
 
 function NavBar () {
 
-    const { user } = useUserContext();
+    const { user, isLoading } = useUserContext();
     const {data: serviceNames = [] } = useServiceNames();
-    const { data: cartItems = []} = useGetCartItems(user?.id);
+    const { data: cartCount } = useGetCartItemCount(user?.id);
 
     const { loginOpen, signupOpen, handleOpenLogin, handleOpenSignup, closeModal } = useLoginContext();
 
@@ -41,9 +41,6 @@ function NavBar () {
         setIsAccountDropdownOpen(false);
         setIsServiceDropdownOpen(false);
     }
-
-    
-
 
     
     return (
@@ -80,7 +77,7 @@ function NavBar () {
                     <div className="flex items-center gap-[0.5rem] border-r border-[#fff]/50 pr-[0.75rem]">
                         <CartButton 
                             closeDropdowns={handleCloseDropdowns}
-                            itemCount={cartItems.length}
+                            itemCount={cartCount}
                         />
 
                         <FolderButton 
@@ -93,7 +90,9 @@ function NavBar () {
                         />
                     </div>
 
-                    {user ? (
+                    {isLoading ? (
+                        <div className="w-[2.5rem] h-[2.5rem] bg-[#B1B2B5] rounded-[10px]" />
+                    ): user ? (
                         <UserAccountIcon 
                             user={user}
                             setIsAccountDropdownOpen={setIsAccountDropdownOpen}

@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/test', function () {
@@ -20,14 +21,16 @@ Route::get("/client/service/{slug}", [ServiceController::class, 'getClientServic
 Route::get("/services/names", [ServiceController::class, 'getNames']);
 Route::get("service/configurations", [ServiceController::class, 'getConfigurations']);
 Route::get("/service/{slug}/configuration", [ServiceController::class, 'getConfiguration']);
+Route::get("/cart/item-count", [CartItemController::class, 'cartItemCount']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::post("/order/add-to-cart/{user_id}", [OrderItemController::class, 'store']);
-    Route::get("/order/cart/{user_id}", [OrderItemController::class, 'index']);
-    Route::patch("/order/cart/item/{id}/add", [OrderItemController::class, 'addItemQuantity']);
-    Route::patch("/order/cart/item/{id}/subtract", [OrderItemController::class, 'subtractItemQuantity']);
-    Route::delete("/order/cart/item/{id}/delete", [OrderItemController::class, 'destroy']);
-    Route::patch("order/cart/item/{id}/configuration", [OrderItemController::class, 'updateItemConfiguration']);
+    Route::post("/order/add-to-cart/{user_id}", [CartItemController::class, 'store']);
+    Route::get("/order/cart", [CartItemController::class, 'index']);
+    Route::patch("/order/cart/item/{id}/add", [CartItemController::class, 'addItemQuantity']);
+    Route::patch("/order/cart/item/{id}/subtract", [CartItemController::class, 'subtractItemQuantity']);
+    Route::patch("order/cart/item/{id}/configuration", [CartItemController::class, 'updateItemConfiguration']);
+    Route::delete("/order/cart/item/{id}/delete", [CartItemController::class, 'destroy']);
+    Route::post("/order/cart/checkout", [OrderController::class, 'checkout']);
 });
 
 

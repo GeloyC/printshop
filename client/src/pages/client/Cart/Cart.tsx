@@ -9,7 +9,7 @@ function Cart () {
 
     const { user } = useUserContext();
     const {data: configurations = []} = useServiceConfigurations();
-    const {data: orderItems = [], isFetching: isLoading} = useGetCartItems(user?.id)
+    const {data: cartItems = [], isFetching: isLoading} = useGetCartItems(user?.id)
 
     if (isLoading) {
         <TopLoadingBar 
@@ -19,7 +19,7 @@ function Cart () {
 
     return <CartForm 
         configurations={configurations}
-        orderItems={orderItems}
+        cartItems={cartItems}
     />
 }
 

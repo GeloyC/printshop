@@ -9,7 +9,6 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    //
     public function register(Request $request) {
 
         $validated = $request->validate([
@@ -43,8 +42,7 @@ class AuthController extends Controller
             'password' => ['required', 'string']
         ]);
 
-
-        $user = User::where('email', $validated['email'])->first();
+        $user = User::where('email', $validated['email'])->firstOrFail();
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([

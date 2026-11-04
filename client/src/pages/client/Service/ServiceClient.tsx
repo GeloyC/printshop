@@ -20,9 +20,6 @@ function ServiceClient () {
     const { data: service, isPending } = useClientSelectedService(String(slug));
     const { data: configurations = [] } = useServiceConfiguration(String(slug));
 
-    const [loginOpen, setLoginOpen] = useState<boolean>(false);
-    const [signUpOpen, setSignUpOpen] = useState<boolean>(false);
-
     
     if (isPending) {
         return (

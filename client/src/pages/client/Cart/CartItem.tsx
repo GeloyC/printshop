@@ -12,7 +12,7 @@ import Service from '/src/assets/icon/service.svg?react'
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react';
 
 
-import type { fileConfigType, fileItem, SelectedOption } from '../../../types/file.type'
+import type { CartItemType, fileConfigType, SelectedOption } from '../../../types/file.type'
 import currencyFormat from '../../../utils/currencyFormat'
 import makeSlugCapital from '../../../utils/makeSlugCapital'
 import { useAddCartItemQuantity, useDeleteCartItem, useSubtractCartItemQuantity } from '../../../hooks/cart/order_item.hook'
@@ -25,14 +25,14 @@ import LoadingSpinner from '../../../components/ui/LoadingSpinner/LoadingSpinner
 
 
 type CartItemProp = {
-    order: fileItem
+    cartItem: CartItemType
     openConfiguration: () => void
     setSkipDeleteConfirmation: React.Dispatch<SetStateAction<boolean>>
     skipDeleteConfirmation: boolean
 }
 
 function CartItem ({
-    order,
+    cartItem,
     openConfiguration,
     setSkipDeleteConfirmation,
     skipDeleteConfirmation
@@ -42,11 +42,11 @@ function CartItem ({
     
 
     const { user } = useUserContext()
-    const configuration = order?.configuration?.map(config => config.option).join(', ')
+    const configuration = cartItem?.configuration?.map(config => config.option).join(', ')
 
-    const {mutate: addQuantity, isPending: isAddPending} = useAddCartItemQuantity(order.id, user.id);
-    const {mutate: subtractQuantity, isPending: isSubtractPending} = useSubtractCartItemQuantity(order.id, user.id);
-    const {mutate: deleteItem} = useDeleteCartItem(order.id, user.id);
+    const {mutate: addQuantity, isPending: isAddPending} = useAddCartItemQuantity(cartItem.id, user?.id);
+    const {mutate: subtractQuantity, isPending: isSubtractPending} = useSubtractCartItemQuantity(cartItem.id, user?.id);
+    const {mutate: deleteItem} = useDeleteCartItem(cartItem.id, user?.id);
     
 
     const handleOpenAlert = () => {
@@ -58,34 +58,33 @@ function CartItem ({
     }
 
 
-    console.log('config on orderItem: ', order);
 
     return (
         <>
             <div className={`flex flex-col w-full p-[1rem] gap-[0.3rem] bg-[#fff] border border-[#292929]/25 rounded-[5px]`}>
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-[0.5rem]">
-                        {order?.metadata?.file_type == 'application/pdf' ? (
+                        {cartItem?.metadata?.file_type == 'application/pdf' ? (
                             <PDFIcon className='size-6' color="#F40F02" /> 
                         ):(
                             <DOCXIcon className='size-6' color='#1B5EBE' />
                         )}
 
-                        <span className="text-[16px] text-[#292929] font-bold leading-none">{order?.metadata?.file_name}</span>
+                        <span className="text-[16px] text-[#292929] font-bold leading-none">{cartItem?.metadata?.file_name}</span>
                     </div>
 
-                    <span className="text-[16px] font-bold text-[#ff6b00] leading-none">{currencyFormat(Number(order?.total_price))}</span>
+                    <span className="text-[16px] font-bold text-[#ff6b00] leading-none">{currencyFormat(Number(cartItem?.total_price))}</span>
                 </div>
 
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center w-full gap-[1rem]">
                         <div className='flex items-center gap-[0.3rem] opacity-50'>
                             <Service className='size-4' />
-                            <span className="text-[14px] leading-tight">{makeSlugCapital(order?.slug)}</span>
+                            <span className="text-[14px] leading-tight">{makeSlugCapital(cartItem?.slug)}</span>
                         </div> 
 
                         <div className='flex items-center gap-[0.3rem] opacity-50'>
-                            <span className='text-[14px] leading-tight'>Unit price: {currencyFormat(Number(order?.unit_price))}</span>
+                            <span className='text-[14px] leading-tight'>Unit price: {currencyFormat(Number(cartItem?.unit_price))}</span>
                         </div>
 
                         <button onClick={openConfiguration} className='group flex items-center gap-[0.3rem] p-[0.3rem] px-[0.5rem] active:bg-[#ffdca5] hover:opacity-100 rounded-[10px] cursor-pointer'>
@@ -102,15 +101,15 @@ function CartItem ({
 
                     <div className="flex items-center gap-[1rem]">
                         <div className='flex items-center gap-[0.2rem]'>
-                            <button onClick={()=>subtractQuantity()} disabled={order.quantity === 1} className={`group ${order.quantity == 1 ? 'opacity-25' : 'cursor-pointer'} bg-[#fff] p-[0.3rem] rounded-[5px]`}>
-                                <Subtract className={`size-5 opacity-50 ${order.quantity > 1 && 'group-hover:opacity-100 group-active:opacity-50'}`} color='#292929'/>
+                            <button onClick={()=>subtractQuantity()} disabled={cartItem.quantity === 1} className={`group ${cartItem.quantity == 1 ? 'opacity-25' : 'cursor-pointer'} bg-[#fff] p-[0.3rem] rounded-[5px]`}>
+                                <Subtract className={`size-5 opacity-50 ${cartItem.quantity > 1 && 'group-hover:opacity-100 group-active:opacity-50'}`} color='#292929'/>
                             </button>
 
                             <div className='flex items-center justify-center p-[0.5rem] h-[2rem] w-[2rem] bg-[#ffdca5] rounded-[5px]'>
                                 {(isAddPending || isSubtractPending) ? (
                                     <LoadingSpinner color='#292929' size={15} />
                                 ):(
-                                    <input type="text" name="item_quantity" id={`item_quantity_${order.id}`} value={order.quantity} readOnly
+                                    <input type="text" name="item_quantity" id={`item_quantity_${cartItem.id}`} value={cartItem.quantity} readOnly
                                     className='focus:outline-none w-[2rem] text-[14px] font-bold text-center'
                                     />
                                 )}
@@ -131,7 +130,7 @@ function CartItem ({
             {deleteAlertOpen && (
                 <ModalWrapper>
                     <DeleteItemFromCartAlert 
-                        filename={order?.metadata?.file_name}
+                        filename={cartItem?.metadata?.file_name}
                         closeAlert={()=>setDeleteAlertOpen(false)}
                         setSkipDeleteConfirmation={setSkipDeleteConfirmation}
                         skipDeleteConfirmation={skipDeleteConfirmation}

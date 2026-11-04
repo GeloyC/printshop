@@ -4,31 +4,62 @@
 * Files and configurations for each must not be wiped during login and must continue normally after successfully login
 */
 
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
-import { useCartContext } from "../../../context/cartContext";
 import currencyFormat from "../../../utils/currencyFormat";
+import type { CartItemType } from "../../../types/file.type";
+
+import { checkoutItems } from "../../../api/order.api";
+
 
 type OrderSummaryProp = {
     fileQuantity: number
     subTotalPrice: number
+    cartItems: CartItemType[]
 }
 
-function OrderSummary ({ fileQuantity, subTotalPrice }: OrderSummaryProp) {
+function OrderSummary ({ 
+    fileQuantity, 
+    subTotalPrice, 
+    cartItems 
+}: OrderSummaryProp) {
 
     const navigate = useNavigate();
-    const { items, setItems } = useCartContext();
 
     const handleConfirmOrder = () => {
-
-        // pass the data of setItems to folderContext so the data/order transaction will be saved to the folders page
         navigate('/order-confirmation', {
             state: {
-                orders: items
+                orders: cartItems
             }
         })
-
-        setItems([]); // this will be empty after the function is called successfully
     }
+
+    //  TODO -- send to orders table:
+    //  user_id
+    //  service_id --> get the service_id using the slug from CartItems 'SELECT id FROM     services WHERE slug = cartItems.slug'
+    //  create reference_number on Laravel
+    //  send the cartItems data to order_items table
+
+    const handleCheckout = useMutation({
+        mutationFn: async () => {
+            return await checkoutItems(cartItems);
+        },
+        onSuccess: () => {
+            // handleConfirmOrder();
+            console.log('checkout successful!');
+        }, onError: (err: unknown) => {
+            if (axios.isAxiosError(err)) {
+                console.error('Message:', err.message);
+                console.error('Status:', err.response?.status);
+                console.error('Response:', err.response?.data);
+                console.error('Request:', err.request);
+            } else {
+                console.error(err);
+            }
+        }
+    });
 
 
 
@@ -41,7 +72,7 @@ function OrderSummary ({ fileQuantity, subTotalPrice }: OrderSummaryProp) {
                 <span className="text-[16px] text-[#292929] font-bold">{currencyFormat(Number(subTotalPrice))}</span>
             </div>
 
-            <button onClick={handleConfirmOrder} className="bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">
+            <button onClick={() => handleCheckout.mutate()} className="bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">
                 <span className="text-[16px] text-[#fff]">Confirm Order</span>
             </button>
         </section>

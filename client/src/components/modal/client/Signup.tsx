@@ -4,7 +4,8 @@ import Arrow from '/src/assets/icon/arrow-with-tail.svg?react';
 
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { registration } from '../../../api/user';
+import { registration, login } from '../../../api/user';
+import LoadingSpinner from '../../ui/LoadingSpinner/LoadingSpinner';
 
 type SignupProp = {
     close: () => void
@@ -23,27 +24,31 @@ function Signup ({
     const queryClient = useQueryClient();
     const handleRegistration = useMutation({
         mutationFn: async () => {
-            await registration(newAccount);  
+            await registration(newAccount);
+            return login({
+                email: newAccount.email,
+                password: newAccount.password
+            });
         }, 
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({queryKey: ['user']})
-            console.log('registration success from frontend');
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['user']})
+            
             close(); 
         }
     })
 
     return (
-        <div className='fade-up grid grid-cols-2 rounded-[10px] overflow-hidden'>
+        <form onSubmit={(e)=>{
+                e.preventDefault();
+                handleRegistration.mutate();
+            }} className='fade-up grid grid-cols-2 rounded-[10px] overflow-hidden'>
             <div className='flex items-center justify-center p-[0.5rem] bg-[#fff]'>
                 <div className='flex items-center justify-center w-full h-full bg-[#B1B2B5]/50 rounded-[5px]'>
                     asdasd
                 </div>
             </div>
 
-            <form onSubmit={(e)=>{
-                e.preventDefault();
-                handleRegistration.mutate();
-            }} className="relative flex flex-col items-start justify-between w-[400px] h-auto bg-[#fff] p-[3rem] gap-[2rem]">
+            <div  className="relative flex flex-col items-start justify-between w-[400px] h-auto bg-[#fff] p-[3rem] gap-[2rem]">
                 <button onClick={close} className="absolute top-3 right-3 hover:bg-[#f2f2f2] active:bg-transparent rounded-full cursor-pointer">
                     <Close className='size-7 opacity-75' />
                 </button>
@@ -88,12 +93,17 @@ function Signup ({
 
                 <div className='flex items-center w-full gap-[0.3rem]'>
                     <button type='submit' className='group flex items-center justify-center gap-[0.3rem] py-[0.5rem] rounded-[5px] w-full bg-[#ff6b00] hover:bg-[#ea6200] active:bg-[#cc4c02]/90 transition-all duration-100 cursor-pointer'>
-                        <span className='text-[16px] text-[#fff]'>Continue</span>
+                        <span className='text-[16px] text-[#fff]'>
+                            {handleRegistration.isPending 
+                                ? <LoadingSpinner size={15} color={'#FFFFFF'} />
+                                : 'Continue'
+                            }
+                        </span>
                         <Arrow className="size-5 group-hover:translate-x-1 transition-all duration-200" color='#fff' />
                     </button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     )
 }
 

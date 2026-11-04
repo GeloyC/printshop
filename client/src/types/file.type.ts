@@ -25,6 +25,18 @@ export type fileItem = {
     total_price?: number
 }
 
+export type CartItemType = { // use for items that are on cart
+    id: string,
+    file_url: string,
+    metadata: Metadata,
+    configuration: SelectedOption[],
+    slug: string,
+    additional_instruction?: string,
+    quantity: number,
+    unit_price: number,
+    total_price: number
+}
+
 export type SelectedOption = { // for confiugred file
     id: string,
     category: string,

@@ -13,7 +13,7 @@ import RadioType from '../../ui/ConfigurationType/RadioType';
 import DropdownType from '../../ui/ConfigurationType/DropdownType';
 import TextType from '../../ui/ConfigurationType/TextType';
 
-import type { fileConfigType, fileItem, SelectedOption, UpdatedConfigPayload } from '../../../types/file.type';
+import type { CartItemType, fileConfigType, fileItem, SelectedOption, UpdatedConfigPayload } from '../../../types/file.type';
 import { useUpdateCartItemConfiguration } from '../../../hooks/cart/order_item.hook';
 import { useUserContext } from '../../../context/userContext';
 import LoadingSpinner from '../../ui/LoadingSpinner/LoadingSpinner';
@@ -24,7 +24,7 @@ import LoadingSpinner from '../../ui/LoadingSpinner/LoadingSpinner';
 
 interface ModalProp {
     closeModal: () => void;
-    selectedItem?: fileItem,
+    selectedItem?: CartItemType,
     configurations: fileConfigType|undefined
 }
 

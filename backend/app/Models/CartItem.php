@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
     'total_price'
 ])]
 
-class OrderFileItem extends Model
+class CartItem extends Model
 {
     protected $keyType = 'string';
     public $incrementing = false;
