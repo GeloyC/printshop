@@ -9,4 +9,5 @@ enum OrderStatus: string
     case PrintingStarted = "Printing started";
     case ReadForPickup = "Ready-for-pickup";
     case Completed = "Completed";
+    case Cancelled = "Cancelled";
 }

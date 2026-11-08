@@ -1,6 +1,7 @@
 import api from "./api";
 
 import type { CartItemType, Metadata, SelectedOption, UpdatedConfigPayload } from "../types/file.type";
+import type { OrderData } from "../types/order.type";
 
 // interface CartItem {
 //     id: string,
@@ -49,5 +50,12 @@ export async function updateCartItemConfiguration (
     const response = await api.patch(`/api/order/cart/item/${item_id}/configuration`, 
         payload
     );
+    return response.data;
+}
+
+
+
+export async function getOrderItemData (item_id: string): Promise<OrderData> {
+    const response = await api.get(`/api/order/item/${item_id}`);
     return response.data;
 }

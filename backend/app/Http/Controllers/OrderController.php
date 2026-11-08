@@ -149,4 +149,66 @@ class OrderController extends Controller
 
         return response()->json($orderCount);
     }
+
+
+    public function getOrderItemData (String $item_id) {
+        $userId = auth()->id();
+
+        $validator = Validator::make(
+            ['id' => $item_id],
+            [
+                'id' => ['required', 'uuid', 'exists:order_items,id'],
+            ]
+        );
+
+        $orderItem = DB::select("
+            SELECT
+                o.id,
+                o.reference_number,
+                o.status,
+                o.created_at,
+                o.updated_at,
+
+                SUM(oi.total_price) AS order_total,
+
+                osh.status AS current_status,
+                osh.updated_at AS status_changed_at,
+
+                COALESCE(
+                    JSON_AGG(
+                        JSON_BUILD_OBJECT(
+                            'id', oi.id,
+                            'file_url', oi.file_url,
+                            'metadata', oi.metadata,
+                            'configuration', oi.configuration,
+                            'slug', oi.slug,
+                            'additional_instruction', oi.additional_instruction,
+                            'quantity', oi.quantity,
+                            'unit_price', oi.unit_price,
+                            'total_price', oi.total_price
+                        )
+                    ) FILTER (WHERE oi.id IS NOT NULL),
+                    '[]'::json
+                ) AS order_items
+
+            FROM orders AS o
+
+            LEFT JOIN order_items AS oi
+                ON oi.order_id = o.id
+            LEFT JOIN order_status_histories AS osh
+                ON osh.order_id = o.id
+
+            WHERE
+                o.user_id = ?
+                AND o.id = ?
+
+            GROUP BY
+                o.id,
+                osh.status,
+                osh.updated_at;
+        ", 
+        [$userId, $item_id]);
+
+        return response()->json($orderItem[0] ?? null);
+    }
 }

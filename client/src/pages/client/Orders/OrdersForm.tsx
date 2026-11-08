@@ -1,13 +1,14 @@
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 // components
 import OrderItem from "./OrderItem"
 import ModalWrapper from "../../../components/wrapper/ModalWrapper"
-import FolderItemModal from "./OrderItemModal"
+import OrderItemModalProp from "./OrderItemModal"
 import StatusTab from "./StatusTab"
 import type { SetURLSearchParams } from "react-router-dom"
 import type { Order } from "../../../types/order.type"
+import { useGetOrderItemData } from "../../../hooks/cart/order_item.hook"
 
 type OrdersFormProp = {
     setSearchParams: SetURLSearchParams
@@ -22,6 +23,18 @@ function OrdersForm ({
 }: OrdersFormProp) {
 
     const [isItemModalOpen, setIsItemModalOpen] = useState<boolean>(false);
+    const [selectedId, setSelectedId] = useState<string|null>(null)
+
+    const handleViewOrderData = (item_id: string) => {
+        setSelectedId(item_id);
+        setIsItemModalOpen(true);
+    }
+
+    const { data: itemData } = useGetOrderItemData(String(selectedId) ?? '', !!selectedId)
+
+
+
+    
 
     return (
         <>
@@ -57,8 +70,9 @@ function OrdersForm ({
                         
                         {orders.map(order => (
                             <OrderItem key={order.id}
-                                viewOrder={()=>setIsItemModalOpen(true)}
+                                viewOrder={()=>handleViewOrderData(order.id)}
                                 order={order}
+                                
                             />
                         ))}
                     </div>
@@ -68,8 +82,9 @@ function OrdersForm ({
 
             {isItemModalOpen && (
                 <ModalWrapper>
-                    <FolderItemModal 
+                    <OrderItemModalProp 
                         closeModal={()=>setIsItemModalOpen(false)}
+                        data={itemData}
                     />
                 </ModalWrapper>
             )}

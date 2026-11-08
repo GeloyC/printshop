@@ -17,8 +17,6 @@ import type {
     fileConfigType, 
     SelectedOptions 
 } from '../../../types/file.type';
-import { useUserContext } from '../../../context/userContext';
-import { useUpdateCartItemConfiguration } from '../../../hooks/cart/order_item.hook';
 
 
 
@@ -61,7 +59,7 @@ function ConfigurationSetupModal ({
         }, {});
     });
 
-
+    const isConfigurationComplete = Object.values(selectedOptions).length === configurations?.configuration.length;
 
     
 
@@ -70,7 +68,7 @@ function ConfigurationSetupModal ({
         configuration: SelectedOptions,
         additionalInstruction?: string 
     ) => {
-        if (!selectedFile) return;
+        if (!selectedFile || !isConfigurationComplete) return;
 
         const formattedConfiguration = Object.values(configuration).flat();
         const totalPricePerItem = formattedConfiguration.reduce((acc, config) => acc + config.price, 0);
@@ -101,7 +99,7 @@ function ConfigurationSetupModal ({
 
 
     return (
-        <div className="fade-up flex flex-col items-center w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[15px]">
+        <div className="fade-up flex flex-col items-start w-[600px] bg-[#FFF] p-[2rem] gap-[1rem] rounded-[15px]">
             <span className='text-3xl text-[#292929] font-bold leading-none'>File setup</span>
 
             <div className='flex flex-col w-full '>
@@ -217,17 +215,20 @@ function ConfigurationSetupModal ({
             </div>
 
             <div className="flex items-center justify-end w-full gap-[0.3rem] z-20">
-                <button onClick={closeModal} className="p-[0.5rem] bg-[#f2f2f2] hover:bg-[#d6d6d6] active:bg-[#e6e6e6] rounded-[5px] cursor-pointer">
+                <button onClick={closeModal} className="p-[0.5rem] bg-[#f2f2f2] hover:bg-[#d6d6d6] active:bg-[#e6e6e6] rounded-[10px] cursor-pointer">
                     <span className="text-[#272727] px-[1rem]">Cancel</span>
                 </button>
-                <button onClick={
-                    () => handleSaveFileConfiguration(
-                        quantity, 
-                        selectedOptions, 
-                        additionalInstruction
-                    )
-                } 
-                className="p-[0.5rem] bg-[#272727] hover:bg-[#1a1a1a] active:bg-[#434343] rounded-[5px] cursor-pointer">
+                <button 
+                    disabled={!isConfigurationComplete}
+                    onClick={
+                        () => handleSaveFileConfiguration(
+                            quantity, 
+                            selectedOptions, 
+                            additionalInstruction
+                        )
+                    } 
+                    className={`p-[0.5rem] bg-[#272727] ${isConfigurationComplete ? 'hover:bg-[#1a1a1a] active:bg-[#434343] cursor-pointer' : 'opacity-75 cursor-not-allowed'} rounded-[10px] `}
+                >
                     <span className="text-[#FFF] px-[1rem]">Save</span>
                 </button>
             </div>

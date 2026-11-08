@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/order/cart/checkout", [OrderController::class, 'checkout']);
     Route::get("/order/list" , [OrderController::class, 'getOrdersByStatus']);
     Route::get("/order/list/count", [OrderController::class, 'getOrderPlacedCount']);
+    Route::get("/order/item/{id}", [OrderController::class, 'getOrderItemData']);
 });
 
 

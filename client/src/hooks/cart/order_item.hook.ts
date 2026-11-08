@@ -1,5 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addItemQuantity, deleteCartItem, getAllCartItems, subtractItemQuantity, updateCartItemConfiguration } from "../../api/order_item.api";
+import { 
+    useMutation, 
+    useQuery, 
+    useQueryClient 
+} from "@tanstack/react-query";
+import { 
+    addItemQuantity, 
+    deleteCartItem, 
+    getAllCartItems, 
+    getOrderItemData, 
+    subtractItemQuantity, 
+    updateCartItemConfiguration 
+} from "../../api/order_item.api";
 import axios from "axios";
 import type { UpdatedConfigPayload } from "../../types/file.type";
 
@@ -117,3 +128,17 @@ export function useUpdateCartItemConfiguration (item_id: string,user_id?: string
         }
     });
 }
+
+
+
+export function useGetOrderItemData (item_id: string, enabled: boolean) {
+
+    return useQuery({
+        queryKey: ['order-item', item_id],
+        queryFn: async () => {
+            return await getOrderItemData(item_id)
+        },
+        enabled
+    });
+}
+
