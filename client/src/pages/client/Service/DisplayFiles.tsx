@@ -11,7 +11,7 @@ import Delete from "/src/assets/icon/add.svg?react";
 import AddIcon from '/src/assets/icon/add.svg?react'
 
 import type { fileItem } from "../../../types/file.type";
-import type { UseMutationResult } from "@tanstack/react-query";
+import type { UseMutateFunction, UseMutationResult } from "@tanstack/react-query";
 
 // services
 
@@ -22,7 +22,8 @@ type DisplayFilesProp =  {
     files: fileItem[];
     setError: React.Dispatch<SetStateAction<string>>;
     slug: string;
-    handleAddToCart: UseMutationResult<any[], Error, void, unknown>;
+    handleAddToCart: UseMutateFunction<any[], Error, void, unknown>
+    AddToCartPending: boolean,
     setFileSetupModalOpen: React.Dispatch<SetStateAction<boolean>>,
     serviceName: string
     serviceDescription: string
@@ -37,6 +38,7 @@ function DisplayFiles ({
     setError,
     slug,
     handleAddToCart,
+    AddToCartPending,
     setFileSetupModalOpen,
     serviceName,
     serviceDescription,
@@ -193,14 +195,14 @@ function DisplayFiles ({
                             </label>
                         </div>
 
-                        <button onClick={()=>handleAddToCart.mutate()} disabled={!shouldBlock || handleAddToCart.isPending} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock || handleAddToCart.isPending ? 'cursor-not-allowed bg-[#9a3902]' : 'bg-[#292929] hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} rounded-full transition-all duration-100`}>
+                        <button onClick={()=>handleAddToCart()} disabled={!shouldBlock || AddToCartPending} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock || AddToCartPending ? 'cursor-not-allowed bg-[#9a3902]' : 'bg-[#292929] hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} rounded-full transition-all duration-100`}>
                             <span className="text-[14px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">
-                                {handleAddToCart.isPending
+                                {AddToCartPending
                                     ? 'Adding to Cart'
                                     : 'Add to Cart'
                                 }
                             </span>
-                            <ArrowWithTail className={`size-4 ${handleAddToCart.isPending && 'group-hover:translate-x-1'} transition-all duration-200`} color="#fff" />
+                            <ArrowWithTail className={`size-4 ${AddToCartPending && 'group-hover:translate-x-1'} transition-all duration-200`} color="#fff" />
                         </button>
                     </div>
                 </div>  
