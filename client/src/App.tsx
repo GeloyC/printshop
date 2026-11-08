@@ -10,8 +10,7 @@ import CreateService from './pages/admin/CreateService/CreateService'
 import SelectedService from './pages/admin/SelectedService/SelectedService'
 import Cart from './pages/client/Cart/Cart'
 import OrderConfirmation from './pages/client/OrderConfirmation/OrderConfirmation'
-import Folder from './pages/client/Folder/Folder'
-
+import Orders from './pages/client/Orders/Orders'
 
 const router = createBrowserRouter([
     {
@@ -21,7 +20,7 @@ const router = createBrowserRouter([
             { path: '/service/:slug', element: <ServiceClient /> },
             { path: '/cart', element: <Cart /> },
             { path: '/order-confirmation', element: <OrderConfirmation /> },
-            { path: '/folder', element: <Folder /> },
+            { path: '/order', element: <Orders /> },
         ],
     },
     {
@@ -33,31 +32,6 @@ const router = createBrowserRouter([
         ],
     },
 ]);
-
-
-
-// function App() {
-
-//   return (
-//     <BrowserRouter>
-    //   <Routes >
-    //     <Route element={<ClientLayout />}>
-    //       <Route path='/' element={<Home />} />
-    //       <Route path='/service/:slug' element={<ServiceClient />} /> 
-    //       <Route path='/cart' element={<Cart />} />
-    //       <Route path='/order-confirmation' element={<OrderConfirmation />} />
-    //       <Route path='/folder' element={<Folder />} />
-    //     </Route>
-
-    //     <Route element={<AdminLayout />}>
-    //       <Route path="/admin/service" element={<ServiceAdmin />}/>
-    //       <Route path='/admin/service/:slug' element={<SelectedService />}/> 
-    //       <Route path='/admin/service/create' element={<CreateService />} />
-    //     </Route>
-    //   </Routes>
-//     </BrowserRouter>
-//   )
-// }
 
 
 

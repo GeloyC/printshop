@@ -1,10 +1,8 @@
 
-import { createContext, useContext, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getUser } from '../api/user';
-
+import { createContext, useContext } from 'react';
 
 import type { UserType } from '../types/user.type';
+import { useGetUser } from '../hooks/useGetUser';
 
 type UserContextType = {
     user: UserType,
@@ -17,12 +15,7 @@ export const UserContext = createContext<UserContextType|null>(null);
 
 export const UserContextProvider = ({ children }: {children: React.ReactNode}) => {
     
-    const { data: user, isLoading } = useQuery({
-        queryKey: ['user'],
-        queryFn: () =>getUser(),
-    })
-
-
+    const { data: user, isLoading } = useGetUser();
 
     return (
         <UserContext.Provider value={{ 

@@ -7,16 +7,16 @@ import Close from '/src/assets/icon/close.svg?react'
 
 
 // components
-import OrderItem from './OrderItem';
+import OrderItem from './OrderFileItem';
 import OrderStatus from './OrderStatus';
 
-type FolderItemModalProp = {
+type OrderItemModalProp = {
     closeModal: () => void;
 }
 
-function FolderItemModal ({
+function OrderItemModal ({
     closeModal
-}: FolderItemModalProp) {
+}: OrderItemModalProp) {
 
     return (
         <div className="fade-up relative flex flex-col w-[700px] p-[2rem] gap-[1rem] bg-[#fff] rounded-[5px]">
@@ -87,4 +87,4 @@ function FolderItemModal ({
     )
 }
 
-export default FolderItemModal;
+export default OrderItemModal;

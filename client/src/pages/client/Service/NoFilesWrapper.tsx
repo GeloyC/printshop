@@ -81,7 +81,7 @@ function NoFilesWrapper ({
 
 
                 <span className="text-[14px] text-[#292929] font-[600] opacity-75">or drop your files here</span>
-                <span className="text-[14px] text-[#292929] font-[600] opacity-50">(Only{requiredFiles.join(', ')} allowed)</span>
+                <span className="text-[14px] text-[#292929] font-[600] opacity-50">(Only {requiredFiles.join(', ')} allowed)</span>
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import { useEffect, type SetStateAction } from "react";
+import { type SetStateAction } from "react";
 import { useState } from "react";
 
 // components
@@ -169,38 +169,38 @@ function DisplayFiles ({
     return (
         <div className={`flex flex-col flex-1 w-full`}>   
             {files.length > 0 && (
-                <div className="flex items-center justify-between w-full gap-[0.3rem] p-[1rem] px-[2rem]">
+                <div className="flex items-center justify-between w-full gap-[0.3rem] p-[1.5rem] bg-[#ff6b00]">
 
                     <div className="flex">
-                        <span className="text-3xl text-[#292929] font-bold leading-none">{serviceName}</span>
+                        <span className="text-3xl text-[#fff] font-bold leading-none">{serviceName}</span>
                     </div>
 
 
                     <div className="flex items-center gap-[0.5rem]">
                         <div className="flex items-center">
-                            <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer hover:bg-[#ff0000]/65 active:bg-transparent rounded-[5px] transition-all duration-100">
-                                <Delete className="size-4 rotate-45" />
-                                <span className="text-[14px] text-[#292929] font-bold leading-none">Remove all files</span>
+                            <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer hover:bg-[#ff0000]/65 active:bg-transparent rounded-full transition-all duration-100">
+                                <Delete className="size-4 rotate-45" color="#fff"/>
+                                <span className="text-[14px] text-[#fff] font-bold leading-none">Remove all files</span>
                             </button>
                             
                             <input type="file" name="service_addmore" id="service_addmore" accept={stringedRequiredFiles} multiple hidden onChange={handleAddFiles} />
 
                             <label htmlFor="service_addmore"
-                                className="flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer hover:bg-[#ffdca5] active:bg-transparent rounded-[5px] transition-all duration-100"
+                                className="group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer hover:bg-[#cc4c02] active:bg-transparent rounded-full transition-all duration-100"
                             >
-                                <AddIcon className='size-4' />
-                                <span className='text-[14px] text-[#292929] font-bold leading-none'>Add files</span>
+                                <AddIcon className='size-4' color="#fff"/>
+                                <span className='text-[14px] text-[#fff] font-bold leading-none'>Add files</span>
                             </label>
                         </div>
 
-                        <button onClick={()=>handleAddToCart.mutate()} disabled={!shouldBlock || handleAddToCart.isPending} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock || handleAddToCart.isPending ? 'cursor-not-allowed opacity-50' : 'hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} bg-[#cc4c02] rounded-[10px] transition-all duration-100`}>
+                        <button onClick={()=>handleAddToCart.mutate()} disabled={!shouldBlock || handleAddToCart.isPending} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock || handleAddToCart.isPending ? 'cursor-not-allowed bg-[#9a3902]' : 'bg-[#292929] hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} rounded-full transition-all duration-100`}>
                             <span className="text-[14px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">
                                 {handleAddToCart.isPending
                                     ? 'Adding to Cart'
                                     : 'Add to Cart'
                                 }
                             </span>
-                            <ArrowWithTail className="size-4 group-hover:translate-x-1 transition-all duration-200" color="#fff" />
+                            <ArrowWithTail className={`size-4 ${handleAddToCart.isPending && 'group-hover:translate-x-1'} transition-all duration-200`} color="#fff" />
                         </button>
                     </div>
                 </div>  
@@ -210,10 +210,10 @@ function DisplayFiles ({
             <div onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={()=>setDragOver(false)}
                 className={`flex flex-1 w-full
                     ${ dragOver && files.length > 0 
-                        ? 'bg-[#ff6b00]/50 rounded-t-[15px]'  // when dragging file
+                        ? 'bg-gradient-to-b from-[#ff6b00] via-[#cc4c02] to-transparent'  // when dragging file
                         : files.length === 0 
                             ? 'bg-transparent'
-                            : 'bg-[#fff0d3] rounded-t-[15px]'  // default
+                            : 'bg-gradient-to-b from-[#ff6b00] to-transparent'  // default
                     } 
                 `}
             >
@@ -228,7 +228,7 @@ function DisplayFiles ({
                         slug={slug}
                     />
                 ):(
-                    <div className={`grid grid-cols-2 items-start gap-[1rem] w-full h-fit p-[2rem] rounded-t-[15px] transition-all duration-400`}>
+                    <div className={`grid grid-cols-2 items-start gap-[0.5rem] w-full h-fit p-[1rem] px-[1.5rem] rounded-t-[15px] transition-all duration-400`}>
                         {files.map((file, index) => {
                             if (file.slug === slug) {
                                 return (

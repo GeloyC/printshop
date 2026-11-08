@@ -82,7 +82,9 @@ function ConfigurationSetupModalCart ({
         if (instructionUpdated) payload.additional_instruction = additionalInstruction;
         if (quantityUpdated) payload.quantity = quantity;
 
-        updateCartItemConfiguration(payload);
+        updateCartItemConfiguration(payload, {
+            onSuccess: () => closeModal()
+        });
     }
 
 
@@ -216,7 +218,10 @@ function ConfigurationSetupModalCart ({
                     className={`p-[0.5rem] bg-[#272727] rounded-[5px]  ${hasChanges ? 'hover:bg-[#1a1a1a] active:bg-[#434343] cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
                 >
                     {isUpdateLoading ? (
-                        <LoadingSpinner size={15} color='#FFFFFF'/>
+                        <div className='flex items-center gap-[0.5rem] px-[1rem]'>
+                            <span className='text-[#fff]'>Saving</span>
+                            <LoadingSpinner size={15} color='#FFFFFF'/>
+                        </div>
                     ):(
                         <span className="text-[#FFF] px-[1rem]">Save</span>
                     )}

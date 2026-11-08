@@ -146,7 +146,7 @@ class CartItemController extends Controller
         $validator = Validator::make(
             ['id' => $id],
             [
-                'id' => ['required', 'uuid', 'exists:order_file_items,id'],
+                'id' => ['required', 'uuid', 'exists:cart_items,id'],
             ]
         );
 
@@ -188,18 +188,26 @@ class CartItemController extends Controller
             'quantity' => ['sometimes', 'integer', 'min:1']
         ]);
 
-        $quantity = (int) $validated['quantity'];
+        $quantity = (int) ($validated['quantity'] ?? $item->quantity);
         $totalPrice = (float) $quantity * $unitPrice;
 
-        $updatedConfiguration = CartItem::query()
-            ->where('id', $id)
-            ->update([
-                'configuration' => $validated['configuration'] ?? null,
-                'additional_instruction' => $validated['additional_instruction'] ?? null,
-                'quantity' => $validated['quantity'] ?? null,
-                'total_price' => $totalPrice
+        $updates = [];
 
-            ]);
+        if (array_key_exists('configuration', $validated)) {
+            $updates['configuration'] = $validated['configuration'];
+        }
+
+        if (array_key_exists('additional_instruction', $validated)) {
+            $updates['additional_instruction'] = $validated['additional_instruction'];
+        }
+
+        if (array_key_exists('quantity', $validated)) {
+            $updates['quantity'] = $quantity;
+        }
+
+        $updates['total_price'] = $quantity * (float) $item->unit_price;
+
+        $updatedConfiguration = $item->update($updates);
 
         return response()->json([
             'message' => 'configuration updated',

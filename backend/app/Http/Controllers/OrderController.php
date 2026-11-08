@@ -95,4 +95,58 @@ class OrderController extends Controller
             'order' => $order->load('items')
         ], 201);
     }
+
+
+    public function getOrdersByStatus (Request $request) {
+        
+        $userId = auth()->id();
+        $status = $request->query('status');
+
+        $sql = "
+            SELECT
+                orders.id,
+                orders.reference_number,
+                orders.status,
+                orders.updated_at,
+                COUNT(orderItems.file_url) AS number_of_files,
+                SUM(orderItems.total_price) AS total_paid
+
+            FROM orders
+
+            JOIN order_items AS orderItems
+                ON orderItems.order_id = orders.id
+
+            WHERE orders.user_id = ?
+        ";
+
+        $params = [$userId];
+
+        if (!empty($status)) {
+            $sql .= " AND orders.status = ?";
+            $params[] = $status;
+        }
+
+        $sql .= "
+            GROUP BY
+                orders.id,
+                orders.reference_number,
+                orders.status,
+                orders.updated_at
+        ";
+
+        $orders = DB::select($sql, $params);
+        return response()->json($orders);
+    }
+
+
+    public function getOrderPlacedCount () {
+        $userId = auth()->id();
+
+        $orderCount = Order::query()
+            ->where('status', 'Order placed')
+            ->where('user_id', $userId)
+            ->count();
+
+        return response()->json($orderCount);
+    }
 }

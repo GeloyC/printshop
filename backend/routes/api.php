@@ -31,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch("order/cart/item/{id}/configuration", [CartItemController::class, 'updateItemConfiguration']);
     Route::delete("/order/cart/item/{id}/delete", [CartItemController::class, 'destroy']);
     Route::post("/order/cart/checkout", [OrderController::class, 'checkout']);
+    Route::get("/order/list" , [OrderController::class, 'getOrdersByStatus']);
+    Route::get("/order/list/count", [OrderController::class, 'getOrderPlacedCount']);
 });
 
 

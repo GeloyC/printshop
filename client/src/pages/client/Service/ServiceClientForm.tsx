@@ -117,9 +117,12 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
             return responses;
         },
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey:['cart-items'] })
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey:['cart-items', user?.id] }),
+                queryClient.invalidateQueries({ queryKey:['cart', user?.id] }),
+                proceedToCheckOut()
+            ])
 
-            proceedToCheckOut();
         },
         onError: (err: unknown) => {
 
@@ -151,7 +154,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     return (
         <>
             <TopLoadingBar isLoading={handleAddToCart.isPending} />
-            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch p-[rem]' : 'bg-[#ffdca5] border border-[#ffc36d]'} rounded-t-[15px] overflow-hidden  gap-[2rem] `}>
+            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch' : 'bg-transparent'} rounded-t-[20px] overflow-hidden gap-[2rem] `}>
                 
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}

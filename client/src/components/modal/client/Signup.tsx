@@ -41,9 +41,9 @@ function Signup ({
         <form onSubmit={(e)=>{
                 e.preventDefault();
                 handleRegistration.mutate();
-            }} className='fade-up grid grid-cols-2 rounded-[10px] overflow-hidden'>
+            }} className='fade-up grid grid-cols-2 rounded-[20px] overflow-hidden'>
             <div className='flex items-center justify-center p-[0.5rem] bg-[#fff]'>
-                <div className='flex items-center justify-center w-full h-full bg-[#B1B2B5]/50 rounded-[5px]'>
+                <div className='flex items-center justify-center w-full h-full bg-[#B1B2B5]/50 rounded-[15px]'>
                     asdasd
                 </div>
             </div>

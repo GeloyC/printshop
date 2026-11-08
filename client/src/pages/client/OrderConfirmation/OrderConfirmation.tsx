@@ -60,7 +60,7 @@ function OrderConfirmation () {
 
                                 <div className="flex flex-col items-end gap-[0.3rem]">
                                     {orders.map((order: any) => (
-                                        <span key={order.id} className="text-[14px] font-bold text-right text-wrap">{order.file.name} ({order.quantity}x) - {currencyFormat(Number(order.total_price))}</span>
+                                        <span key={order.id} className="text-[14px] font-bold text-right text-wrap">{order.metadata?.file_name} ({order.quantity}x) - {currencyFormat(Number(order.unit_price))}</span>
                                     ))}
                                 </div>
                             </div>

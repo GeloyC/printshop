@@ -46,7 +46,7 @@ function Login ({
 
 
     return (
-        <form onSubmit={(e)=>{e.preventDefault(); handleLogin.mutate()}} className="fade-up relative flex flex-col w-[400px] h-auto bg-[#fff] p-[3rem] rounded-[5px] gap-[2rem]">
+        <form onSubmit={(e)=>{e.preventDefault(); handleLogin.mutate()}} className="fade-up relative flex flex-col w-[400px] h-auto bg-[#fff] p-[3rem] rounded-[15px] gap-[2rem]">
             <button type='button' onClick={close} className="absolute top-3 right-3 cursor-pointer hover:bg-[#f2f2f2] active:bg-transparent rounded-full">
                 <Close className='size-7 opacity-75'/>
             </button>

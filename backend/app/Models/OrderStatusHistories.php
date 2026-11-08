@@ -24,7 +24,7 @@ class OrderStatusHistories extends Model
     
     public function casts(): array {
         return [
-            'updated_at' => 'datetime:M d, Y h:i A',
+            'updated_at' => 'datetime:M d, Y, g:i A',
         ];
     }
 }

@@ -9,7 +9,7 @@ import Home from '/src/assets/icon/home.svg?react'
 import ModalWrapper from "../../wrapper/ModalWrapper";
 import Signup from "../../modal/client/Signup";
 import Login from "../../modal/client/Login";
-import FolderButton from "./FolderButton";
+import FolderButton from "./OrderButton";
 import NotificationButton from "./NotificationButton";
 import { useUserContext } from "../../../context/userContext";
 import UserAccountIcon from "./UserAccountIcon";
@@ -48,7 +48,7 @@ function NavBar () {
             {(isNotifDropdownOpen || isAccountDropdownOpen || isServoceDropdownOpen) && (
                 <div onClick={handleCloseDropdowns} className="fixed inset-0 z-10"/>
             )}
-            <section className="sticky top-0 backdrop-blur grid grid-cols-3 w-full h-[4rem] py-[0.75rem]  z-10">
+            <section className="sticky top-0 backdrop-blur grid grid-cols-3 w-full h-[4rem] py-[0.75rem]  z-20">
 
                 <div className="flex w-full">
                     <Link to="/" onClick={handleCloseDropdowns} className="flex items-center bg-[#fff0d3] hover:bg-[#ffdca5] px-[0.5rem] gap-[0.3rem] rounded-[10px]">

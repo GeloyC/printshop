@@ -1,18 +1,6 @@
 
-// import type { Configuration } from "../../../types/service/service";
 
-/*
-
-type OrderItemProp = {
-    filename: string,
-    configuration: Configuration,
-    quantity: number
-    price: number
-}
-
-*/
-
-function OrderItem () {
+function OrderFileItem () {
 
     return (
         <div className="flex items-start justify-between w-full p-[0.5rem] rounded-[10px] border border-dashed border-[#ffc36d] bg-[#fff8ec]">
@@ -29,4 +17,4 @@ function OrderItem () {
     )
 }
 
-export default OrderItem;
+export default OrderFileItem;

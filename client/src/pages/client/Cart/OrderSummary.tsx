@@ -4,7 +4,7 @@
 * Files and configurations for each must not be wiped during login and must continue normally after successfully login
 */
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,8 @@ import currencyFormat from "../../../utils/currencyFormat";
 import type { CartItemType } from "../../../types/file.type";
 
 import { checkoutItems } from "../../../api/order.api";
+import { useUserContext } from "../../../context/userContext";
+import LoadingSpinner from "../../../components/ui/LoadingSpinner/LoadingSpinner";
 
 
 type OrderSummaryProp = {
@@ -26,6 +28,7 @@ function OrderSummary ({
     cartItems 
 }: OrderSummaryProp) {
 
+    const { user } = useUserContext();
     const navigate = useNavigate();
 
     const handleConfirmOrder = () => {
@@ -41,14 +44,15 @@ function OrderSummary ({
     //  service_id --> get the service_id using the slug from CartItems 'SELECT id FROM     services WHERE slug = cartItems.slug'
     //  create reference_number on Laravel
     //  send the cartItems data to order_items table
-
+    const queryClient = useQueryClient();
     const handleCheckout = useMutation({
         mutationFn: async () => {
             return await checkoutItems(cartItems);
         },
         onSuccess: () => {
-            // handleConfirmOrder();
+            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
             console.log('checkout successful!');
+            handleConfirmOrder();
         }, onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
                 console.error('Message:', err.message);
@@ -72,8 +76,12 @@ function OrderSummary ({
                 <span className="text-[16px] text-[#292929] font-bold">{currencyFormat(Number(subTotalPrice))}</span>
             </div>
 
-            <button onClick={() => handleCheckout.mutate()} className="bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">
-                <span className="text-[16px] text-[#fff]">Confirm Order</span>
+            <button onClick={() => handleCheckout.mutate()} className="flex items-center justify-center  bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">
+                {handleCheckout.isPending ? (
+                    <LoadingSpinner size={15} color="#FFF" />
+                ): (
+                    <span className="text-[16px] text-[#fff]">Confirm Order</span>
+                )}
             </button>
         </section>
     )

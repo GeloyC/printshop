@@ -22,7 +22,9 @@ class ServiceController extends Controller
                 'slug',
                 'created_at',
                 'base_price'
-            )->get();
+            )
+            ->orderBy('created_at', 'asc')
+            ->get();
 
         return response()->json($service);
     }

@@ -5,23 +5,30 @@ import type { UpdatedConfigPayload } from "../../types/file.type";
 
 
 
-export function useGetCartItems (user_id: string) {
+export function useGetCartItems (user_id?: string) {
 
     return useQuery({
         queryKey: ['cart-items', user_id],
-        queryFn: async () => {
-            return await getAllCartItems()
-        }
+        queryFn: getAllCartItems,
+        enabled: !!user_id
     });
 }
 
 
-export function useAddCartItemQuantity (item_id: string, user_id: string) {
+export function useAddCartItemQuantity (item_id: string, user_id?: string) {
     const queryClient = useQueryClient();
+
 
     return useMutation({
         mutationFn: () => addItemQuantity(item_id),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart-items', user_id] }),
+        onSuccess: async () => {
+            console.log('Mutation successful');
+            
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: ['cart-items', user_id] }),
+                queryClient.invalidateQueries({ queryKey: ['cart', user_id] })
+            ])
+        },
         onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
                 console.error('Status:', err.response?.status);
@@ -34,7 +41,7 @@ export function useAddCartItemQuantity (item_id: string, user_id: string) {
 }
 
 
-export function useSubtractCartItemQuantity (item_id: string, user_id: string) {
+export function useSubtractCartItemQuantity (item_id: string, user_id?: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -51,12 +58,16 @@ export function useSubtractCartItemQuantity (item_id: string, user_id: string) {
     });
 }
 
-export function useDeleteCartItem (item_id: string,  user_id: string) {
+export function useDeleteCartItem (item_id: string,  user_id?: string) {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: () => deleteCartItem(item_id),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cart-items', user_id] }),
+        onSuccess: () => Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['cart-items', user_id] }),
+            queryClient.invalidateQueries({ queryKey: ['cart', user_id] }),
+        ]),
+            
         onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
                 console.error('Status:', err.response?.status);
@@ -70,7 +81,7 @@ export function useDeleteCartItem (item_id: string,  user_id: string) {
 
 
 
-export function useUpdateCartItemConfiguration (item_id: string,user_id: string ) {
+export function useUpdateCartItemConfiguration (item_id: string,user_id?: string ) {
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -91,7 +102,11 @@ export function useUpdateCartItemConfiguration (item_id: string,user_id: string 
                 }
             }
         },
-        onSuccess: ()=>queryClient.invalidateQueries({ queryKey:['cart-items', user_id] }),
+        onSuccess: ()=> Promise.all([
+            queryClient.invalidateQueries({ queryKey:['cart-items', user_id] }),
+            queryClient.invalidateQueries({ queryKey:['cart', user_id] })
+
+        ]),
         onError: (err:unknown) => {
             if (axios.isAxiosError(err)) {
                 console.error('Status:', err.response?.status);
