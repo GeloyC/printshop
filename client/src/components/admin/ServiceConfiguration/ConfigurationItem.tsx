@@ -24,7 +24,7 @@ function ConfigurationItem ({
     const isNotCreatingService = location.pathname === '/admin/service/create' ? !isEditing : isEditing;
 
     return (
-        <div className={`group flex flex-col items-start w-full ${isNotCreatingService ? 'bg-[#fff0d3]' : 'bg-[#e6e6e6]'}  rounded-[5px] p-[1rem]`}>
+        <div className={`group flex flex-col items-start w-full ${isNotCreatingService ? 'bg-[#fff0d3]' : 'bg-[#fafafa]'} border border-[#292929]/20 rounded-[5px] p-[1rem]`}>
             <div className="flex items-center justify-between gap-[0.5rem] w-full transition-all duration-100">
                 <div className="flex items-center gap-[0.5rem]">
                     <Folder className="size-5" />

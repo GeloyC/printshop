@@ -13,10 +13,10 @@ function TopNavAdmin () {
 
 
     return (
-        <div className="flex items-center justify-between w-full min-h-[3rem] z-10 p-[0.3rem] px-[1rem] bg-[#B1B2B5]/50 ">
+        <div className="flex items-center justify-between w-full min-h-[3rem] z-10 p-[0.3rem] px-[1rem] ">
             <div className={`flex items-center h-[3rem] max-h-[3rem] gap-[0.5rem]`}>
-                <Logo className="h-[20px] w-[30px]" />
-                <span className="font-bold text-[16px] text-[#272727] leading-none">ADMIN</span>
+                {/* <Logo className="h-[20px] w-[30px]" /> */}
+                <span className="font-bold text-2xl text-[#cc4c02] leading-none">Admin PrintShop</span>
             </div>
 
             <AdminUserIcon 

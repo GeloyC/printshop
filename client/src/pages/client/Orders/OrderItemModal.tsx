@@ -59,9 +59,6 @@ function OrderItemModal ({
                             ))}
                         </div>
                     </div>
-
-
-                    
                 </div>
             </div>
 

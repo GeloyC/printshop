@@ -1,12 +1,15 @@
 
 import { Link } from "react-router-dom";
 import Cart from '/src/assets/icon/cart.svg?react'
+import { useUserContext } from "../../../context/userContext";
 
 type CartButtonProp = {
     closeDropdowns: ()=>void
     itemCount: number
 }
 function CartButton ({ closeDropdowns, itemCount }:CartButtonProp) {
+
+    const { user } = useUserContext();
 
     return (
         <div onClick={closeDropdowns} className='relative'>
@@ -18,7 +21,12 @@ function CartButton ({ closeDropdowns, itemCount }:CartButtonProp) {
 
                 <div className='absolute -top-1 -left-1 h-[1.2rem] w-[1.2rem] flex items-center justify-center bg-[#ff6b00] border-2 border-[#fff] rounded-full'>
                     <span className='text-[#fff] text-[12px] font-bold leading-none'>
-                        { itemCount > 9 ? '+9' : itemCount }
+                        { user && itemCount > 9 
+                            ? '9+'
+                            : !user 
+                                ? '0'
+                                : itemCount
+                        }
                     </span>
                 </div>
             </Link>

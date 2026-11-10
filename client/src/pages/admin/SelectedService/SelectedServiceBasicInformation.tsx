@@ -21,7 +21,7 @@ function SelectedServiceBasicInformation ({
             <div className="flex flex-col gap-[0.3rem] w-full">
                 <span className="text-[14px] font-bold leading-none opacity-75">Name</span>
 
-                <div className={`flex items-center justify-between w-full border border-[#292929]/25 ${isEditing && 'border-dashed border-[#ff6b00] bg-[#fff8ec]'} bg-[#f2f2f2] p-[0.5rem] rounded-[5px]`}>
+                <div className={`flex items-center justify-between w-full border border-[#292929]/25 ${isEditing && 'border-dashed border-[#ff6b00] bg-[#fff8ec]'} bg-[#fafafa] p-[0.75rem] rounded-[5px]`}>
                     <input type="text" name="service_name" id="service_name" 
                         value={basicInformation.name} onChange={(e)=>setBasicInformation(prev=>({
                             ...prev,
@@ -36,7 +36,7 @@ function SelectedServiceBasicInformation ({
             <div className="flex flex-col gap-[0.3rem] w-full">
                 <span className="text-[14px] font-bold leading-none opacity-75">Description</span>
 
-                <div className={`flex items-start justify-between w-full border border-[#292929]/25 ${isEditing && 'border-dashed border-[#ff6b00] bg-[#fff8ec]'} bg-[#f2f2f2] p-[0.5rem] rounded-[5px]`}>
+                <div className={`flex items-start justify-between w-full border border-[#292929]/25 ${isEditing && 'border-dashed border-[#ff6b00] bg-[#fff8ec]'} bg-[#fafafa] p-[0.75rem] rounded-[5px]`}>
                     <textarea name="" id="" rows={4} 
                     value={basicInformation.description} onChange={(e)=>setBasicInformation(prev=>({
                             ...prev,
@@ -50,7 +50,7 @@ function SelectedServiceBasicInformation ({
             <div className="flex flex-col gap-[0.3rem] w-full">
                 <span className="text-[14px] font-bold leading-none opacity-75">Base price</span>
 
-                <div className={`flex items-center justify-between w-full border border-[#292929]/25 ${isEditing && 'border-dashed border-[#ff6b00] bg-[#fff8ec]'} bg-[#f2f2f2] p-[0.5rem] rounded-[5px]`}>
+                <div className={`flex items-center justify-between w-full border border-[#292929]/25 ${isEditing && 'border-dashed border-[#ff6b00] bg-[#fff8ec]'} bg-[#fafafa] p-[0.75rem] rounded-[5px]`}>
                     <input type="text" name="service_name" id="service_name" 
                         value={basicInformation.base_price} 
                         onChange={(e) => {

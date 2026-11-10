@@ -37,14 +37,16 @@ function ServiceAdmin () {
 
     return (
         <>
-            <div className="flex flex-col w-full h-full bg-[#fff]">
+            <div className="flex flex-col w-full h-full bg-[#f2f2f2] gap-[1rem]">
 
-                <div className="flex items-center justify-between border-b border-[#292929]/10 p-[1rem]">
-                    <span className="text-[20px] text-[#292929] font-bold">Service</span>
+                <div className="flex items-center justify-between p-[0.75rem] px-[1rem] bg-[#fafafa] border-b border-[#292929]/10">
+                    <span className="text-2xl text-[#292929] font-bold">Service</span>
                     
-                    <Link to={'/admin/service/create'} className="flex items-center bg-[#ff6b00] hover:bg-[#ff810a] active:bg-[#ff6b00] rounded-[5px] min-w-[5rem] py-[0.5rem] px-[1rem] gap-[0.5rem] cursor-pointer transition-all duration-100">
+                    <Link to={'/admin/service/create'} 
+                        className="flex items-center bg-[#292929] hover:bg-[#141414] active:bg-[#292929] rounded-[10px] min-w-[5rem] p-[0.75rem] px-[1rem] gap-[0.5rem] cursor-pointer transition-all duration-100"
+                    >
+                        <span className="text-[#fff] leading-none text-sm font-bold">Create Service</span>
                         <Add className="size-5" fill='#fff'/>
-                        <span className="text-[#fff] leading-none text-[14px] font-bold">Create Service</span>
                     </Link>
                 </div>
 

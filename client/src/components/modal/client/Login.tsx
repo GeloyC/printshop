@@ -34,12 +34,16 @@ function Login ({
     const queryClient = useQueryClient();
     const handleLogin = useMutation({
         mutationFn: async () => {
-            await login(account);
+            return await login(account);
         },
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ['user'] })
-            console.log('login is goooooood!');
+        onSuccess: (response) => {
             close();
+
+            return Promise.all([
+                queryClient.invalidateQueries({ queryKey: ['user'] }),
+                queryClient.invalidateQueries({ queryKey: ['cart-items', response.data.id] }),
+                queryClient.invalidateQueries({ queryKey: ['cart', response.data.id] }),
+            ])
         }
     })
 

@@ -175,16 +175,18 @@ function CreateService () {
 
     return (
         <>
-            <div className="flex flex-col w-full h-full bg-[#fff]">
+            <div className="flex flex-col w-full h-full bg-[#f2f2f2]">
                 
-                <div className="flex items-center justify-between w-full border-b border-[#292929]/10 p-[1rem]">
+                <div className="flex items-center justify-between w-full bg-[#fafafa] border-b border-[#292929]/10 p-[0.75rem] px-[1rem]">
 
                     <div className="flex items-center gap-[0.5rem]">
                         <ReturnButton/>
                         <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
                     </div>
 
-                    <button onClick={()=>handleCreateService.mutate()} className="flex items-center gap-[0.3rem] bg-[#ff6b00] rounded-[5px] hover:bg-[#cc4c02]/90 active:bg-[#ff6b00] min-w-[5rem] py-[0.5rem] px-[1rem] cursor-pointer transition-all duration-100">
+                    <button onClick={()=>handleCreateService.mutate()} 
+                        className="flex items-center bg-[#292929] hover:bg-[#141414] active:bg-[#292929] rounded-[10px] min-w-[5rem] p-[0.75rem] px-[1rem] gap-[0.5rem] cursor-pointer transition-all duration-100"
+                    >
                         <span className="text-[#fff] text-[14px] leading-none font-bold">Save</span>
                         {handleCreateService.isPending ? (
                             <LoadingSpinner 

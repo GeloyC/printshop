@@ -11,6 +11,7 @@ import SelectedService from './pages/admin/SelectedService/SelectedService'
 import Cart from './pages/client/Cart/Cart'
 import OrderConfirmation from './pages/client/OrderConfirmation/OrderConfirmation'
 import Orders from './pages/client/Orders/Orders'
+import OrdersAdmin from './pages/admin/Orders/OrdersAdmin'
 
 const router = createBrowserRouter([
     {
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
             { path: '/admin/service', element: <ServiceAdmin /> },
             { path: '/admin/service/:slug', element: <SelectedService /> },
             { path: '/admin/service/create', element: <CreateService /> },
+            { path: '/admin/orders', element: <OrdersAdmin /> },
         ],
     },
 ]);
