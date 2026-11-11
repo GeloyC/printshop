@@ -7,9 +7,9 @@ function AdminLayout () {
 
     return (
         <div className="flex flex-col items-start w-full h-screen bg-[#fafafa]">
-            <TopNavAdmin />
+            {/* <TopNavAdmin /> */}
 
-            <div className="grid grid-cols-[15%_85%] w-full h-full border-t border-[#292929]/10 overflow-hidden">
+            <div className="grid grid-cols-[15%_85%] w-full h-full overflow-y-auto thin-scrollbar">
                 <NavbarAdmin />
                 <Outlet />
             </div>

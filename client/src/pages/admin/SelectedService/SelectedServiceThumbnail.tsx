@@ -45,18 +45,18 @@ function SelectedServiceThumbnail ({
 
 
     return (
-        <section className="flex flex-col w-[700px] p-[1rem] gap-[1rem]">
+        <section className="flex flex-col w-full gap-[1rem]">
             <div className='flex flex-col'>
                 <span className="text-[16px] font-bold">Thumbnail</span>
                 <span className="text-[14px] opacity-75">Add a short description here. State why thumbnail is important</span>
             </div>
             
             {!newImagePrev ? (
-                <div className="flex items-center justify-center overflow-hidden h-[200px] bg-[#fff0d3] p-[0.5rem] rounded-[5px] border-2 border-dashed border-[#ffdca5]">
+                <div className="flex items-center justify-center overflow-hidden h-[350px] bg-[#fafafa] rounded-[5px] border border-dashed border-[#292929]/25">
                     <img src={`${ThumbnailUrl}${currentImage}`} alt="" className={`object-contain w-full h-full`} />
                 </div>
             ):(
-                <div className="flex items-center justify-center overflow-hidden h-[200px] bg-[#fff0d3] p-[0.5rem] rounded-[5px] border-2 border-dashed border-[#ffdca5]">
+                <div className="flex items-center justify-center overflow-hidden h-[200px] bg-[#fafafa] rounded-[5px] border border-dashed border-[#292929]/25">
                     <img src={`${newImagePrev}`} alt="" className={`object-contain w-full h-full`} />
                 </div>
             )}

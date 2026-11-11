@@ -211,4 +211,9 @@ class OrderController extends Controller
 
         return response()->json($orderItem[0] ?? null);
     }
+
+
+    public function getOrderDataFromAdmin () {
+        
+    }
 }

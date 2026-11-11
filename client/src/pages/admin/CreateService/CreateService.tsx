@@ -175,44 +175,39 @@ function CreateService () {
 
     return (
         <>
-            <div className="flex flex-col w-full h-full bg-[#f2f2f2]">
+            <div className="relative flex flex-col w-full h-full bg-[#f2f2f2]">
                 
-                <div className="flex items-center justify-between w-full bg-[#fafafa] border-b border-[#292929]/10 p-[0.75rem] px-[1rem]">
+                <div className="sticky top-0 flex items-center justify-between w-full h-[3.5rem] bg-[#fafafa] border-b border-[#292929]/10 px-[1rem] z-10 overflow-hidden">
 
                     <div className="flex items-center gap-[0.5rem]">
                         <ReturnButton/>
-                        <span className="text-[20px] font-bold text-[#292929]">Create Service</span>
+                        <span className="text-lg font-bold text-[#292929]">Create Service</span>
                     </div>
 
                     <button onClick={()=>handleCreateService.mutate()} 
-                        className="flex items-center bg-[#292929] hover:bg-[#141414] active:bg-[#292929] rounded-[10px] min-w-[5rem] p-[0.75rem] px-[1rem] gap-[0.5rem] cursor-pointer transition-all duration-100"
+                        className="flex items-center bg-gradient-to-b from-[#cc4c02] via-[#cc4c02] to-[#9a3902] hover:from-[#ff6b00] active:from-[#cc4c02] border border-[#9a3902] rounded-[10px] p-[0.75rem] gap-[0.5rem] cursor-pointer transition-all duration-200"
                     >
-                        <span className="text-[#fff] text-[14px] leading-none font-bold">Save</span>
+                        <span className="text-[#fff] text-[14px] leading-none">Save</span>
                         {handleCreateService.isPending ? (
                             <LoadingSpinner 
                                 size={20}
                                 color="#fff"
                             />
                         ):(
-                            <Save className="size-5" fill="#fff"/>
+                            <Save className="size-4" color="#fff"/>
                         )}
                     </button>
                 </div>
 
                 {handleCreateService.isPending && ( 
-                    <div className={`absolute inset-0 flex h-full bg-[#292929]/30 ${handleCreateService.isPending ? 'opacity-100' : 'opacity-0'} z-10 transition-all duration-200`}/>
+                    <div className={`absolute inset-0 flex h-full bg-[#292929]/15 ${handleCreateService.isPending ? 'opacity-100' : 'opacity-0'} z-10 transition-all duration-200`}/>
                 )}
 
-                <div className={`flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar gap-[1rem] p-[1rem]`}>
+                <div className={`grid grid-cols-[6fr_4fr] w-full flex-1 h-full gap-[1rem] p-[2rem] overflow-y-auto thin-scrollbar`}>
 
-                    <ThumbnailComp 
-                        thumbnailPrev={thumbnailPrev}
-                        thumbnailBlob={thumbnailBlob}
-                        setThumbnailBlob={setThumbnailBlob}
-                        setThumbnailPrev={setThumbnailPrev}
-                    />
+                    
 
-                    <div className="flex flex-col w-[700px] gap-[1.5rem]">
+                    <div className="flex flex-col w-full gap-[1.5rem]">
                         <CreateServiceBasicInformation 
                             basicInfo={basicInfo}
                             setBasicInfo={setBasicInfo}
@@ -231,8 +226,14 @@ function CreateService () {
                             setSelectedConfigEdit={setSelectedConfigEdit}
                             openEditModal={()=>setIsConfigEditModalOpen(true)}
                         />
-
                     </div>
+
+                    <ThumbnailComp 
+                        thumbnailPrev={thumbnailPrev}
+                        thumbnailBlob={thumbnailBlob}
+                        setThumbnailBlob={setThumbnailBlob}
+                        setThumbnailPrev={setThumbnailPrev}
+                    />
                 </div>
 
             </div>

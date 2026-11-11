@@ -253,8 +253,8 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
     return (
         <>
             <TopLoadingBar isLoading={checkIfLoading} />
-            <main className="flex flex-col w-full h-full bg-[#f2f2f2]">
-                <div className="flex items-center justify-between w-full bg-[#fafafa] p-[1rem] border-b border-[#292929]/10">
+            <main className="relative flex flex-col w-full h-full bg-[#f2f2f2]">
+                <div className="sticky top-0 flex items-center justify-between w-full h-[3.5rem] bg-[#fafafa] p-[1rem] border-b border-[#292929]/10">
                     <div className="flex items-center w-full gap-[0.5rem]">
                         <ReturnButton path="/admin/service" />
                         <span className="text-[20px] font-bold leading-none text-[#292929]">{service?.name}</span>
@@ -268,27 +268,27 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
 
                         {!isEditing ? (
                             <>
-                                <button onClick={()=>setDeleteModalOpen(true)} className="flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer opacity-100 bg-[#ff0f0f] hover:opacity-75 hover:bg-[#e50000] active:bg-[#ff0000] active:opacity-100 rounded-[5px] transition-all duration-200">
-                                    <span className="text-[14px] text-[#fff] font-bold leading-none">Delete</span>
+                                <button onClick={()=>setDeleteModalOpen(true)} className="flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] cursor-pointer opacity-100 hover:bg-[#b90000]/10 active:bg-transparent active:opacity-100 rounded-[5px] transition-all duration-200">
+                                    <span className="text-[14px] text-[#ff0000] font-bold leading-none">Delete</span>
                                 </button>
 
-                                <button onClick={()=>setIsEditing(true)} className="flex items-center gap-[0.3rem] bg-[#008000] hover:bg-[#0F4D0F] active:bg-[#008000] p-[0.75rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
+                                <button onClick={()=>setIsEditing(true)} className="flex items-center gap-[0.3rem] bg-[#292929] hover:bg-[#292929]/80 active:bg-[#141414] p-[0.75rem] px-[1rem] rounded-[5px] cursor-pointer transition-all duration-200">
                                     <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Edit details</span>
                                 </button>
                             </>
                         ):(
                             <>
-                                <button onClick={()=>handleUpdateService.mutate()} 
-                                disabled={!hasChanges}
-                                className={`flex items-center gap-[0.3rem] bg-[#008000] p-[0.75rem] px-[1rem] rounded-[5px] transition-all duration-200 ${!hasChanges ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0F4D0F] active:bg-[#008000] cursor-pointer'}`}>
-                                    <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Save Changes</span>
-                                </button>
-
                                 <button onClick={()=>{
                                     setIsEditing(false)
                                     handleCancelEdit()
                                 }} className="flex bg-[#f2f2f2] hover:bg-[#B1B2B5]/50 active:bg-[#f2f2f2] p-[0.75rem] px-[1rem] cursor-pointer rounded-[5px] transition-all duration-200">
                                     <span className="text-[14px] text-[#292929] font-bold leading-none text-nowrap">Cancel</span>
+                                </button>
+
+                                <button onClick={()=>handleUpdateService.mutate()} 
+                                disabled={!hasChanges}
+                                className={`flex items-center gap-[0.3rem] bg-[#008000] p-[0.75rem] px-[1rem] rounded-[5px] transition-all duration-200 ${!hasChanges ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#0F4D0F] active:bg-[#008000] cursor-pointer'}`}>
+                                    <span className="text-[14px] text-[#fff] font-bold leading-none text-nowrap">Save Changes</span>
                                 </button>
                             </>
                         )}
@@ -297,15 +297,8 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                 </div>
 
 
-                <div className="flex flex-col items-center w-full h-[675px] overflow-y-auto thin-scrollbar">
-                    <SelectedServiceThumbnail 
-                        currentImage={thumbnailPreview}
-                        setNewThumbnail={setNewThumbnail}
-                        setThumbnailPreview={setThumbnailPreview}
-                        isEditing={isEditing}
-                    />
-
-                    <section className="flex flex-col w-[700px] p-[1rem] gap-[2rem]">
+                <div className="grid grid-cols-[6fr_4fr] flex-1 items-start w-full h-full gap-[1rem] p-[2rem] overflow-y-auto thin-scrollbar">
+                    <section className="flex flex-col w-[full] gap-[2rem]">
                         <SelectedServiceBasicInformation 
                             basicInformation={basicInformation}
                             setBasicInformation={setBasicInformation}
@@ -327,6 +320,13 @@ function SelectedServiceForm ({ service }: SelectedServiceFormProp) {
                             isEditing={isEditing}
                         />
                     </section>
+
+                    <SelectedServiceThumbnail 
+                        currentImage={thumbnailPreview}
+                        setNewThumbnail={setNewThumbnail}
+                        setThumbnailPreview={setThumbnailPreview}
+                        isEditing={isEditing}
+                    />
                 </div>
             </main>
 

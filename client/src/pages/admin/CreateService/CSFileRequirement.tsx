@@ -49,7 +49,7 @@ function CSFileRequirement ({ acceptedFiles, setAcceptedFiles }: FileRequirement
                     );
                     return (
                     <label htmlFor={`file_${ext.extension}`} key={ext.extension}
-                    className={`flex items-center px-[1rem] h-[2.5rem] border-2 ${selected ? 'border-[#ff6b00]' : 'border-[#292929]'} rounded-[10px] cursor-pointer`}>
+                    className={`flex items-center px-[1rem] h-[2.5rem] border-2 ${selected ? 'border-[#ff6b00]' : 'border-[#292929]'} rounded-full bg-[#fafafa] cursor-pointer`}>
                         <input 
                             type="checkbox" 
                             name={`file_${ext.extension}`} 

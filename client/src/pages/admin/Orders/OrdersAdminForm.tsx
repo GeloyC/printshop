@@ -5,8 +5,8 @@ function OrdersAdminForm () {
 
     return (
         <div className="flex flex-col w-full h-full bg-[#f2f2f2]">
-            <div className="flex items-center justify-between p-[0.75rem] px-[1rem] bg-[#fafafa] border-b border-[#292929]/10">
-                <span className="text-2xl text-[#292929] font-bold">Orders</span>
+            <div className="flex items-center justify-between h-[3.5rem] p-[0.75rem] px-[1rem] bg-[#fafafa] border-b border-[#292929]/10">
+                <span className="text-xl text-[#292929] font-bold">Orders</span>
                 
             </div>
 

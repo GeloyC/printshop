@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 // icon
-import Add from '/src/assets/icon/add-service.svg?react'
+import Add from '/src/assets/icon/add.svg?react'
 
 // hooks
 import { useServices } from '../../../hooks/services/useServices';
@@ -39,14 +39,14 @@ function ServiceAdmin () {
         <>
             <div className="flex flex-col w-full h-full bg-[#f2f2f2] gap-[1rem]">
 
-                <div className="flex items-center justify-between p-[0.75rem] px-[1rem] bg-[#fafafa] border-b border-[#292929]/10">
-                    <span className="text-2xl text-[#292929] font-bold">Service</span>
+                <div className="flex items-center justify-between h-[3.5rem] p-[0.5rem] px-[1rem] bg-[#fafafa] border-b border-[#292929]/10">
+                    <span className="text-lg text-[#292929] font-bold">Service</span>
                     
                     <Link to={'/admin/service/create'} 
-                        className="flex items-center bg-[#292929] hover:bg-[#141414] active:bg-[#292929] rounded-[10px] min-w-[5rem] p-[0.75rem] px-[1rem] gap-[0.5rem] cursor-pointer transition-all duration-100"
+                        className="flex items-center h-full bg-gradient-to-b from-[#cc4c02] via-[#cc4c02] to-[#9a3902] hover:from-[#ff6b00] active:from-[#cc4c02] border border-[#9a3902] rounded-[10px] p-[0.75rem] gap-[0.5rem] cursor-pointer transition-all duration-200"
                     >
-                        <span className="text-[#fff] leading-none text-sm font-bold">Create Service</span>
-                        <Add className="size-5" fill='#fff'/>
+                        <span className="text-[#fff] leading-none text-[14px]">New Service</span>
+                        <Add className="size-4" color='#fff'/>
                     </Link>
                 </div>
 
