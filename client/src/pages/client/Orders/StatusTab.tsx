@@ -72,15 +72,15 @@ function StatusTab ({ setSearchParams, status }: StatusTablProp) {
                 )}
             </button>
 
-            <button onClick={() => setSearchParams({ status: 'Printing started' })} 
-                className={`relative group flex items-center justify-center py-[0.5rem] px-[1rem] min-w-[100px] rounded-t-[15px] cursor-pointer ${status === 'Printing started' ? 'bg-[#cc4c02] text-[#fff]' : 'bg-transparent text-[#292929]'}`}
+            <button onClick={() => setSearchParams({ status: 'Processing' })} 
+                className={`relative group flex items-center justify-center py-[0.5rem] px-[1rem] min-w-[100px] rounded-t-[15px] cursor-pointer ${status === 'Processing' ? 'bg-[#cc4c02] text-[#fff]' : 'bg-transparent text-[#292929]'}`}
             >
                 <span className={`text-[16px] group-active:text-[#cc4c02] font-bold transition-all duration-100`}>
-                    Printing started
+                    Processing
                 </span>
 
                 
-                {status === 'Printing started' && (
+                {status === 'Processing' && (
                     <>
                         <div className="absolute bottom-0 -right-[1rem] w-[1rem] h-[1rem] bg-[#cc4c02] z-10">
                             <div className="w-[1rem] h-[1rem] bg-[#ff6b00] rounded-bl-[15px] bg-[#fff8ec]" />

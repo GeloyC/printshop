@@ -213,7 +213,79 @@ class OrderController extends Controller
     }
 
 
-    public function getOrderDataFromAdmin () {
+    public function getOrdersAdmin () {
         
+        $orders = DB::select("
+            SELECT 
+                o.id,
+                o.reference_number,
+                u.name AS customer_name,
+                o.status,
+                o.updated_at
+            FROM orders AS o
+            INNER JOIN users AS u
+                ON u.id = o.user_id
+        ");
+
+        return response()->json($orders);
+    }
+
+
+    public function getOrderDataFromAdmin (String $reference_number) {
+
+        $validator = Validator::make(
+            ['reference_number' => $reference_number],
+            [
+                'reference_number' => ['required', 'string', 'exists:orders,reference_number'],
+            ]
+        );
+
+        $order = DB::select("
+            SELECT
+                o.id,
+                o.reference_number,
+                o.status,
+                o.created_at,
+                o.updated_at,
+
+                SUM(oi.total_price) AS order_total,
+
+                osh.status AS current_status,
+                osh.updated_at AS status_changed_at,
+
+                COALESCE(
+                    JSON_AGG(
+                        JSON_BUILD_OBJECT(
+                            'id', oi.id,
+                            'file_url', oi.file_url,
+                            'metadata', oi.metadata,
+                            'configuration', oi.configuration,
+                            'slug', oi.slug,
+                            'additional_instruction', oi.additional_instruction,
+                            'quantity', oi.quantity,
+                            'unit_price', oi.unit_price,
+                            'total_price', oi.total_price
+                        )
+                    ) FILTER (WHERE oi.id IS NOT NULL),
+                    '[]'::json
+                ) AS order_items
+
+            FROM orders AS o
+
+            LEFT JOIN order_items AS oi
+                ON oi.order_id = o.id
+            LEFT JOIN order_status_histories AS osh
+                ON osh.order_id = o.id
+
+            WHERE
+                o.reference_number = ?
+                
+            GROUP BY
+                o.id,
+                osh.status,
+                osh.updated_at;
+        ", [$reference_number]);
+
+        return response()->json($order[0] ?? null);
     }
 }

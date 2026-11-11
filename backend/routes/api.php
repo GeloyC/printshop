@@ -42,4 +42,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get("/admin/service/{slug}", [ServiceController::class, 'show']);
     Route::patch("/service/{id}", [ServiceController::class, 'update']);
     Route::delete("/service/{id}", [ServiceController::class, 'destroy']);
+
+    Route::get("/admin/order/list", [OrderController::class, 'getOrdersAdmin']);
+    Route::get("/admin/order/{reference_number}", [OrderController::class, 'getOrderDataFromAdmin']);
 });

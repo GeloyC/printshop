@@ -12,6 +12,7 @@ import Cart from './pages/client/Cart/Cart'
 import OrderConfirmation from './pages/client/OrderConfirmation/OrderConfirmation'
 import Orders from './pages/client/Orders/Orders'
 import OrdersAdmin from './pages/admin/Orders/OrdersAdmin'
+import OrderDetail from './pages/admin/Orders/OrderDetail'
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
             { path: '/admin/service/:slug', element: <SelectedService /> },
             { path: '/admin/service/create', element: <CreateService /> },
             { path: '/admin/orders', element: <OrdersAdmin /> },
+            { path: '/admin/orders/:reference_number', element: <OrderDetail /> }
         ],
     },
 ]);

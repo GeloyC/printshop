@@ -1,9 +1,16 @@
+
+import { useGetOrdersAdmin } from "../../../hooks/orders/order.hook";
 import OrdersAdminForm from "./OrdersAdminForm";
 
 
 function OrdersAdmin () {
 
-    return <OrdersAdminForm />
+    const { data: orders=[] } = useGetOrdersAdmin();
+
+
+    return <OrdersAdminForm 
+        orders={orders}
+    />
 }
 
 

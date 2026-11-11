@@ -32,3 +32,12 @@ export interface OrderData {
     status_changed_at: string,
     order_items: string
 }
+
+// admin order
+export type OrderAdmin = {
+    id: string,
+    reference_number: string,
+    customer_name: string,
+    status: string,
+    updated_at: string
+}

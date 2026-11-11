@@ -6,7 +6,7 @@ enum OrderStatus: string
 {
     case OrderPlaced = "Order placed";
     case OrderConfirmed = "Order confirmed";
-    case PrintingStarted = "Printing started";
+    case PrintingStarted = "Processing";
     case ReadForPickup = "Ready-for-pickup";
     case Completed = "Completed";
     case Cancelled = "Cancelled";

@@ -1,7 +1,16 @@
+import type { OrderAdmin } from "../../../types/order.type";
 import OrderItemAdmin from "./OrderItemAdmin";
 
 
-function OrdersAdminForm () {
+type OrdersAdminFormProp = {
+    orders: OrderAdmin[]
+}
+
+function OrdersAdminForm ({
+    orders,
+}: OrdersAdminFormProp) {
+
+
 
     return (
         <div className="flex flex-col w-full h-full bg-[#f2f2f2]">
@@ -28,9 +37,12 @@ function OrdersAdminForm () {
                     <span className="text-sm text-[#292929] leading-none">Date</span>
                 </div>
 
-                <div className="flex flex-col w-full bg-[#fafafa] rounded-[10px] overflow-hidden border border-[#292929]/10 py-[1rem]">
-                    <OrderItemAdmin />
-                    <OrderItemAdmin />
+                <div className="flex flex-col w-full bg-[#fafafa] rounded-[10px] overflow-hidden border border-[#292929]/15 py-[1rem]">
+                    {orders.map(order => (
+                        <OrderItemAdmin key={order.id}
+                            order={order}
+                        />
+                    ))}
                 </div>
             </div>
         </div>

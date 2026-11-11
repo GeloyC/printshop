@@ -22,3 +22,17 @@ export async function getOrderPlacedCount () {
     const response = await api.get('/api/order/list/count');
     return response.data;
 }
+
+
+
+// Admin api calls
+
+export async function getOrdersAdmin () {
+    const response = await api.get('/api/admin/order/list');
+    return response.data;
+}
+
+export async function getOrderDetail (reference_number: string) {
+    const response = await api.get(`/api/admin/order/${reference_number}`);
+    return response.data;
+}
