@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use MohamedSaid\Referenceable\Traits\HasReference;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\OrderItem;
+use App\Enums\OrderStatus;
 
 
 #[Fillable([
@@ -35,6 +36,7 @@ class Order extends Model
 
     public function casts(): array {
         return [
+            'status' => OrderStatus::class,
             'created_at' => 'datetime:M d, Y, g:i A',
             'updated_at' => 'datetime:M d, Y, g:i A',
         ];

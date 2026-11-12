@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+
 use App\Models\OrderItem;
 use App\Models\CartItem;
 use App\Models\OrderStatusHistories;
 use App\Models\Order;
 use App\Models\Service;
-use Illuminate\Http\Request;
+
 use App\Enums\OrderStatus;
-use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -132,6 +135,7 @@ class OrderController extends Controller
                 orders.reference_number,
                 orders.status,
                 orders.updated_at
+            ORDER BY orders.updated_at DESC
         ";
 
         $orders = DB::select($sql, $params);
@@ -169,10 +173,26 @@ class OrderController extends Controller
                 o.created_at,
                 o.updated_at,
 
-                SUM(oi.total_price) AS order_total,
+                COALESCE(SUM(oi.total_price), 0) AS order_total,
 
-                osh.status AS current_status,
-                osh.updated_at AS status_changed_at,
+                u.name AS customer_name,
+                u.id AS user_id,
+
+                COALESCE(
+                    (
+                        SELECT JSON_AGG(
+                            JSON_BUILD_OBJECT(
+                                'id', osh.id,
+                                'status', osh.status,
+                                'updated_at', osh.updated_at
+                            )
+                            ORDER BY osh.updated_at ASC
+                        )
+                        FROM order_status_histories AS osh
+                        WHERE osh.order_id = o.id
+                    ),
+                    '[]'::json
+                ) AS order_status_histories,
 
                 COALESCE(
                     JSON_AGG(
@@ -195,17 +215,17 @@ class OrderController extends Controller
 
             LEFT JOIN order_items AS oi
                 ON oi.order_id = o.id
-            LEFT JOIN order_status_histories AS osh
-                ON osh.order_id = o.id
+            LEFT JOIN users AS u
+                ON o.user_id = u.id
 
             WHERE
                 o.user_id = ?
-                AND o.id = ?
+                AND o.id = ?    
 
             GROUP BY
                 o.id,
-                osh.status,
-                osh.updated_at;
+                u.name,
+                u.id;
         ", 
         [$userId, $item_id]);
 
@@ -248,10 +268,26 @@ class OrderController extends Controller
                 o.created_at,
                 o.updated_at,
 
-                SUM(oi.total_price) AS order_total,
+                COALESCE(SUM(oi.total_price), 0) AS order_total,
 
-                osh.status AS current_status,
-                osh.updated_at AS status_changed_at,
+                u.name AS customer_name,
+                u.id AS user_id,
+
+                COALESCE(
+                    (
+                        SELECT JSON_AGG(
+                            JSON_BUILD_OBJECT(
+                                'id', osh.id,
+                                'status', osh.status,
+                                'updated_at', osh.updated_at
+                            )
+                            ORDER BY osh.updated_at ASC
+                        )
+                        FROM order_status_histories AS osh
+                        WHERE osh.order_id = o.id
+                    ),
+                    '[]'::json
+                ) AS order_status_histories,
 
                 COALESCE(
                     JSON_AGG(
@@ -274,18 +310,63 @@ class OrderController extends Controller
 
             LEFT JOIN order_items AS oi
                 ON oi.order_id = o.id
-            LEFT JOIN order_status_histories AS osh
-                ON osh.order_id = o.id
+            LEFT JOIN users AS u
+                ON o.user_id = u.id
 
             WHERE
                 o.reference_number = ?
                 
             GROUP BY
                 o.id,
-                osh.status,
-                osh.updated_at;
+                u.name,
+                u.id;
         ", [$reference_number]);
 
         return response()->json($order[0] ?? null);
+    }
+
+
+
+    public function updateOrderStatus (Request $request) {
+
+        $validated = $request->validate([
+            'status' => ['required', Rule::enum(OrderStatus::class)],
+            'reference_number' => ['required', 'string', 'exists:orders,reference_number']
+        ]);
+
+        
+        DB::transaction(function () use ($validated) {
+            
+            $referenceNumber = $validated['reference_number'];
+            $status = $validated['status'];
+
+            $orders = Order::where(
+                'reference_number',
+                $referenceNumber
+            )->firstOrFail();
+
+            DB::update("
+                UPDATE orders
+                SET 
+                    status = ?,
+                    updated_at = NOW()
+                WHERE reference_number = ?
+            ", [$status ,$referenceNumber]);
+
+            DB::insert("
+                INSERT INTO order_status_histories
+                    (id, order_id, status, updated_at)
+                VALUES (?, ?, ?, NOW())
+            ", [
+                Str::uuid7(),
+                $orders->id,
+                $status, 
+            ]);
+        });
+
+
+        return response()->json([
+            'message'=>'status updated',
+        ]);
     }
 }

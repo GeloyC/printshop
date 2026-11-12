@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getOrdersByStatus, getOrderPlacedCount, getOrdersAdmin, getOrderDetail } from '../../api/order.api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getOrdersByStatus, getOrderPlacedCount, getOrdersAdmin, getOrderDetail, updateOrderStatus } from '../../api/order.api';
 import { useGetUser } from '../useGetUser';
 
 
@@ -39,5 +39,20 @@ export function useGetOrderDetail (reference_number: string) {
     return useQuery({
         queryKey: ['order-detail', reference_number],
         queryFn: () => getOrderDetail(reference_number)
+    });
+}
+
+
+export function useUpdateOrderStatus (reference_number: string, status: string) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: () => {
+            const params = {reference_number: reference_number, status: status};
+            return updateOrderStatus(params);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['orders', status] });
+        },
     });
 }

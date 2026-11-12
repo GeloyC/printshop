@@ -21,15 +21,23 @@ export type OrderItem = {
     total_price: string
 }
 
+
+export type OrderStatusHistoriesType = {
+    id: string,
+    status: string,
+    updated_at: string
+}
+
 export interface OrderData {
     id: string,
     reference_number: string,
+    customer_name?: string,
+    user_id?: string,
     status: string,
     created_at: string,
     updated_at: string,
     order_total: number,
-    current_status: string,
-    status_changed_at: string,
+    order_status_histories: OrderStatusHistoriesType[],
     order_items: string
 }
 

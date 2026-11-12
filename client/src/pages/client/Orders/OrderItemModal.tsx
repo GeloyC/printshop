@@ -6,7 +6,7 @@ import Close from '/src/assets/icon/close.svg?react'
 // components
 import OrderFileItem from './OrderFileItem';
 import OrderStatus from './OrderStatus';
-import type { OrderData, OrderItem } from '../../../types/order.type';
+import type { OrderData, OrderItem, OrderStatusHistoriesType } from '../../../types/order.type';
 import currencyFormat from '../../../utils/currencyFormat';
 
 type OrderItemModalProp = {
@@ -19,13 +19,15 @@ function OrderItemModal ({
     data
 }: OrderItemModalProp) {
 
-    // const order_items = JSON.parse(String(data?.order_items));
 
     const orderItems: OrderItem[] = data?.order_items
         ? JSON.parse(data.order_items)
         : [];
 
-    console.log('check data', data);
+    const statusHistory: OrderStatusHistoriesType[] = data?.order_status_histories
+        ? JSON.parse(String(data?.order_status_histories))
+        : [];
+
 
     return (
         <div className="fade-up relative flex flex-col w-[700px] p-[2rem] gap-[2rem] bg-[#fff] rounded-[20px]">
@@ -39,9 +41,9 @@ function OrderItemModal ({
 
             <div className='grid grid-cols-[3fr_6fr] w-full gap-[1rem]'>
                 <OrderStatus 
+                    orderDatePlaced={data?.created_at}
                     status={data?.status}
-                    current_status={data?.current_status}
-                    updated_at={data?.status_changed_at}
+                    statusHistory={statusHistory}
                 />
 
                 <div className="flex flex-col items-center items-start gap-[1rem]">
@@ -63,8 +65,8 @@ function OrderItemModal ({
             </div>
 
             <div className='flex items-center justify-between gap-[0.3rem]'>
-                <button disabled={data?.current_status !== 'Order placed'}
-                    className={`group py-[0.5rem] w-[150px] rounded-[10px] ${data?.current_status === 'Order placed' ? 'bg-[#292929] active:bg-[#141414] text-[#fff] hover:text-[#ff0000] cursor-pointer' : 'cursor-not-allowed opacity-50'} bg-[#292929] active:bg-[#141414] transition-all duration-200`}
+                <button disabled={data?.status !== 'Order placed'}
+                    className={`group py-[0.5rem] w-[150px] rounded-[10px] ${data?.status === 'Order placed' ? 'bg-[#292929] active:bg-[#141414] text-[#fff] hover:text-[#ff0000] cursor-pointer' : 'cursor-not-allowed opacity-50'} bg-[#292929] active:bg-[#141414] transition-all duration-200`}
                 >
                     <span className='text-[14px] font-bold leading-none transition-all duration-200'>Cancel Order</span>
                 </button>

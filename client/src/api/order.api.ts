@@ -36,3 +36,13 @@ export async function getOrderDetail (reference_number: string) {
     const response = await api.get(`/api/admin/order/${reference_number}`);
     return response.data;
 }
+
+type updateOrderStatusParams = {
+    reference_number: string,
+    status: string
+}
+
+export async function updateOrderStatus (params: updateOrderStatusParams) {
+    const response = await api.patch('/api/admin/order/status', params);
+    return response.data;
+}

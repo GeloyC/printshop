@@ -54,7 +54,7 @@ return new class extends Migration
                 ->constrained('orders')
                 ->nullOnDelete();
             $table->string('status');
-            $table->timestamp('updated_at');
+            $table->timestamp('created_at');
         });
     }
 
