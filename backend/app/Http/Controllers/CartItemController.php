@@ -51,9 +51,14 @@ class CartItemController extends Controller
 
         $file = $validated['file'];
         $path = null;
+        
         if ($file) {
-            $path = $file->store('/documents', 'r2');
-        }
+            $path = Storage::disk('r2')->putFileAs(
+                '/documents',
+                $file,
+                $file->getClientOriginalName(),
+            );
+        };
 
         $orderFileItem = CartItem::create([
             'user_id' => $user_id,

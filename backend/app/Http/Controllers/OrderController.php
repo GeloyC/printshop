@@ -245,6 +245,8 @@ class OrderController extends Controller
             FROM orders AS o
             INNER JOIN users AS u
                 ON u.id = o.user_id
+            ORDER BY 
+                o.created_at DESC
         ");
 
         return response()->json($orders);
@@ -369,4 +371,22 @@ class OrderController extends Controller
             'message'=>'status updated',
         ]);
     }
+
+
+    public function downloadFile (String $id) {
+
+        $item = OrderItem::findOrFail($id);
+        $filePath = $item->file_url;
+        $filename = basename($filePath);
+
+        $mimeType = Storage::disk('r2')->mimeType($filePath);
+
+        return Storage::disk('r2')->download(
+            $filePath,
+            $filename,
+            [
+                'Content-Type' => $mimeType,
+            ]
+        );
+    }   
 }
