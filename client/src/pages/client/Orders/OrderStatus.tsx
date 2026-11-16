@@ -15,7 +15,6 @@ type OrderStatusProp = {
 };
 
 function OrderStatus({
-    orderDatePlaced,
     status,
     statusHistory
 }: OrderStatusProp) {
@@ -52,10 +51,6 @@ function OrderStatus({
                     const history = statusHistory.find(
                         history => history.status === item.name
                     );
-
-                    // const history = statusHistory?.filter(
-                    //     item => item.status === status
-                    // ).at(-1);
 
                     const updatedAt = history
                         ? new Date(history.updated_at).toLocaleDateString('en-PH', {

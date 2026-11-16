@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getOrdersByStatus, getOrderPlacedCount, getOrdersAdmin, getOrderDetail, updateOrderStatus } from '../../api/order.api';
+import { getOrdersByStatus, getOrderPlacedCount, getOrdersAdmin, getOrderDetail, updateOrderStatus, downloadOrderItemFile } from '../../api/order.api';
 import { useGetUser } from '../useGetUser';
 
 
@@ -51,8 +52,17 @@ export function useUpdateOrderStatus (reference_number: string, status: string) 
             const params = {reference_number: reference_number, status: status};
             return updateOrderStatus(params);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['orders', status] });
-        },
+        onSuccess: () => Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['orders', status] }),
+            queryClient.invalidateQueries({ queryKey: ['order-detail'] }),
+            queryClient.invalidateQueries({ queryKey: ['orders-admin'] }),
+        ]),
     });
+}
+
+
+export function useDownloadOrderFileItem () {
+    return useMutation({
+        mutationFn: (id: string) => downloadOrderItemFile(id)
+    })
 }

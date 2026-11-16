@@ -1,10 +1,21 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
-import { useGetOrderDetail, useUpdateOrderStatus } from "../../../hooks/orders/order.hook";
-import type { OrderData } from "../../../types/order.type";
+import { useDownloadOrderFileItem, useGetOrderDetail, useUpdateOrderStatus } from "../../../hooks/orders/order.hook";
+import type { OrderData, OrderItem, OrderStatusHistoriesType } from "../../../types/order.type";
 import StatusDropdown from "../../../components/admin/Order/StatusDropdown";
+import { formatDate } from "../../../utils/formatDate";
+
+// icon
+import ReferenceIcon from '/src/assets/icon/reference.svg?react';
+
+
+import OrderFileItem from "./OrderFileItem";
+import currencyFormat from "../../../utils/currencyFormat";
+import OrderItemConfiguration from "./OrderItemConfiguration";
+import OrderPickupProof from "./OrderPickupProof";
+import ModalWrapper from "../../../components/wrapper/ModalWrapper";
+
 
 
 function OrderDetail () {
@@ -12,52 +23,168 @@ function OrderDetail () {
     const { reference_number } = useParams();
     const { data: orderData } = useGetOrderDetail(String(reference_number))
     const order: OrderData = orderData;
+    const orderItem: OrderItem[] = order?.order_items
+            ?  JSON.parse(order?.order_items)
+            : [];
+    const orderStatusHistory: OrderStatusHistoriesType[] = order?.order_status_histories
+        ? JSON.parse(String(order?.order_status_histories))
+        : [];
 
 
     const [currentStatus, setCurrentStatus] = useState<string>(order?.status);
+    const [downloadedFiles, setDownloadedFiles] = useState<string[]>([]);
+    const [proofImage, setProofImage] = useState<File|null>(null);
+    const [proofImageFilename, setProofImageFilename] = useState<string|null>(null);
+    const [proofPreview, setProofPreview] = useState<string|null>(null);
+    const [proofModalOpen, setProofModalOpen] = useState<boolean>(false);
+
     const { 
         mutate:handleUpdateOrderStatus, 
         isPending:updateStatusPending 
     } = useUpdateOrderStatus(order?.reference_number, currentStatus);
 
+
+    const [isSelectedFileIdOpen, setIsSelectedFileIdOpen] = useState<string|null>(null);
+    const itemDetail = orderItem.find(item => item.id === isSelectedFileIdOpen);
+    
+
+    const handleOpenSelectedFile = (file_id: string) => {
+        setIsSelectedFileIdOpen(file_id);
+    }
+
+    const { 
+        mutate: downloadFile, 
+        isPending: downloadPending, 
+        variables: downloadingFileId,
+    } = useDownloadOrderFileItem()
+
+
+    const handleDownload = (id: string) => {
+        downloadFile(id, {
+            onSuccess: () => {
+                setDownloadedFiles(prev =>
+                    prev.includes(id) ? prev : [...prev, id]
+                );
+            }
+        });
+    };
+
+
+    const handleAddImageProof = (status: string) => {
+        setProofModalOpen(true);
+        setCurrentStatus(status)
+    }
+
+    
+
     return (
         <div className="flex flex-col w-full h-full bg-[#f2f2f2]">
-            <div className="flex items-center justify-between h-[3.5rem] p-[0.75rem] px-[1rem] bg-[#fafafa] border-b border-[#292929]/10">
+            <div className="flex items-center justify-between min-h-[3.5rem] p-[0.75rem] px-[1rem] bg-[#fafafa] border-b border-[#292929]/15">
                 <span className="text-xl text-[#292929] font-bold">Order details</span>
             </div>
 
-            <div className="flex w-full p-[1rem] px-[8rem]">
+            <div className="flex w-full h-full transition-all duration-200">
 
-                <div className="flex flex-col w-full bg-[#fafafa] rounded-[10px] border border-[#292929]/15 gap-[1rem]">
+                <section className="flex flex-col w-full h-full p-[1rem] gap-[1.5rem]">
                     
-                    <div className="flex items-center justify-between gap-[2rem] p-[1rem] w-full">
-                        <div className="flex items-center gap-[0.5rem]">
-                            <span className="text-sm text-[#292929]/80">Ordered by: </span>
-                            <span className="text-sm text-[#292929] font-bold">{order?.customer_name}</span>
-                        </div>
-
+                    <div className="flex flex-col w-full">
                         <div className="flex items-center gap-[1rem]">
-                            <div className="flex items-center gap-[0.5rem] px-[1rem] border-r border-[#292929]/20">
-                                <span className="text-sm text-[#292929]/80">Reference #: </span>
-                                <span className="text-sm text-[#ff6b00] font-bold">{order?.reference_number}</span>
-                            </div>
-
-                            <StatusDropdown 
-                                status={order?.status}
-                                currentStatus={currentStatus}
-                                setCurrentStatus={setCurrentStatus}
-                                handleUpdateOrderStatus={handleUpdateOrderStatus}
-                                updateStatusPending={updateStatusPending}
-                            />
+                            <ReferenceIcon className="size-5 opacity-25" />
+                            <span className="text-2xl text-[#ff6b00] font-bold">{order?.reference_number}</span>
                         </div>
 
-
+                        <div className="flex items-center gap-[0.5rem]">
+                            <div className="flex items-center">
+                                <span className="text-sm text-[#292929]/80">{`Order placed on ${formatDate(String(order?.created_at))}`}</span>
+                            </div>
+                            <div className="flex items-center gap-[0.5rem]">
+                                <span className="text-sm text-[#292929]/80">by </span>
+                                <span className="text-sm text-[#292929] font-bold">{order?.customer_name}</span>
+                            </div>
+                        </div>
                     </div>
-                    
-                </div>
 
+
+                    <StatusDropdown 
+                        status={order?.status}
+                        currentStatus={currentStatus}
+                        statusHistory={orderStatusHistory}
+                        setCurrentStatus={setCurrentStatus}
+                        setProofModalOpen={setProofModalOpen}
+                        handleUpdateOrderStatus={handleUpdateOrderStatus}
+                        updateStatusPending={updateStatusPending}
+                    />
+                    
+
+                    <div className="flex flex-1 flex-col w-full h-full gap-[0.5rem]">
+                        <span className="text-sm text-[#292929] font-bold">File/s</span>
+
+                        <div className="flex w-full">
+                            <div className="flex flex-col gap-[1.5rem] w-full h-fit ">
+
+                                <div className="flex flex-col w-full">
+                                    <div className="flex flex-col w-full bg-[#fafafa] rounded-[10px] border border-[#292929]/15 overflow-hidden">
+                                        <div className="grid grid-cols-[50%_10%_10%_10%_10%_10%] w-full bg-[#e6e6e6] p-[1rem] border-b border-[#292929]/15 opacity-75">
+                                            <span className="text-sm text-[#292929] leading-none">File</span>
+                                            <span className="text-sm text-[#292929] leading-none">Unit price</span>
+                                            <span className="text-sm text-[#292929] leading-none">Amount</span>
+                                            <span className="text-sm text-[#292929] leading-none">Size</span>
+                                            <span className="text-sm text-[#292929] leading-none">Quantity</ span>
+                                            <span className="text-sm text-[#292929] leading-none text-center">Action</ span>
+                                        </div>
+
+                                        {orderItem.map(item => (
+                                            <OrderFileItem key={item.id}
+                                                item={item}
+                                                handleDownload={handleDownload}
+                                                downloadedFiles={downloadedFiles}
+                                                downloadPending={downloadPending}
+                                                downloadingFileId={downloadingFileId}
+                                                isSelectedFileIdOpen={isSelectedFileIdOpen}
+                                                handleOpenSelectedFile={handleOpenSelectedFile}
+                                                setIsSelectedFileIdOpen={setIsSelectedFileIdOpen}
+                                            />
+                                        ))}
+
+                                        <div className="grid grid-cols-[50%_10%_10%_10%_10%_10%] p-[1rem] w-full items-center">
+                                            <span className="text-sm text-[#292929] leading-none"></span>
+                                            <span className="text-sm text-[#292929] leading-none"></span>
+                                            <span className="text-sm text-[#ff6b00] font-bold leading-none">{currencyFormat(Number(order?.order_total))}</span>
+                                            <span className="text-sm text-[#292929] leading-none"></span> 
+                                            <span className="text-sm text-[#292929] leading-none"></ span>
+                                            <span className="text-sm text-[#292929] leading-none text-center"></ span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                {/* Show the block for sending image of completed print document */}
+                {proofModalOpen && order.status !== 'Ready-for-pickup' && (
+                    <ModalWrapper>
+                        <OrderPickupProof 
+                            setProofImage={setProofImage}
+                            setProofPreview={setProofPreview}
+                            setProofImageFilename={setProofImageFilename}
+                            setProofModalOpen={setProofModalOpen}
+                            proofImage={proofImage}
+                            proofPreview={proofPreview}
+                            proofImageFilename={proofImageFilename}
+                            setCurrentStatus={setCurrentStatus}
+                            handleUpdateOrderStatus={handleUpdateOrderStatus}
+                        />
+                    </ModalWrapper>
+                )}
+
+                <OrderItemConfiguration 
+                    isSelectedFileIdOpen={isSelectedFileIdOpen}
+                    setIsSelectedFileIdOpen={setIsSelectedFileIdOpen}
+                    itemDetail={itemDetail}
+                />
             </div>
-            
         </div>
     )
 }

@@ -15,8 +15,9 @@
 
 
 -- success
-#498d49
 #CCFFCC
+#498d49
+#325e32
 
 -- warning
 #b90000

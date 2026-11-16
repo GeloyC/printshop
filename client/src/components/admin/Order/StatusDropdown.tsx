@@ -2,98 +2,119 @@
 import { useState, type SetStateAction } from "react";
 
 // icons
-import ArrowDown from '/src/assets/icon/arrow-no-tail.svg?react'
+import ArrowDown from '/src/assets/icon/arrow-no-tail.svg?react';
+import PendingIcon from '/src/assets/icon/pending.svg?react';
+import Passed from '/src/assets/icon/check.svg?react';
+
 import type { UseMutateFunction } from "@tanstack/react-query";
 import LoadingSpinner from "../../ui/LoadingSpinner/LoadingSpinner";
+import type { OrderStatusHistoriesType } from "../../../types/order.type";
+import { formatDate } from "../../../utils/formatDate";
 
 type StatusDropdownProp = {
     status: string
     currentStatus: string,
+    statusHistory: OrderStatusHistoriesType[];
     setCurrentStatus: React.Dispatch<SetStateAction<string>>
-    handleUpdateOrderStatus: UseMutateFunction,
+    setProofModalOpen: React.Dispatch<SetStateAction<boolean>>,
+    handleUpdateOrderStatus: UseMutateFunction
     updateStatusPending: boolean
 }
 
 function StatusDropdown ({
     status,
     currentStatus,
+    statusHistory,
     setCurrentStatus,
+    setProofModalOpen,
     handleUpdateOrderStatus,
     updateStatusPending
 }: StatusDropdownProp) {
 
-    const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+    const [selectedStatus, setSelectedStatus] = useState<string>('');
+    const statuses = [
+        { name: 'Order placed', icon: PendingIcon },
+        { name: 'Order confirmed', icon: PendingIcon },
+        { name: 'Processing', icon: PendingIcon },
+        { name: 'Ready-for-pickup', icon: PendingIcon },
+        { name: 'Completed', icon: PendingIcon }
+    ];
 
-    const handleSetStatus = (status: string) => {
-        setCurrentStatus(status);
-        setDropdownOpen(false);
+    const currentStatusIndex = statuses.findIndex(
+        item => item.name === status
+    );
 
+
+    const handleSetStatus = (selectedStatus: string) => {
+        if (selectedStatus === 'Ready-for-pickup') {
+            setProofModalOpen(true);    
+            return;
+        } 
+
+        setSelectedStatus(selectedStatus);
+        setCurrentStatus(selectedStatus);
         handleUpdateOrderStatus();
     }
 
 
 
     return (
-        <div className="flex items-center gap-[0.5rem]">
-            <span className="text-sm text-[#292929]/80">Status:</span>
-            
-            <div className="relative flex items-center w-[200px] rounded-[10px] border border-[#9a3902]/50 border-t-[#ffc36d] border-x-[#ff6b00] bg-gradient-to-b from-[#ff6b00] to-[#cc4c02]">
-                {
-                    updateStatusPending 
-                        ? (
-                            <div className="flex items-center justify-center w-full">
-                                <LoadingSpinner size={15} color="#ffffff" />
+        <div className="flex flex-col w-full h-auto gap-[0.5rem]">
+            <span className="text-sm text-[#292929] font-bold">Status</span>
+
+            <div className="flex items-center justify-center w-full h-full p-[0.75rem] pl-[0.75rem] gap-[0.3rem] bg-[#fafafa] rounded-[10px] border border-[#292929]/15">
+                {statuses.map((item, index) => {
+
+                    const Icon = item.icon;
+                    const passed = index <= currentStatusIndex;
+
+                    const history = statusHistory.find(
+                        history => history.status === item.name
+                    );
+
+                    const updatedAt = history
+                        ? formatDate(String(history.updated_at))
+                        : 'Pending';
+                    
+                    return (
+                        <div 
+                            key={item.name} 
+                            className={`relative flex flex-col items-center justify-center w-full h-full pl-[0.5rem]`}
+                        >
+                            {/* <div className={`flex w-full h-[3px] rounded-full ${passed ? 'bg-[#498d49]' : 'bg-[#B1B2B5]'}`} /> */}
+                            {/* <div className={`absolute -top-[6px] -left-2 border-4 ${passed ? 'border-[#498d49]' : 'border-[#292929]'} bg-[#fafafa] w-[1rem] h-[1rem] rounded-full`} /> */}
+
+                            <div className={`absolute top-1/2 -translate-y-1/2 -left-[12px] flex items-center justify-center rounded-full min-w-[1.5rem] min-h-[1.5rem] border-4 border-[#fafafa] ${passed ? 'bg-[#498d49]/90' : 'bg-[#292929]'}`}>
+                                {passed 
+                                    ? <Passed className="size-5" color="#fff" />
+                                    : <Icon className="size-5" color="#fff" />
+                                }
                             </div>
-                        ) : (
-                            <span className="text-sm text-[#fff] px-[0.75rem] w-full">{currentStatus ?? status}</span>
-                        )
-                }
-                
 
-                <button onClick={()=>setDropdownOpen(open => !open)} className="flex items-center justify-center p-[0.5rem] bg-gradient-to-b from-[#ff6b00] to-[#cc4c02] hover:from-[#ffc36d]/50 active:from-[#ff6b00] rounded-r-[10px] border-l border-[#9a3902]/50 cursor-pointer">
-                    <ArrowDown className="size-5 rotate-270" color="#fff" />
-                </button>
+                            <button 
+                                onClick={()=>handleSetStatus(item.name)}
+                                disabled={passed || updateStatusPending}
+                                className={`
+                                    flex w-full min-h-[56px] h-[56px] p-[0.5rem] pl-[1rem] gap-[0.3rem] rounded-[8px]
+                                    ${updateStatusPending && selectedStatus === item.name ? 'items-start justify-start' : 'items-center justify-center'}
+                                    ${passed ? 'bg-[#498d49]/90 cursor-not-allowed' : 'bg-[#292929] hover:bg-[#141414] active:bg-[#292929] cursor-pointer'} 
+                                `}
+                            >
+                                {updateStatusPending && selectedStatus === item.name
+                                    ? <LoadingSpinner size={15} color="#fff" />
+                                    : (
+                                        <div className="flex flex-col w-full items-start">
+                                            <span className={`text-sm text-[#fafafa] font-bold`}>{item.name}</span>
+                                            <span className={`text-sm text-[#fafafa]`}>{updatedAt}</span>
+                                        </div>
+                                    )
+                                }
+                            </button>
+                        </div>
+                    )
+                })}
 
-                {dropdownOpen && (
-                    <div className="absolute top-10 right-0 flex flex-col w-[200px] bg-gradient-to-b from-[#ff6b00] via-[#ff6b00] to-[#cc4c02] border border-[#9a3902]/50 border-t-[#ffc36d] border-x-[#ff6b00] rounded-[10px] p-[0.5rem]">
-                        <button 
-                            onClick={()=>handleSetStatus('Order placed')}
-                            className="flex items-center p-[0.5rem] hover:bg-[#9a3902]/30 active:bg-transparent rounded-[5px] cursor-pointer"
-                        >
-                            <span className="text-sm text-[#fff]">Order placed</span>
-                        </button>
-
-                        <button 
-                            onClick={()=>handleSetStatus('Order confirmed')}
-                            className="flex items-center p-[0.5rem] hover:bg-[#9a3902]/30 active:bg-transparent rounded-[5px] cursor-pointer"
-                        >
-                            <span className="text-sm text-[#fff]">Order confirmed</span>
-                        </button>
-
-                        <button 
-                            onClick={()=>handleSetStatus('Processing')}
-                            className="flex items-center p-[0.5rem] hover:bg-[#9a3902]/30 active:bg-transparent rounded-[5px] cursor-pointer"
-                        >
-                            <span className="text-sm text-[#fff]">Processing</span>
-                        </button>
-
-                        <button 
-                            onClick={()=>handleSetStatus('Ready-for-pickup')}
-                            className="flex items-center p-[0.5rem] hover:bg-[#9a3902]/25 active:bg-transparent rounded-[5px] cursor-pointer"
-                        >
-                            <span className="text-sm text-[#fff]">Ready-for-pickup</span>
-                        </button>
-
-                        <button 
-                            onClick={()=>handleSetStatus('Completed')}
-                            className="flex items-center p-[0.5rem] hover:bg-[#9a3902]/25 active:bg-transparent rounded-[5px] cursor-pointer"
-                        >
-                            <span className="text-sm text-[#fff]">Completed</span>
-                        </button>
-                    </div>
-                )}
             </div>
-
         </div>
     )
 }

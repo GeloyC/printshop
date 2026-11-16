@@ -46,3 +46,33 @@ export async function updateOrderStatus (params: updateOrderStatusParams) {
     const response = await api.patch('/api/admin/order/status', params);
     return response.data;
 }
+
+export async function downloadOrderItemFile (id: string) {
+    const response = await api.get(`/api/admin/order/${id}/file-download`, {
+        responseType: 'blob'
+    });
+
+    const contentType = response.headers['content-type'];
+    const blob = new Blob([response.data], {
+        type: typeof contentType === 'string' ? contentType : ''
+    });
+
+    const contentDisposition = response.headers['content-disposition'];
+    const filename = contentDisposition
+        ?.split('filename=')[1]
+        ?.replace(/"/g, '') ?? 'download';
+
+    const downloadUrl = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+
+    link.href = downloadUrl;
+    link.download = filename;
+
+    document.body.appendChild(link);
+
+    link.click();
+    document.body.removeChild(link);
+
+    window.URL.revokeObjectURL(downloadUrl);
+}

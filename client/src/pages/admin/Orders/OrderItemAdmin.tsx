@@ -35,14 +35,14 @@ function OrderItemAdmin ({
                     className=
                         {`text-sm leading-none p-[0.3rem] px-[0.5rem] rounded-[10px]
                             ${order.status === 'Order placed' 
-                                    ? 'text-[#fff] bg-[#ff6b00]'
+                                    ? 'text-[#292929] bg-[#ffc36d]'
                                     : order.status === 'Order confirmed'
-                                        ? 'text-[#292929]'
+                                        ? 'text-[#fafafa] bg-[#ff6b00]'
                                         : order.status === 'Processing'
-                                            ? 'text-[#292929]'
+                                            ? 'text-[#292929] bg-[#B1B2B5]'
                                             : order.status === 'Ready-for-pickup'
-                                                ? 'text-[#292929]'
-                                                : 'text-[#fff] bg-[#15803d]'
+                                                ? 'text-[#fafafa] bg-[#292929]'
+                                                : 'text-[#fff] bg-[#498d49]'
                             }
                         `}
                 >
