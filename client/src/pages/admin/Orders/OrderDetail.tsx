@@ -70,10 +70,7 @@ function OrderDetail () {
     };
 
 
-    const handleAddImageProof = (status: string) => {
-        setProofModalOpen(true);
-        setCurrentStatus(status)
-    }
+
 
     
 
@@ -85,25 +82,34 @@ function OrderDetail () {
 
             <div className="flex w-full h-full transition-all duration-200">
 
-                <section className="flex flex-col w-full h-full p-[1rem] gap-[1.5rem]">
+                <section className="flex flex-col w-full h-full p-[2rem] gap-[1.5rem]">
                     
-                    <div className="flex flex-col w-full">
-                        <div className="flex items-center gap-[1rem]">
-                            <ReferenceIcon className="size-5 opacity-25" />
-                            <span className="text-2xl text-[#ff6b00] font-bold">{order?.reference_number}</span>
-                        </div>
 
-                        <div className="flex items-center gap-[0.5rem]">
-                            <div className="flex items-center">
-                                <span className="text-sm text-[#292929]/80">{`Order placed on ${formatDate(String(order?.created_at))}`}</span>
+
+                    <div className="flex flex-col w-full gap-[1rem]">
+                        <div className="flex items-start justify-between w-full">
+                            <div className="flex flex-col items-start">
+                                <div className="flex items-center gap-[0.5rem]">
+                                    <ReferenceIcon className="size-5 opacity-50" />
+                                    <span className="text-4xl text-[#ff6b00] font-bold">{order?.reference_number}</span>
+                                </div>
+
+                                <div className="flex items-center gap-[0.5rem]">
+                                    <div className="flex items-center">
+                                        <span className="text-sm text-[#292929]/80">{`Order placed on ${formatDate(String(order?.created_at))}`}</span>
+                                    </div>
+                                    <div className="flex items-center gap-[0.5rem]">
+                                        <span className="text-sm text-[#292929]/80">by </span>
+                                        <span className="text-sm text-[#292929] font-bold">{order?.customer_name}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-[0.5rem]">
-                                <span className="text-sm text-[#292929]/80">by </span>
-                                <span className="text-sm text-[#292929] font-bold">{order?.customer_name}</span>
+
+                            <div className="flex flex-col">
+                                <span className="text-sm text-[#292929] underline">View Ready-for-pickup Image</span>
                             </div>
                         </div>
                     </div>
-
 
                     <StatusDropdown 
                         status={order?.status}
@@ -114,6 +120,7 @@ function OrderDetail () {
                         handleUpdateOrderStatus={handleUpdateOrderStatus}
                         updateStatusPending={updateStatusPending}
                     />
+
                     
 
                     <div className="flex flex-1 flex-col w-full h-full gap-[0.5rem]">
@@ -123,14 +130,14 @@ function OrderDetail () {
                             <div className="flex flex-col gap-[1.5rem] w-full h-fit ">
 
                                 <div className="flex flex-col w-full">
-                                    <div className="flex flex-col w-full bg-[#fafafa] rounded-[10px] border border-[#292929]/15 overflow-hidden">
-                                        <div className="grid grid-cols-[50%_10%_10%_10%_10%_10%] w-full bg-[#e6e6e6] p-[1rem] border-b border-[#292929]/15 opacity-75">
-                                            <span className="text-sm text-[#292929] leading-none">File</span>
-                                            <span className="text-sm text-[#292929] leading-none">Unit price</span>
-                                            <span className="text-sm text-[#292929] leading-none">Amount</span>
-                                            <span className="text-sm text-[#292929] leading-none">Size</span>
-                                            <span className="text-sm text-[#292929] leading-none">Quantity</ span>
-                                            <span className="text-sm text-[#292929] leading-none text-center">Action</ span>
+                                    <div className="flex flex-col w-full bg-[#fafafa] rounded-[5px] border border-[#292929]/15 overflow-hidden">
+                                        <div className="grid grid-cols-[50%_10%_10%_10%_10%_10%] w-full bg-[#292929] p-[1rem] border-b border-[#292929]/15">
+                                            <span className="text-sm text-[#fafafa] leading-none">File</span>
+                                            <span className="text-sm text-[#fafafa] leading-none">Unit price</span>
+                                            <span className="text-sm text-[#fafafa] leading-none">Amount</span>
+                                            <span className="text-sm text-[#fafafa] leading-none">Size</span>
+                                            <span className="text-sm text-[#fafafa] leading-none">Quantity</ span>
+                                            <span className="text-sm text-[#fafafa] leading-none text-center">Action</ span>
                                         </div>
 
                                         {orderItem.map(item => (
@@ -179,11 +186,16 @@ function OrderDetail () {
                     </ModalWrapper>
                 )}
 
-                <OrderItemConfiguration 
-                    isSelectedFileIdOpen={isSelectedFileIdOpen}
-                    setIsSelectedFileIdOpen={setIsSelectedFileIdOpen}
-                    itemDetail={itemDetail}
-                />
+                {isSelectedFileIdOpen && (
+                    <div className="fixed inset-0 flex items-end justify-end w-full h-full z-20">
+                        <div onClick={()=>setIsSelectedFileIdOpen(null)} className="absolute inset-0 bg-[#292929]/50"/>
+                        <OrderItemConfiguration 
+                            isSelectedFileIdOpen={isSelectedFileIdOpen}
+                            setIsSelectedFileIdOpen={setIsSelectedFileIdOpen}
+                            itemDetail={itemDetail}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     )

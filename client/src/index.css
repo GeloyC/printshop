@@ -67,6 +67,15 @@ body {
     }
 }
 
+@keyframes moveToLeft {
+    0% {
+        transform: translateX(100%)
+    }
+    100% {
+        transform: translateX(0%)
+    }
+}
+
 .fade-up {
     animation: fadeUp 0.1s ease-in-out forwards
 }
@@ -77,6 +86,10 @@ body {
 
 .toast-pop {
     animation: toastPop 3s ease-in-out forwards
+}
+
+.move-to-left {
+    animation: moveToLeft 0.5s normal forwards
 }
 
 

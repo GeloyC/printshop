@@ -51,6 +51,7 @@ function StatusDropdown ({
             return;
         } 
 
+        setProofModalOpen(false);    
         setSelectedStatus(selectedStatus);
         setCurrentStatus(selectedStatus);
         handleUpdateOrderStatus();
@@ -60,13 +61,16 @@ function StatusDropdown ({
 
     return (
         <div className="flex flex-col w-full h-auto gap-[0.5rem]">
-            <span className="text-sm text-[#292929] font-bold">Status</span>
 
-            <div className="flex items-center justify-center w-full h-full p-[0.75rem] pl-[0.75rem] gap-[0.3rem] bg-[#fafafa] rounded-[10px] border border-[#292929]/15">
+            <div className="flex items-center justify-center w-full h-full">
                 {statuses.map((item, index) => {
 
                     const Icon = item.icon;
-                    const passed = index <= currentStatusIndex;
+                    const passed = index < currentStatusIndex;
+                    const notPassed = index > currentStatusIndex+1; // the status beside the next status of the current status
+                    const current = index === currentStatusIndex;
+
+                    console.log('passed: ', passed);
 
                     const history = statusHistory.find(
                         history => history.status === item.name
@@ -74,46 +78,75 @@ function StatusDropdown ({
 
                     const updatedAt = history
                         ? formatDate(String(history.updated_at))
-                        : 'Pending';
+                        : '...';
                     
                     return (
-                        <div 
-                            key={item.name} 
-                            className={`relative flex flex-col items-center justify-center w-full h-full pl-[0.5rem]`}
+                        <button 
+                            onClick={()=>handleSetStatus(item.name)}
+                            disabled={current || passed || notPassed || updateStatusPending}
+                            className={`
+                                group flex w-full gap-[0.5rem] items-start p-[0.75rem] border-y border-[#292929]/50
+                                ${passed
+                                    ? 'bg-[#fafafa] border-r border-dashed border-[#292929] opacity-50' 
+                                    : current
+                                        ? 'bg-[#292929] border-solid'
+                                        : notPassed
+                                            ? 'bg-[#f2f2f2] border-l border-dashed border-[#292929] opacity-50'
+                                            : 'bg-[#B1B2B5]/80 hover:bg-[#404040]/50 active:bg-[#B1B2B5] border-dashed cursor-pointer transition-all duration-200'
+                                }
+                            `}
                         >
-                            {/* <div className={`flex w-full h-[3px] rounded-full ${passed ? 'bg-[#498d49]' : 'bg-[#B1B2B5]'}`} /> */}
-                            {/* <div className={`absolute -top-[6px] -left-2 border-4 ${passed ? 'border-[#498d49]' : 'border-[#292929]'} bg-[#fafafa] w-[1rem] h-[1rem] rounded-full`} /> */}
+                            <div className={`flex items-center justify-center rounded-full
+                                ${passed 
+                                    ? 'bg-[#292929]' 
+                                    : current 
+                                        ? 'bg-[#fafafa]'
+                                        : notPassed
+                                            ? 'bg-[#fafafa]'
+                                            : 'bg-[#fafafa]' 
 
-                            <div className={`absolute top-1/2 -translate-y-1/2 -left-[12px] flex items-center justify-center rounded-full min-w-[1.5rem] min-h-[1.5rem] border-4 border-[#fafafa] ${passed ? 'bg-[#498d49]/90' : 'bg-[#292929]'}`}>
-                                {passed 
+                                }`}>
+                                {passed
                                     ? <Passed className="size-5" color="#fff" />
-                                    : <Icon className="size-5" color="#fff" />
+                                    : current 
+                                        ? <Passed className="size-5" color="#292929" />
+                                        : updateStatusPending && !notPassed
+                                            ? <LoadingSpinner size={20} color="#292929" />
+                                            : <Icon className="size-5" color="#404040" />
                                 }
                             </div>
-
-                            <button 
-                                onClick={()=>handleSetStatus(item.name)}
-                                disabled={passed || updateStatusPending}
-                                className={`
-                                    flex w-full min-h-[56px] h-[56px] p-[0.5rem] pl-[1rem] gap-[0.3rem] rounded-[8px]
-                                    ${updateStatusPending && selectedStatus === item.name ? 'items-start justify-start' : 'items-center justify-center'}
-                                    ${passed ? 'bg-[#498d49]/90 cursor-not-allowed' : 'bg-[#292929] hover:bg-[#141414] active:bg-[#292929] cursor-pointer'} 
-                                `}
-                            >
-                                {updateStatusPending && selectedStatus === item.name
-                                    ? <LoadingSpinner size={15} color="#fff" />
-                                    : (
-                                        <div className="flex flex-col w-full items-start">
-                                            <span className={`text-sm text-[#fafafa] font-bold`}>{item.name}</span>
-                                            <span className={`text-sm text-[#fafafa]`}>{updatedAt}</span>
-                                        </div>
-                                    )
-                                }
-                            </button>
-                        </div>
+                            
+                            <div className="flex flex-col w-full items-start">
+                                <span 
+                                    className={`
+                                        text-md leading-none
+                                        ${passed 
+                                            ? 'text-[#292929] font-bold' 
+                                            : current
+                                                ? 'text-[#fafafa] font-bold'
+                                                : notPassed
+                                                    ? 'text-[#404040] font-bold'
+                                                    : 'text-[#404040] font-bold group-hover:text-[#292929] transition-all duration-200' // next
+                                        }
+                                    `}
+                                >{item.name}</span>
+                                <span 
+                                    className={`
+                                        text-sm 
+                                        ${passed 
+                                            ? 'text-[#292929]' 
+                                            : current
+                                                ? 'text-[#fafafa]'
+                                                : notPassed
+                                                    ? 'text-[#404040]'
+                                                    : 'text-[#404040] group-hover:text-[#141414] transition-all duration-200' // next
+                                        }
+                                    `}
+                                >{updatedAt}</span>
+                            </div>
+                        </button>
                     )
                 })}
-
             </div>
         </div>
     )

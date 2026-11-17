@@ -372,6 +372,18 @@ class OrderController extends Controller
         ]);
     }
 
+    public function uploadReadyForPickUpImageProof (Request $request, String $reference_number) {
+
+        $validated = $request->validate([
+            'file' => [
+                'required',
+                'file',
+                'mimes:png,jpeg,jpg',
+                'max:20480'
+            ]
+        ]);
+    }
+
 
     public function downloadFile (String $id) {
 
