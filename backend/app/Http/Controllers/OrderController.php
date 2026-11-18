@@ -262,11 +262,14 @@ class OrderController extends Controller
             ]
         );
 
+        $validated = $validator->validate();
+
         $order = DB::select("
             SELECT
                 o.id,
                 o.reference_number,
                 o.status,
+                o.rfp_proof_image_url,
                 o.created_at,
                 o.updated_at,
 
@@ -322,7 +325,7 @@ class OrderController extends Controller
                 o.id,
                 u.name,
                 u.id;
-        ", [$reference_number]);
+        ", [ $validated['reference_number'] ]);
 
         return response()->json($order[0] ?? null);
     }
@@ -382,6 +385,31 @@ class OrderController extends Controller
                 'max:20480'
             ]
         ]);
+
+        $validated_reference_number = Validator::make(
+            ['reference_number'=>$reference_number],
+            ['reference_number' => ['required', 'string', 'exists:orders,reference_number']]
+        );
+        $validatedReferenceNumber = $validated_reference_number->validate();
+
+
+        $order = Order::query()
+            ->where('reference_number', $validatedReferenceNumber['reference_number'] )
+            ->firstOrFail();
+
+        $file = $validated['file'];
+        $filePath = $file->store(
+            '/orders/rfp_proof_image',
+            'r2'
+        );
+    
+        $order->update([
+            'rfp_proof_image_url'=>$filePath
+        ]);
+
+        return response()->json([
+            'message'=>'proof image uploaded'
+        ], 200);
     }
 
 

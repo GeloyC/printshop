@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 import { useParams } from "react-router-dom";
-import { useDownloadOrderFileItem, useGetOrderDetail, useUpdateOrderStatus } from "../../../hooks/orders/order.hook";
+import { useDownloadOrderFileItem, useGetOrderDetail, useUpdateOrderStatus, useUploadReadyForPickUpImageProof } from "../../../hooks/orders/order.hook";
 import type { OrderData, OrderItem, OrderStatusHistoriesType } from "../../../types/order.type";
 import StatusDropdown from "../../../components/admin/Order/StatusDropdown";
 import { formatDate } from "../../../utils/formatDate";
@@ -15,6 +16,7 @@ import currencyFormat from "../../../utils/currencyFormat";
 import OrderItemConfiguration from "./OrderItemConfiguration";
 import OrderPickupProof from "./OrderPickupProof";
 import ModalWrapper from "../../../components/wrapper/ModalWrapper";
+import ProofImage from "./ProofImage";
 
 
 
@@ -38,6 +40,8 @@ function OrderDetail () {
     const [proofPreview, setProofPreview] = useState<string|null>(null);
     const [proofModalOpen, setProofModalOpen] = useState<boolean>(false);
 
+    const [proofImageDisplayOpen, setProofImageDisplayOpen] = useState<boolean>(false);
+
     const { 
         mutate:handleUpdateOrderStatus, 
         isPending:updateStatusPending 
@@ -50,6 +54,35 @@ function OrderDetail () {
 
     const handleOpenSelectedFile = (file_id: string) => {
         setIsSelectedFileIdOpen(file_id);
+    }
+
+    
+    const {
+        mutateAsync: handleUploadReadyForPickupProofImage,
+        isPending: proofImageUploadPending
+    } = useUploadReadyForPickUpImageProof(String(reference_number));
+
+    const handleUploadImageProof = async () => {
+        try {
+            const formData = new FormData;
+            if (proofImage) {
+                formData.append('file', proofImage)
+            }
+
+            await handleUploadReadyForPickupProofImage(formData);
+            handleUpdateOrderStatus();
+
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                if (err.response?.status === 422) {
+                    const errors = err.response.data.errors;
+
+                    console.log(errors.file?.[0]);
+                } else {
+                    console.error(err.response?.data?.message || err.message);
+                }
+            }
+        }
     }
 
     const { 
@@ -68,7 +101,6 @@ function OrderDetail () {
             }
         });
     };
-
 
 
 
@@ -105,9 +137,16 @@ function OrderDetail () {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col">
-                                <span className="text-sm text-[#292929] underline">View Ready-for-pickup Image</span>
-                            </div>
+                            {order?.rfp_proof_image_url && (
+                                <div className="flex flex-col">
+                                    <button 
+                                        onClick={()=>setProofImageDisplayOpen(true)}
+                                        className="cursor-pointer group opacity-75 hover:opacity-100"
+                                    >
+                                        <span className="text-sm text-[#292929] leading-none border-b border-[#292929]/25 group-hover:border-[#292929]/80 transition-all duration-200">View Ready-for-pickup Image</span>
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -181,7 +220,17 @@ function OrderDetail () {
                             proofPreview={proofPreview}
                             proofImageFilename={proofImageFilename}
                             setCurrentStatus={setCurrentStatus}
-                            handleUpdateOrderStatus={handleUpdateOrderStatus}
+                            handleUploadImageProof={handleUploadImageProof}
+                            proofImageUploadPending={proofImageUploadPending}
+                        />
+                    </ModalWrapper>
+                )}
+
+                {proofImageDisplayOpen && (
+                    <ModalWrapper>
+                        <ProofImage 
+                            proof_image_url={String(order?.rfp_proof_image_url)}
+                            close={()=>setProofImageDisplayOpen(false)}
                         />
                     </ModalWrapper>
                 )}

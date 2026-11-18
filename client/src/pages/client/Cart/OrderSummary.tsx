@@ -76,9 +76,12 @@ function OrderSummary ({
                 <span className="text-[16px] text-[#292929] font-bold">{currencyFormat(Number(subTotalPrice))}</span>
             </div>
 
-            <button onClick={() => handleCheckout.mutate()} className="flex items-center justify-center  bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">
+            <button onClick={() => handleCheckout.mutate()} className="flex items-center justify-center gap-[0.3rem] bg-[#ff6b00] hover:bg-[#cc4c02] active:bg-[#ff6b00] w-full py-[0.5rem] rounded-[5px] cursor-pointer transition-all duration-200">
                 {handleCheckout.isPending ? (
-                    <LoadingSpinner size={15} color="#FFF" />
+                    <>
+                        <span className="text-[16px] text-[#fff]">Confirming order </span>
+                        <LoadingSpinner size={15} color="#FFF" />
+                    </>
                 ): (
                     <span className="text-[16px] text-[#fff]">Confirm Order</span>
                 )}

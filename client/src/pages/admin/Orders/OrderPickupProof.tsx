@@ -1,6 +1,5 @@
 
-import type { UseMutateFunction } from "@tanstack/react-query";
-import { useState, useEffect, type SetStateAction } from "react";
+import { useEffect, type SetStateAction } from "react";
 
 
 type OrderPickupProofProp = {
@@ -11,7 +10,8 @@ type OrderPickupProofProp = {
     proofImage: File|null,
     proofImageFilename: string|null,
     proofPreview: string|null,
-    handleUpdateOrderStatus: UseMutateFunction,
+    handleUploadImageProof: () => void,
+    proofImageUploadPending: boolean,
     setCurrentStatus: React.Dispatch<SetStateAction<string>>
 }
 
@@ -23,7 +23,8 @@ function OrderPickupProof ({
     proofImage,
     proofPreview,
     proofImageFilename,
-    handleUpdateOrderStatus,
+    handleUploadImageProof,
+    proofImageUploadPending,
     setCurrentStatus
 }: OrderPickupProofProp) {
 
@@ -63,7 +64,9 @@ function OrderPickupProof ({
                 
 
                 <div className={`flex flex-col w-full h-[250px] items-center justify-center bg-[#f2f2f2] rounded-[5px] border border-dashed border-[#292929]/15 overflow-hidden`}>
-                    {proofPreview ? (
+                    {proofImageUploadPending ? (
+                        <span>Loading...</span>
+                    ): proofImage ?(
                         <div className="relative flex flex-col w-full h-full">
                             {proofImage && (
                                 <button 
@@ -97,33 +100,32 @@ function OrderPickupProof ({
                             </label>
                         </>
                     )}
-
                 </div>
 
                 {proofImageFilename && (
                     <span className="text-sm text-[#292929] text-left font-bold leading-none">{proofImageFilename}</span>
                 )}
 
-
                 <div className="flex items-center justify-end w-full gap-[0.3rem] pt-[1rem]">
                     <button 
+                        disabled={proofImageUploadPending}
                         onClick={()=>{
                             setProofPreview('');
                             setProofImage(null);
                             setProofImageFilename(null);
                             setProofModalOpen(false);
                         }}
-                        className={`flex  p-[0.75rem] rounded-[10px] hover:bg-[#e6e6e6] active:bg-transparent cursor-pointer`}
+                        className={`flex p-[0.75rem] rounded-[10px] ${proofImageUploadPending ? 'opacity-25' : 'hover:bg-[#e6e6e6] active:bg-transparent cursor-pointer'}`}
                     >
                         <span className="text-sm text-[#292929] leading-none">Cancel</span>
                     </button>
                     <button 
                         onClick={()=>{
                             setCurrentStatus('Ready-for-pickup');
-                            handleUpdateOrderStatus();
+                            handleUploadImageProof();
                         }}
-                        disabled={!proofImage}
-                        className={`flex  bg-[#ff6b00] p-[0.75rem] rounded-[10px] ${proofImage ? 'opacity-100 hover:bg-[#cc4c02] active:bg-[#ff6b00] cursor-pointer' : 'opacity-50'}`}
+                        disabled={!proofImage || proofImageUploadPending}
+                        className={`flex  bg-[#ff6b00] p-[0.75rem] rounded-[10px] ${proofImage || proofImageUploadPending ? 'opacity-100 hover:bg-[#cc4c02] active:bg-[#ff6b00] cursor-pointer' : 'opacity-50'}`}
                     >
                         <span className="text-sm text-[#fafafa] leading-none">Update status and save</span>
                     </button>

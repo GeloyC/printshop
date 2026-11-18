@@ -47,6 +47,11 @@ export async function updateOrderStatus (params: updateOrderStatusParams) {
     return response.data;
 }
 
+export async function uploadReadyForPickUpImageProof (reference_number: string, formData: FormData) {
+    const response = await api.patch(`/api/admin/order/${reference_number}/proof-image`, formData);
+    return response.data;
+}
+
 export async function downloadOrderItemFile (id: string) {
     const response = await api.get(`/api/admin/order/${id}/file-download`, {
         responseType: 'blob'

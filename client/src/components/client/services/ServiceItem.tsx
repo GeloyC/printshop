@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { ServiceItemType } from "../../../types/service/service.type";
-import { ThumbnailUrl } from "../../../utils/cloudflarePublicURL";
+import { cloudflare_url } from "../../../utils/cloudflarePublicURL";
 
 // icon
 import ArrowDiagonal from '/src/assets/icon/arrow-diagonal.svg?react'
@@ -26,7 +26,7 @@ function ServiceItem ({ service }: ServiceItemProp) {
             </div>
 
             <div className="flex w-full h-[200px] bg-[#fff] group-hover:border-[#292929] group-hover:rotate-1 rounded-[10px] overflow-hidden transition-all duration-200">
-                <img src={`${ThumbnailUrl}${service?.thumbnail_url}`} alt="" className="w-full h-full transition-all duration-300"/>
+                <img src={`${cloudflare_url}${service?.thumbnail_url}`} alt="" className="w-full h-full transition-all duration-300"/>
             </div>
 
             <span className="text-[18px] text-[#292929] text-wrap font-bold leading-none transition-all duration-100">{service.name}</span>

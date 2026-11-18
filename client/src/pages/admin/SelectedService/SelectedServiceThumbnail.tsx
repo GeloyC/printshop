@@ -4,7 +4,7 @@ import { useState } from 'react';
 // icons
 import ImageIcon from '/src/assets/icon/image.svg?react'
 
-import { ThumbnailUrl } from '../../../utils/cloudflarePublicURL';
+import { cloudflare_url } from '../../../utils/cloudflarePublicURL';
 import type { SetStateAction } from 'react';
 
 type SelectedServiceThumbnailProp = {
@@ -53,7 +53,7 @@ function SelectedServiceThumbnail ({
             
             {!newImagePrev ? (
                 <div className="flex items-center justify-center overflow-hidden h-[350px] bg-[#fafafa] rounded-[5px] border border-dashed border-[#292929]/25">
-                    <img src={`${ThumbnailUrl}${currentImage}`} alt="" className={`object-contain w-full h-full`} />
+                    <img src={`${cloudflare_url}${currentImage}`} alt="" className={`object-contain w-full h-full`} />
                 </div>
             ):(
                 <div className="flex items-center justify-center overflow-hidden h-[200px] bg-[#fafafa] rounded-[5px] border border-dashed border-[#292929]/25">

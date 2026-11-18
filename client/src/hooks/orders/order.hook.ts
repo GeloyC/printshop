@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import axios from 'axios';
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getOrdersByStatus, getOrderPlacedCount, getOrdersAdmin, getOrderDetail, updateOrderStatus, downloadOrderItemFile } from '../../api/order.api';
+import { getOrdersByStatus, getOrderPlacedCount, getOrdersAdmin, getOrderDetail, updateOrderStatus, downloadOrderItemFile, uploadReadyForPickUpImageProof } from '../../api/order.api';
 import { useGetUser } from '../useGetUser';
 
 
@@ -54,9 +56,31 @@ export function useUpdateOrderStatus (reference_number: string, status: string) 
         },
         onSuccess: () => Promise.all([
             queryClient.invalidateQueries({ queryKey: ['orders', status] }),
-            queryClient.invalidateQueries({ queryKey: ['order-detail'] }),
+            queryClient.invalidateQueries({ queryKey: ['order-detail', reference_number] }),
             queryClient.invalidateQueries({ queryKey: ['orders-admin'] }),
         ]),
+    });
+}
+
+export function useUploadReadyForPickUpImageProof (reference_number: string) {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (formData: FormData) => {
+            await uploadReadyForPickUpImageProof(reference_number, formData)
+        },
+        onSuccess: ()=> {
+            queryClient.invalidateQueries({ queryKey: ['order-detail', reference_number] });
+        }, onError: (err: unknown) => {
+            if (axios.isAxiosError(err)) {
+                console.error('Message:', err.message);
+                console.error('Status:', err.response?.status);
+                console.error('Response:', err.response?.data);
+                console.error('Request:', err.request);
+            } else {
+                console.error(err);
+            }
+        }
     });
 }
 

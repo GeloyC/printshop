@@ -40,6 +40,7 @@ export interface OrderData {
     order_total: number,
     order_status_histories: OrderStatusHistoriesType[],
     order_items: string
+    rfp_proof_image_url?: string
 }
 
 // admin order

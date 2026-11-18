@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('reference_number');
             $table->string('status', 25)
                 ->default("Order placed");
+            $table->string('rfp_proof_image_url') // Ready-for-pickup proof image
+                ->nullable(); 
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });

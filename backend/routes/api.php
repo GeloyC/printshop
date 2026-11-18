@@ -47,4 +47,5 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get("/admin/order/{reference_number}", [OrderController::class, 'getOrderDataFromAdmin']);
     Route::patch("/admin/order/status", [OrderController::class, 'updateOrderStatus']);
     Route::get("/admin/order/{id}/file-download", [OrderController::class, 'downloadFile']);
+    Route::patch("/admin/order/{reference_number}/proof-image", [OrderController::class, 'uploadReadyForPickUpImageProof']);
 });

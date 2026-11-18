@@ -1,1 +1,1 @@
-export const ThumbnailUrl = 'https://pub-a5f38e5142b04ca88d7be6d2af85549e.r2.dev/'
+export const cloudflare_url = 'https://pub-a5f38e5142b04ca88d7be6d2af85549e.r2.dev/'

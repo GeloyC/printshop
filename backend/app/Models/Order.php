@@ -14,6 +14,7 @@ use App\Enums\OrderStatus;
     'id',
     'user_id',
     'reference_number',
+    'rfp_proof_image_url',
     'status'
 ])]
 
