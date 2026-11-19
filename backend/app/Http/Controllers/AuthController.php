@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -14,18 +15,41 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'string'],
-            'password'=> ['required', 'min:8']
+            'password'=> ['required', Password::defaults()]
+        ], [
+            'name.required' => 'Name field is required',
+            'email.required' => 'Email field is required',
+            'password.required' => 'Password field is required'
         ]);
+        
 
         $name = $validated['name'];
         $email = $validated['email'];
         $password = $validated['password']; 
+
+        $checkuserExist = User::query()
+            ->where('email', $email)
+            ->exists(); 
+
+        $errors = [];
+
+        if ($checkuserExist) {
+            $errors['email'] = ['A user with this email already exists'];
+        }
+        
+        if (!empty($errors)) {
+            return response()->json([
+                'message' => 'Incorrect or invalid inputs',
+                'errors' => $errors,
+            ], 402);
+        }
 
         $user = User::create([
             'name' => $name,
             'email' => $email,
             'password' => $password,
         ]);
+
 
         Auth::login($user);
         $request->session()->regenerate();
