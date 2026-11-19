@@ -11,10 +11,12 @@ import LoadingSpinner from '../../ui/LoadingSpinner/LoadingSpinner';
 
 type SignupProp = {
     close: () => void
+    handleOpenLogin: () => void
 }
 
 function Signup ({
-    close
+    close,
+    handleOpenLogin
 }: SignupProp) {
 
     const [newAccount, setNewAccount] = useState({
@@ -109,7 +111,7 @@ function Signup ({
                                     name: ''
                                 }))
                             }}
-                            className={`text-[14px] font-bold bg-[#f2f2f2] p-[0.75rem] border ${errors.name ? 'text-[#ff0000] border-[#ff0000]' : 'text-[#292929] border-[#292929]/50'} focus:outline-[#ff6b00] rounded-[5px]`}/>
+                            className={`text-[14px] font-bold bg-[#f2f2f2] p-[0.75rem] border ${errors.name ? 'text-[#ff0000] border-[#ff0000]' : 'text-[#292929] border-[#292929]/15'} focus:outline-[#ff6b00] rounded-[5px]`}/>
 
                             {errors.name && (
                                 <span className='text-sm text-[#ff0000] leading-none'>{errors.name}</span>
@@ -131,7 +133,7 @@ function Signup ({
                                     email: ''
                                 }))
                             }}
-                            className={`text-[14px] font-bold bg-[#f2f2f2] p-[0.75rem] border ${errors.email ? 'text-[#ff0000] border-[#ff0000]' : 'text-[#2929292] border-[#292929]/50'} focus:outline-[#ff6b00] rounded-[5px]`}/>
+                            className={`text-[14px] font-bold bg-[#f2f2f2] p-[0.75rem] border ${errors.email ? 'text-[#ff0000] border-[#ff0000]' : 'text-[#2929292] border-[#292929]/15'} focus:outline-[#ff6b00] rounded-[5px]`}/>
 
                             {errors.email && (
                                 <span className='text-sm text-[#ff0000] leading-none'>{errors.email}</span>
@@ -159,7 +161,7 @@ function Signup ({
                                         ? 'text-[#ff0000] border-[#ff0000]' 
                                         : isPasswordGood 
                                             ? 'text-[#498d49] border-[#498d49] focus:outline-[#498d49]'    
-                                            :'text-[#292929] border-[#292929]/50 focus:outline-[#ff6b00]'
+                                            :'text-[#292929] border-[#292929]/15 focus:outline-[#ff6b00]'
                                     }
                                 `}
                             />
@@ -168,7 +170,7 @@ function Signup ({
                                 <span className='text-sm text-[#ff0000] leading-none'>{errors.password}</span>
                             )}
 
-                            <div className='flex flex-col w-full gap-[0.5rem] mt-[0.5rem] p-[0.5rem]  rounded-[5px]'>
+                            <div className={`flex flex-col w-full gap-[0.5rem] mt-[0.5rem]  rounded-[5px] ${newAccount.password ? 'h-15 opacity-100' : 'h-0 opacity-0'} transition-all duration-200`}>
                                 <div className='flex items-center gap-[0.3rem]'>
                                     <Check className='size-4' color={mixedCase ? '#498d49' : '#292929'} />
                                     <span className={`text-sm font-bold ${mixedCase ? 'text-[#498d49]' : 'text-[#292929]'} leading-none`}>Password contains uppercase and lower case letters</span>
@@ -188,7 +190,7 @@ function Signup ({
                 </div>
 
 
-                <div className='flex items-center w-full gap-[0.3rem]'>
+                <div className='flex flex-col items-center w-full gap-[0.3rem]'>
                     <button 
                         type='submit' 
                         disabled={!hasFilled}
@@ -202,6 +204,16 @@ function Signup ({
                         </span>
                         <Arrow className={`size-5 ${hasFilled && 'group-hover:translate-x-1'} transition-all duration-200`} color='#fff' />
                     </button>
+
+                    <div className='flex items-center gap-[0.3rem] opacity-75 hover:opacity-100'>
+                        <span className='text-md text-[#292929]'>Already have account?</span>
+                        <button onClick={()=>{
+                            close();
+                            handleOpenLogin();
+                        }} className='group cursor-pointer'>
+                            <span className='text-md text-[#292929] underline group-hover:text-[#ff6b00]'>Login instead</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>

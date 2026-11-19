@@ -125,6 +125,7 @@ function NavBar () {
                 <ModalWrapper>
                     <Signup 
                         close={closeModal}
+                        handleOpenLogin={handleOpenLogin}
                     />
                 </ModalWrapper>
             )}
