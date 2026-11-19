@@ -40,16 +40,30 @@ class AuthController extends Controller
         $validated = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string']
+        ], [
+            'email.required' => 'Email is required',
+            'email.email' => 'Please enter a valid email address',
+            'password.required' => 'Password is required'
         ]);
 
-        $user = User::where('email', $validated['email'])->firstOrFail();
+        $user = User::where('email', $validated['email'])->first();
+        $errors = [];
+
+        if (!$user) {
+            $errors['email'] = ['Incorrect email, please try again'];
+        }
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response()->json([
-                'message' => 'invalid credential'
-            ], 401);
+            $errors['password'] = ['Incorrect password, please try again'];
         }
         
+        if (!empty($errors)) {
+            return response()->json([
+                'message' => 'The given data was invalid',
+                'errors' => $errors
+            ], 422);
+        }
+
         Auth::login($user);
         $request->session()->regenerate();
 
