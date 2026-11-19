@@ -13,7 +13,7 @@ type OrderButtonProp = {
 function OrderButton ({closeDropdowns}:OrderButtonProp) {
 
     const { user } = useUserContext();
-    const { data: orderCount } = useGetOrderPlacedCount(user?.id);
+    const { data: orderCount } = useGetOrderPlacedCount();
 
     return (
         <div onClick={closeDropdowns} className='relative'>

@@ -30,7 +30,7 @@ function OrderItemModal ({
 
 
     return (
-        <div className="fade-up relative flex flex-col w-[700px] p-[2rem] gap-[2rem] bg-[#fff] rounded-[20px]">
+        <div className="fade-up relative flex flex-col w-[700px] p-[2rem] gap-[2rem] bg-[#fff] rounded-[25px]">
             <div className="flex items-center gap-[0.3rem] w-full">
                 <span className="text-2xl text-[#292929] font-bold leading-none">Order {data?.reference_number}</span>
             </div>

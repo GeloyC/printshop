@@ -49,11 +49,12 @@ function OrderSummary ({
         mutationFn: async () => {
             return await checkoutItems(cartItems);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] });
-            console.log('checkout successful!');
-            handleConfirmOrder();
-        }, onError: (err: unknown) => {
+        onSuccess: () => Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['cart', user?.id] }),
+            queryClient.invalidateQueries({ queryKey: ['order-placed-count']}),
+            handleConfirmOrder()
+        ])
+        , onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
                 console.error('Message:', err.message);
                 console.error('Status:', err.response?.status);

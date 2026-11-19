@@ -21,8 +21,7 @@ export function useGetOrderPlacedCount () {
     return useQuery({
         queryKey: ['order-placed-count'],
         queryFn: () => getOrderPlacedCount(),
-        enabled: !!user,
-        retry: false
+        enabled: !!user
     });
 }
 

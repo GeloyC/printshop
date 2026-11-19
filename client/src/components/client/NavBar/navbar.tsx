@@ -9,7 +9,7 @@ import Home from '/src/assets/icon/home.svg?react'
 import ModalWrapper from "../../wrapper/ModalWrapper";
 import Signup from "../../modal/client/Signup";
 import Login from "../../modal/client/Login";
-import FolderButton from "./OrderButton";
+import OrderButton from "./OrderButton";
 import NotificationButton from "./NotificationButton";
 import { useUserContext } from "../../../context/userContext";
 import UserAccountIcon from "./UserAccountIcon";
@@ -80,7 +80,7 @@ function NavBar () {
                             itemCount={cartCount}
                         />
 
-                        <FolderButton 
+                        <OrderButton 
                             closeDropdowns={handleCloseDropdowns}
                         />
                         <NotificationButton 

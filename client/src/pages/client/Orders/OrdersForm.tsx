@@ -37,7 +37,7 @@ function OrdersForm ({
         <>
             <div className="flex flex-1 flex-col w-full h-full py-[1rem]">
 
-                <div className="flex items-center justify-between w-full gap-[2rem] px-[1rem]">
+                <div className="flex items-center justify-between w-full gap-[2rem]">
                     <span className="text-[24px] text-[#292929] font-bold leading-none">My Orders</span>
                     <StatusTab 
                         setSearchParams={setSearchParams}
@@ -45,34 +45,24 @@ function OrdersForm ({
                     />
                 </div>
 
-                <div className="flex flex-1 flex-col w-full gap-[1rem] py-[1rem] bg-gradient-to-b from-[#cc4c02] to-[#fff8ec] rounded-t-[15px]">
+                <div className="grid grid-cols-2 flex-col w-full gap-[0.75rem] py-[1rem]">
                     
-                    <div className="grid grid-cols-5 place-items-center w-full ">
-                        {/* 
-                            reference number
-                            number of files
-                            total payment
-                            status
-                            updated date
-                        */}
-
+                    {/* <div className="grid grid-cols-5 place-items-center w-full ">
                         <span className="text-[14px] text-[#fff]/80 leading-tight">Reference number</span>
                         <span className="text-[14px] text-[#fff]/80 leading-tight">No. of file/s</span>
                         <span className="text-[14px] text-[#fff]/80 leading-tight">Total paid</span>
                         <span className="text-[14px] text-[#fff]/80 leading-tight">Status</span>
                         <span className="text-[14px] text-[#fff]/80 leading-tight">Date</span>
-                    </div>
+                    </div> */}
 
-                    <div className="flex flex-col w-full">
                         
-                        {orders.map(order => (
-                            <OrderItem key={order.id}
-                                viewOrder={()=>handleViewOrderData(order.id)}
-                                order={order}
-                                
-                            />
-                        ))}
-                    </div>
+                    {orders.map(order => (
+                        <OrderItem key={order.id}
+                            viewOrder={()=>handleViewOrderData(order.id)}
+                            order={order}
+                            
+                        />
+                    ))}
                     
                 </div>
             </div>
