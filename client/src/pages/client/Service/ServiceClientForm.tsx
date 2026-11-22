@@ -13,7 +13,7 @@ import Toast from "../../../components/ui/Toast";
 
 import type { fileItem } from "../../../types/file.type";
 import RedirectAlert from "../../../components/ui/RedirectAlert";
-import type { Configuration } from "../../../types/service/service.type";
+import type { Configuration, ServiceType } from "../../../types/service/service.type";
 import { useUserContext } from "../../../context/userContext";
 import TopLoadingBar from "../../../components/ui/TopLoadingBar";
 import { useLoginContext } from "../../../context/loginContext";
@@ -21,13 +21,6 @@ import { useLoginContext } from "../../../context/loginContext";
 
 type fileRequirement = {
     extension: string
-}
-
-type ServiceType = {
-    id: string,
-    name: string,
-    description: string,
-    file_requirements: fileRequirement[],
 }
 
 type fileConfigType = {
@@ -62,7 +55,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
 
 
     const hasCurrentServiceFiles = files.some(file => file.slug === slug); 
-    const checkFile = files.map(file => (file.configuration?.length ?? 0) > 0);
+    const checkFile = files.map(file => (file.configuration?.length ?? 0) >= 0);
     const checkFileAllTrue = checkFile.every(file => file === true)
 
     const shouldBlock = checkFileAllTrue && hasCurrentServiceFiles; 
@@ -70,7 +63,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     const shouldBlockNavigation = useCallback<BlockerFunction> (
         ({ currentLocation, nextLocation }) =>
             currentLocation.pathname.startsWith('/service/') &&
-            !shouldBlock &&
+            shouldBlock &&
             files.length > 0 &&
             currentLocation.pathname !== nextLocation.pathname,
             
@@ -100,15 +93,16 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     );
 
     
+    
 
 
     return (
         <>
             <TopLoadingBar isLoading={AddToCartPending} />
-            <div className={`flex flex-1 w-full ${!files.length ? 'items-stretch' : 'bg-transparent'} rounded-t-[20px] overflow-hidden gap-[2rem] `}>
-                
+            <div className={`grid grid-cols-[6fr_3fr] w-full h-full pb-[1rem] gap-[0.5rem]`}>
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}
+                    selectedFile={selectedFile}
                     requiredFiles={requiredFiles}
                     setFiles={setFiles}
                     files={files}
@@ -121,22 +115,22 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
                     serviceDescription={service?.description}
                     shouldBlock={shouldBlock}
                 />
-
-                {error && <Toast message={error} />}
-            </div>
-
-            {fileSetupModalOpen && (
-                <ModalWrapper>
+            
+                {service  &&  (
                     <ConfigurationSetupModal 
+                        key={selectedFile?.id ?? 'no file selected'}
+                        service={service}
                         selectedFile={selectedFile}
                         setFiles={setFiles}
                         setSelectedFile={setSelectedFile}
                         closeModal={()=>setFileSetupModalOpen(false)}
                         configurations={configurations}
-                        setFileSetupModalOpen={setFileSetupModalOpen}
                     />
-                </ModalWrapper>
-            )}
+                )} 
+
+                {error && <Toast message={error} />}
+            </div>
+
 
             {blocker.state === 'blocked' &&  (
                 <ModalWrapper>

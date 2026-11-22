@@ -31,6 +31,13 @@ export type fileRequirement = {
     extension: string
 }
 
+export type ServiceType = {
+    id: string,
+    name: string,
+    description: string,
+    file_requirements: fileRequirement[],
+}
+
 export type SelectedServiceType = {
     id: string,
     thumbnail_url: string,
@@ -48,6 +55,7 @@ export type ServiceItemType = {
     id: string,
     name: string,
     base_price?: number,
+    description: string,
     file_requirements: fileRequirement[], 
     thumbnail_url: string,
     slug: string,

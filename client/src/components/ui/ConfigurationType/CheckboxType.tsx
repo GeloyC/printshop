@@ -1,5 +1,6 @@
 import type { SetStateAction } from "react"
 import currencyFormat from "../../../utils/currencyFormat"
+import type { fileItem } from "../../../types/file.type"
 
 type SelectedOption = {
     id: string,
@@ -9,6 +10,7 @@ type SelectedOption = {
 
 type OptionProp = {
     id: string,
+    selectedFileId: string
     option: string,
     price: number,
     onSelect: () => void,
@@ -16,7 +18,7 @@ type OptionProp = {
     labelKey: string
 }
 
-function CheckboxType ({ id, option, price, onSelect, selected, labelKey }: OptionProp) {
+function CheckboxType ({ id, selectedFileId, option, price, onSelect, selected, labelKey }: OptionProp) {
 
     return (
         <div className={`group flex w-full z-20 rounded-full

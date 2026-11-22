@@ -129,10 +129,10 @@ function Login ({
                     )}
                 </button>
 
-                <div className='flex items-center justify-center gap-[0.3rem] text-[12px] text-[#404040] font-bold'>
-                    <span>No account yet?</span>
+                <div className='flex items-center justify-center gap-[0.3rem] text-md'>
+                    <span className='text-[#404040]'>No account yet?</span>
                     <button type='button' onClick={handleOpenSignup}
-                    className='cursor-pointer hover:underline active:text-[#cc4c02]'>Sign in instead</button>
+                    className='cursor-pointer text-[#404040] underline hover:text-[#ff6b00] active:text-[#cc4c02]'>Sign in instead</button>
                 </div>
             </div>
         </form>

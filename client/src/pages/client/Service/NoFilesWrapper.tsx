@@ -7,8 +7,6 @@ import type { fileItem } from "../../../types/file.type";
 import type { SetStateAction } from "react";
 
 type NoFilesWrapperProp = {
-    serviceName: string,
-    serviceDescription: string,
     requiredFiles: string[],
     setFiles: React.Dispatch<SetStateAction<fileItem[]>>,
     setError: React.Dispatch<SetStateAction<string>>,
@@ -17,8 +15,6 @@ type NoFilesWrapperProp = {
 }
 
 function NoFilesWrapper ({ 
-    serviceName, 
-    serviceDescription, 
     requiredFiles, 
     setFiles, 
     setError, 
@@ -56,11 +52,11 @@ function NoFilesWrapper ({
 
 
     return (
-        <div className={`flex flex-1 flex-col items-center justify-center gap-[2rem] bg-transparent transition-all duration-200 rounded-t-[15px]`}>
-            <div className='flex flex-col items-center gap-[0.75rem]'>
+        <div className={`flex flex-col items-center justify-center w-full gap-[2rem] transition-all duration-200 rounded-[15px]`}>
+            {/* <div className='flex flex-col items-center gap-[0.75rem]'>
                 <span className='text-5xl text-[#292929] font-bold'>{serviceName}</span>
                 <span className='text-lg text-[#292929]'>{serviceDescription}</span>
-            </div>
+            </div> */}
 
 
             <div className="flex flex-col items-center gap-[0.5rem]">

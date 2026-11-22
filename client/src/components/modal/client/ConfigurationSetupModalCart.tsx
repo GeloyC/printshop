@@ -119,6 +119,7 @@ function ConfigurationSetupModalCart ({
                                     <CheckboxType 
                                         key={opt.id}
                                         id={opt.id}
+                                        selectedFileId={selectedItem?.id ?? ''}
                                         labelKey={config.key}
                                         option={opt.option}
                                         price={opt.price}
@@ -157,6 +158,7 @@ function ConfigurationSetupModalCart ({
                                     <RadioType 
                                         key={opt.id}
                                         id={opt.id}
+                                        selectedFileId={selectedItem?.id ?? ''}
                                         labelKey={config.key}
                                         option={opt.option}
                                         price={opt.price}
@@ -191,6 +193,7 @@ function ConfigurationSetupModalCart ({
                 )}
 
                 <TextType 
+                    selectedFileId={String(selectedItem?.id)}
                     additionalInstruction={additionalInstruction}
                     setAdditionalInstruction={setAdditionalInstruction}
                 />

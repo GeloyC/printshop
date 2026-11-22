@@ -17,6 +17,7 @@ class ServiceController extends Controller
             ->select(
                 'id',
                 'thumbnail_url',
+                'description',
                 'name',
                 'file_requirements',
                 'slug',

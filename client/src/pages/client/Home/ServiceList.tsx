@@ -27,7 +27,7 @@ function ServiceList ({ services }: ServiceListProp) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-4 w-full p-[1rem] gap-[1rem] bg-gradient-to-b from-[#ff6b00] to-transparent rounded-t-[10px]">
+            <div className="grid grid-cols-3 w-full p-[1.5rem] gap-[1rem] bg-gradient-to-b from-[#ff6b00] to-transparent rounded-t-[10px]">
                 {services?.map(service => (
                     <ServiceItem key={service.id}
                         service={service}

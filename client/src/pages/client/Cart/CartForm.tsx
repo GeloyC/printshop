@@ -47,7 +47,7 @@ function CartForm ({ configurations, cartItems }: CartFormProp) {
 
     return (
         <>
-            <div className="relative grid flex-1 grid-cols-[5fr_2fr] items-stretch w-full gap-[1rem]">
+            <div className="relative grid flex-1 grid-cols-[5fr_2fr] items-stretch w-full gap-[1rem] px-[6rem]">
 
                 <section className="flex flex-col items-start w-full min-h-full gap-[1rem] rounded-t-[15px]">
                     <div className="flex items-center gap-[0.5rem]">

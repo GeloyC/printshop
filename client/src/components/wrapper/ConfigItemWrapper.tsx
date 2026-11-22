@@ -13,7 +13,7 @@ function ConfigItemWrapper ({ configLabel, configType, children }: ConfigItemWra
 
     return (
         <div className="flex flex-col w-full gap-[0.5rem]">
-            <span className="text-[14px] text-[#575757] font-bold leading-none">{configLabel}</span>
+            <span className="text-[14px] text-[#292929] font-bold leading-none">{configLabel}</span>
 
             {/* Change to flex when type is Number field, text field, and select */}
             <div
@@ -21,7 +21,7 @@ function ConfigItemWrapper ({ configLabel, configType, children }: ConfigItemWra
                     isGridType
                         ? 'flex items-center'
                         : 'flex flex-wrap'
-                } w-full gap-1`}
+                } w-full gap-[0.3rem]`}
             >
                 { children }
             </div>

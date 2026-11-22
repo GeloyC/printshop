@@ -35,7 +35,7 @@ function OrdersForm ({
 
     return (
         <>
-            <div className="flex flex-1 flex-col w-full h-full py-[1rem]">
+            <div className="flex flex-1 flex-col w-full h-full py-[1rem] px-[6rem]">
 
                 <div className="flex items-center justify-between w-full gap-[2rem]">
                     <span className="text-[24px] text-[#292929] font-bold leading-none">My Orders</span>

@@ -7,6 +7,7 @@ import Add from '/src/assets/icon/add.svg?react'
 import Subtract from '/src/assets/icon/subtract.svg?react'
 import PDFIcon from '/src/assets/icon/pdf-icon.svg?react'
 import DOCXIcon from '/src/assets/icon/word-icon.svg?react'
+import ImageIcon from '/src/assets/icon/image-icon.svg?react'
 import ConfigIcon from '/src/assets/icon/configuration-item.svg?react'
 import Service from '/src/assets/icon/service.svg?react'
 import Arrow from '/src/assets/icon/arrow-no-tail.svg?react';
@@ -64,14 +65,16 @@ function CartItem ({
             <div className={`flex flex-col w-full p-[1rem] gap-[0.3rem] bg-[#fff] border border-[#292929]/25 rounded-[5px]`}>
                 <div className="flex items-center justify-between w-full">
                     <div className="flex items-center gap-[0.5rem]">
-                        {cartItem?.metadata?.file_type == 'application/pdf' ? (
-                            <PDFIcon className='size-6' color="#F40F02" /> 
-                        ):(
-                            <DOCXIcon className='size-6' color='#1B5EBE' />
-                        )}
+                        {cartItem?.metadata?.file_type == 'application/pdf' 
+                            ? <PDFIcon className='size-6' color="#F40F02" /> 
+                            : cartItem?.metadata?.file_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                                ? <DOCXIcon className='size-6' color='#1B5EBE' />
+                                : <ImageIcon className='size-6' color='#292929' />   
+                        }
 
                         <span className="text-[16px] text-[#292929] font-bold leading-none">{cartItem?.metadata?.file_name}</span>
                     </div>
+
 
                     <span className="text-[16px] font-bold text-[#ff6b00] leading-none">{currencyFormat(Number(cartItem?.total_price))}</span>
                 </div>
