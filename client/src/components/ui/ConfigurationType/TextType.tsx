@@ -19,7 +19,7 @@ function TextType ({
             <textarea name="config_text" id="config_text" rows={3}
             disabled={!selectedFileId}
             value={additionalInstruction} onChange={(e) => setAdditionalInstruction(e.target.value)}
-            className={`bg-[#fafafa] rounded-[5px] z-10 w-full p-[0.5rem] text-[14px] ${!selectedFileId ? 'border border-[#fafafa]' : 'border border-[#fafafa]'} font-bold focus:outline-none`}
+            className={`bg-[#fafafa] rounded-[10px] z-10 w-full p-[0.5rem] text-[14px] ${!selectedFileId ? 'border border-[#B1B2B5]' : 'border border-[#B1B2B5]'} font-bold focus:outline-none`}
             ></textarea>
         </div>
     )

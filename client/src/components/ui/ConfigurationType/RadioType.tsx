@@ -18,7 +18,6 @@ type OptionProp = {
 function RadioType ({ id, selectedFileId, option, price, onSelect, selected, labelKey }: OptionProp) {
 
     const isDisabled = !selectedFileId;
-    console.log(isDisabled)
 
     return (
         <div 
@@ -26,8 +25,8 @@ function RadioType ({ id, selectedFileId, option, price, onSelect, selected, lab
                 ${selected
                     ? 'bg-[#292929]'
                     : isDisabled
-                        ? 'bg-[#f2f2f2]'
-                        : 'bg-[#f2f2f2] hover:bg-[#e6e6e6] active:bg-[#f2f2f2]'
+                        ? 'bg-[#B1B2B5]'
+                        : 'bg-[#B1B2B5]/50 hover:bg-[#e6e6e6] active:bg-[#f2f2f2]'
                 }
             `} 
         >
@@ -57,7 +56,7 @@ function RadioType ({ id, selectedFileId, option, price, onSelect, selected, lab
                                             size-4 border-2 p-[0.2rem] rounded-full
                                             ${selected
                                                 ? 'border-2 border-[#fafafa] bg-[#fafafa]'
-                                                : 'border-2 border-[#292929]/50'
+                                                : 'border-2 border-[#292929]/50 bg-[#fafafa]'
                                             }
                                         `}
                                     />     

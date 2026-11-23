@@ -103,38 +103,20 @@ function ConfigurationSetupModal ({
         setSelectedFile(null);
     };
 
-    useEffect(() => {
-        console.log('selected file: ', selectedFile);
-    }, [selectedFile]);
-
 
     return (
         <div className='flex flex-col w-full gap-[1rem]'>
-            <div className={`flex flex-col items-start w-full h-full overflow-hidden rounded-t-[10px]`}>
-                
-                
-                {/* <div className='flex flex-col w-full '>
-                    <span className='text-[14px] font-bold text-[#575757]'>File</span>
-                    <div className='flex items-center gap-[0.5rem] w-full p-[1rem]  bg-[#fff0d3] rounded-[5px]'>
+            <div className={`flex flex-col items-start w-full h-full gap-[2rem] overflow-hidden pb-[1rem]`}>
 
-                        {
-                            selectedFile?.file?.type === 'application/pdf' ? <PDFIcon className="size-6 shrink-0" color="#F40F02"/> 
-                            : selectedFile?.file?.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ? <DOCXIcon className="size-6 shrink-0" color="#1B5EBE"/>
-                            : selectedFile?.file?.type === 'image/png' ? <ImageIcon className='size-6 shrink-0' />
-                            : <ImageIcon className='size-6 shrink-0' />
-                        }
-                        <span className="text-[16px] text-[#292929] font-bold leading-none w-[500px] truncate">{selectedFile?.file?.name}</span>
-                    </div>
-                </div> */}
+                <div className={`relative flex flex-col w-full gap-[1rem] px-[1rem]`}>
 
-                <div className={`relative flex flex-col w-full gap-[1rem] p-[2rem] bg-gradient-to-b from-[#ff6b00] to-[#ffc16b] border-b-2 border-dashed border-[#ffc16b]`}>
-                    <div className="absolute top-0 left-0 bg-[#fff8ec] size-8 rounded-br-[50px]" />
-                    <div className="absolute top-0 right-0 bg-[#fff8ec] size-8 rounded-bl-[50px]" />
+                    {/* <div className="absolute top-0 left-0 bg-[#fff8ec] size-8 rounded-br-[50px]" />
+                    <div className="absolute top-0 right-0 bg-[#fff8ec] size-8 rounded-bl-[50px]" /> */}
                         
 
                     <div className='flex items-center gap-[0.5rem]'>
                         <ServiceIcon className="size-6" color='#292929' />
-                        <span className='text-xl text-[#292929] font-bold leading-none'>{service.name}</span>
+                        <span className='text-2xl text-[#404040] font-bold leading-none'>{service.name}</span>
                     </div>
                     <p className='text-md text-[#292929] leading-tight'>{service.description}</p>
                 </div>
@@ -142,12 +124,12 @@ function ConfigurationSetupModal ({
                 
 
                 <div 
-                    className={`relative flex flex-col w-full gap-[1rem] p-[2rem] bg-gradient-to-b from-[#ffc16b] to-[#ffdca3] rounded-b-[10px] ${selectedFile ? 'opacity-100' : 'opacity-75'}`}
+                    className={`relative flex flex-col w-full gap-[1rem] px-[1rem] ${selectedFile ? 'opacity-100' : 'opacity-75'}`}
                 >
                     
                     
-                    <div className="absolute bottom-0 left-0 bg-[#fff8ec] size-8 rounded-tr-[50px]" />
-                    <div className="absolute bottom-0 right-0 bg-[#fff8ec] size-8 rounded-tl-[50px]" />
+                    {/* <div className="absolute bottom-0 left-0 bg-[#fff8ec] size-8 rounded-tr-[50px]" />
+                    <div className="absolute bottom-0 right-0 bg-[#fff8ec] size-8 rounded-tl-[50px]" /> */}
 
                     <span className='text-xl text-[#292929] font-bold leading-none'>Specification</span>
 
@@ -259,9 +241,9 @@ function ConfigurationSetupModal ({
                         <span className='text-[14px] font-bold text-[#292929]'>Quantity (how many copies)</span>
 
                         <div className="flex items-center w-full gap-[0.3rem]">
-                            <button onClick={()=>setQuantity(count=> --count)} disabled={quantity === 1 && !selectedFile?.id} className={`p-[0.5rem] px-[1rem] rounded-[5px] bg-[#fafafa] ${quantity > 1 ? 'active:bg-[#a5a5a5] cursor-pointer' : 'cursor-not-allowed' }  transition-all duration-100`}>-</button>
-                            <input type="text" value={quantity} disabled name="" id="" className='text-center max-w-[50px] border-2 border-[#575757] rounded-[10px] focus:outline-none focus:border-[#ff810a] p-[0.5rem] text-[#272727] font-bold'/>
-                            <button onClick={()=>setQuantity(count=> ++count)} disabled={!selectedFile?.id} className={`p-[0.5rem] px-[1rem] rounded-[5px] bg-[#fafafa] ${selectedFile?.id ? 'active:bg-[#a5a5a5] cursor-pointer' : 'cursor-not-allowed'} transition-all duration-100`}>+</button>
+                            <button onClick={()=>setQuantity(count=> --count)} disabled={quantity === 1} className={`p-[0.5rem] px-[1rem] rounded-[5px] bg-[#B1B2B5] ${quantity > 1 ? 'active:bg-[#a5a5a5] cursor-pointer' : 'cursor-not-allowed' }  transition-all duration-100`}>-</button>
+                            <input type="text" value={quantity} disabled name="" id="" className='text-center max-w-[50px] border-2 border-[#575757] bg-[#fafafa] rounded-[10px] focus:outline-none focus:border-[#ff810a] p-[0.5rem] text-[#272727] font-bold'/>
+                            <button onClick={()=>setQuantity(count=> ++count)} disabled={!selectedFile?.id} className={`p-[0.5rem] px-[1rem] rounded-[5px] bg-[#B1B2B5] ${selectedFile?.id ? 'active:bg-[#a5a5a5] cursor-pointer' : 'cursor-not-allowed'} transition-all duration-100`}>+</button>
                         </div>
                     </div>
 
@@ -269,7 +251,7 @@ function ConfigurationSetupModal ({
                 </div>
 
                 {selectedFile && (
-                    <div className="flex items-center justify-end w-full gap-[0.3rem] z-20 pt-[0.5rem]">
+                    <div className="flex flex-col w-full gap-[0.3rem] z-20 pt-[0.5rem]">
                         <button 
                             disabled={!isConfigurationComplete}
                             onClick={
@@ -279,7 +261,7 @@ function ConfigurationSetupModal ({
                                     additionalInstruction
                                 )
                             } 
-                            className={`flex justify-center w-full py-[0.75rem] bg-[#292929] rounded-[10px] ${isConfigurationComplete ? 'hover:bg-[#141414] active:bg-[#292929] cursor-pointer' : 'opacity-80 cursor-not-allowed'}`}
+                            className={`flex justify-center w-full py-[0.75rem] bg-[#325e32] rounded-[10px] ${isConfigurationComplete ? 'hover:bg-[#141414] active:bg-[#292929] cursor-pointer' : 'opacity-80 cursor-not-allowed'}`}
                         >
                             <span className="text-[#FFF] font-bold">Save configuration</span>
                         </button>

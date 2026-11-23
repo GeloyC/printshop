@@ -9,6 +9,8 @@ import Check from '/src/assets/icon/check.svg?react'
 
 
 import type { fileItem } from '../../../types/file.type'
+import currencyFormat from '../../../utils/currencyFormat'
+import { getDocxPageCount } from '../../../utils/getDocxPageCount'
 
 
 interface DocumentItemProp  {
@@ -25,9 +27,16 @@ function DocumentItem ({
     onSelectFile,
     selectedFile
 }:DocumentItemProp) {
+    
 
     const isConfigured = !!file.configuration?.length;
     const isSelected = selectedFile?.id === file.id;
+
+    console.log('files: ', file.total_price);
+    
+    
+
+
 
     return (
         // <div onClick={onSelectFile} className={`fade-up group flex items-center w-full gap-[0.5rem] p-[1rem] border-b border-dashed border-[#292929]/25 hover:bg-[#ff6b00]/25 cursor-pointer transition-all duration-200`}>
@@ -75,23 +84,25 @@ function DocumentItem ({
         // </div>
 
         <div 
-            className={`flex items-center justify-start w-full min-h-[75px] transition-all duration-100 cursor-pointer rounded-[10px] overflow-hidden`}
+            className={`flex items-center justify-start w-full h-[75px] transition-all duration-100 cursor-pointer overflow-hidden border-b border-[#404040]/15`}
         >
             <div onClick={onSelectFile}  
                 className={
-                    `flex flex-col w-full justify-center p-[1rem] gap-[0.5rem] h-full transition-all duration-100 
+                    `group flex flex-col w-full justify-center p-[1rem] gap-[0.5rem] h-full transition-all duration-100 
                     ${isSelected 
-                        ? 'bg-[#404040] border-r-2 border-dashed border-[#ffdca3]' 
+                        ? 'bg-[#404040]' 
                         : isConfigured
-                            ? 'bg-[#CCFFCC] hover:bg-[#498d49]/75 active:bg-[#498d49]/50 border-r-2 border-dashed border-[#404040]/50'   
-                            : 'bg-[#fff0d3] hover:bg-[#ffc16b] active:bg-[#ffc16b] border-r-2 border-dashed border-[#404040]/50'
+                            ? 'bg-[#CCFFCC]/50 hover:bg-[#CCFFCC]/75 active:bg-transparent'   
+                            : 'hover:bg-[#B1B2B5]/25 active:bg-[#B1B2B5]/50'
                     }
                 `}
             >
                 <div className='flex items-start justify-center w-full gap-[1rem]'>
 
                     {isConfigured 
-                        ? <Check className="size-7" color={`${isSelected ? '#fafafa' : '#325e32'}`} />
+                        ? <div className='rounded-full bg-[#498d49] p-[0.2rem]'>
+                            <Check className="size-7" color={`${isSelected ? '#fafafa' : '#fafafa'}`} />
+                        </div>
                         : <>
                             {
                                 file.file?.type === 'application/pdf' 
@@ -112,19 +123,21 @@ function DocumentItem ({
                                 ${isSelected 
                                     ? 'text-[#fafafa]' 
                                     : isConfigured
-                                        ? 'text-[#325e32]'
-                                        : 'text-[#292929]'
+                                        ? 'text-[#498d49] group-hover:underline'
+                                        : 'text-[#292929] group-hover:underline'
                                 } 
-                                break-all text-wrap leading-none font-bold
+                                break-all text-wrap leading-none font-bold 
                             `}
                         >
                             {file?.file.name}
                         </span>
 
                         <div className='flex items-center jsutify-end w-full'>
-                            <span className={`text-sm ${isSelected ? 'text-[#fafafa]' : 'text-[#292929]'} leading-none`}>{(file.file.size / 1024).toFixed(2)} kB</span>
+                            <span className={`text-sm ${isSelected ? 'text-[#fafafa]' : isConfigured ? 'text-[#498d49]' : 'text-[#292929]'} leading-none`}>{(file.file.size / 1024).toFixed(2)} kB</span>
                         </div>
                     </div>
+
+                    {isConfigured && <span className='text-md font-bold text-[#498d49]'>{currencyFormat(Number(file.total_price))}</span> }
                 </div>
 
             </div>
@@ -132,18 +145,19 @@ function DocumentItem ({
 
             <div className={`flex flex-col h-full`}>
                 <button 
+                    title='Delete'
                     onClick={handleRemoveFile}
                     disabled={isSelected}
                     className={`group 
                         ${isSelected 
                             ? 'bg-[#404040]' 
                             : isConfigured 
-                                ? 'bg-[#CCFFCC] hover:bg-[#498d49]/80 cursor-pointer'
-                                : 'bg-[#fff0d3] hover:bg-[#ffc16b] active:bg-[#b90000] cursor-pointer'
+                                ? 'bg-[#CCFFCC]/50 hover:bg-[#CCFFCC]/75 cursor-pointer'
+                                : 'hover:bg-[#B1B2B5]/25 active:bg-[#b90000] cursor-pointer'
                         } p-[1rem] h-full transition-all duration-200`}
                 >
                     <Delete 
-                        className={`size-6 ${isSelected ? 'opacity-50' : 'opacity-50 group-hover:opacity-100 group-active:scale-95'}`} 
+                        className={`size-6 ${isSelected ? 'opacity-10' : 'opacity-50 group-hover:opacity-100 group-active:scale-95'}`} 
                         color={`${isSelected ? '#fafafa' : '#292929' }`}
                     />
                 </button>

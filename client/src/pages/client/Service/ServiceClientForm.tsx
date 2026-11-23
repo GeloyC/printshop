@@ -99,7 +99,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     return (
         <>
             <TopLoadingBar isLoading={AddToCartPending} />
-            <div className={`grid grid-cols-[6fr_3fr] w-full h-full pb-[1rem] gap-[0.5rem]`}>
+            <div className={`grid grid-cols-[6fr_3fr] w-full gap-[1rem]`}>
                 <DisplayFiles 
                     setSelectedFile={setSelectedFile}
                     selectedFile={selectedFile}

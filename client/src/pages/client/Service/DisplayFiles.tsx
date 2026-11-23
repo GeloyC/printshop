@@ -9,9 +9,11 @@ import NoFilesWrapper from "./NoFilesWrapper";
 import ArrowWithTail from '/src/assets/icon/arrow-with-tail.svg?react'
 import Delete from "/src/assets/icon/delete_v2.svg?react";
 import AddIcon from '/src/assets/icon/add.svg?react'
+import CartIcon from '/src/assets/icon/cart.svg?react'
 
 import type { fileItem } from "../../../types/file.type";
 import type { UseMutateFunction, UseMutationResult } from "@tanstack/react-query";
+import { getDocxPageCount } from "../../../utils/getDocxPageCount";
 
 // services
 
@@ -64,15 +66,33 @@ function DisplayFiles ({
 
         const droppedFiles = Array.from(e.dataTransfer.files);
 
-        droppedFiles.forEach(file => {
+        droppedFiles.forEach(async file => {
             const allowedExtension = requiredFiles;
             const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
 
-            const newFile: fileItem = {
-                id: crypto.randomUUID(),
-                file: file,
-                quantity: 1,
-                slug: String(slug)
+            let count: number | null = null;
+            if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                count = await getDocxPageCount(file);
+            } else if (file.type === 'application/pdf') {
+                count = null;
+            }
+
+            let newFile: fileItem;
+            if (Number(count) > 0) {
+                newFile = {
+                    id:  crypto.randomUUID(),
+                    file: file,
+                    quantity: 1,
+                    slug: String(slug),
+                    pageCount: Number(count)
+                }
+            } else {
+                newFile = {
+                    id:  crypto.randomUUID(),
+                    file: file,
+                    quantity: 1,
+                    slug: String(slug),
+                }
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
@@ -113,15 +133,33 @@ function DisplayFiles ({
         );
 
 
-        selectedFiles.forEach(file => {
+        selectedFiles.forEach(async file => {
             const allowedExtension = requiredFiles;
             const fileExtension = `.${file.name.split('.').pop()?.toLowerCase()}`;
 
-            const newFile: fileItem = {
-                id:  crypto.randomUUID(),
-                file: file,
-                quantity: 1,
-                slug: String(slug)
+            let count: number | null = null;
+            if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                count = await getDocxPageCount(file);
+            } else if (file.type === 'application/pdf') {
+                count = null;
+            }
+
+            let newFile: fileItem;
+            if (Number(count) > 0) {
+                newFile = {
+                    id:  crypto.randomUUID(),
+                    file: file,
+                    quantity: 1,
+                    slug: String(slug),
+                    pageCount: Number(count)
+                }
+            } else {
+                newFile = {
+                    id:  crypto.randomUUID(),
+                    file: file,
+                    quantity: 1,
+                    slug: String(slug),
+                }
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
@@ -169,55 +207,76 @@ function DisplayFiles ({
         setFileSetupModalOpen(true);
     }
 
+    const allFilesConfigured = files.every(file => !!file.configuration?.length);
+    const isAddToCartDisabled = files.length === 0 || !allFilesConfigured || AddToCartPending;
+    const totalConfiguredFiles = files.map(file => !!file.configuration?.length).filter(item => item === true).length;
+
+    console.log(files);
 
     return (
-        <div className={`relative flex items-start w-full gap-[1rem] pr-[1rem]`}>   
-            <div className="sticky top-[5rem] flex flex-col items-start rounded-full gap-[0.5rem]">
+        <div className={`relative flex flex-1 items-start w-full gap-[1rem]`}>   
+            <div className="sticky top-[5rem] z-10 flex w-fit  min-w-[3rem]">
 
-                {/* <div className="flex">
-                    <span className="text-3xl text-[#fff] font-bold leading-none">{serviceName}</span>
-                </div> */}
-                    
-                <div className="flex items-center">
-                    <input type="file" name="service_addmore" id="service_addmore" accept={stringedRequiredFiles} multiple hidden onChange={handleAddFiles} />
+                <div className="absolute top-0 flex flex-col items-start gap-[0.5rem]">
+                    <div className="flex items-center">
+                        <input type="file" name="service_addmore" id="service_addmore" accept={stringedRequiredFiles} multiple hidden onChange={handleAddFiles} />
 
-                    <label 
-                        htmlFor="service_addmore"
-                        title="Upload file/s"
-                        className="group flex items-center gap-[0.3rem] p-[0.75rem] cursor-pointer bg-[#292929] hover:bg-[#325e32] active:bg-[#498d49] rounded-full transition-all duration-200"
+                        <label 
+                            htmlFor="service_addmore"
+                            title="Upload file/s"
+                            className="relative group flex items-center p-[0.75rem] cursor-pointer bg-[#292929] hover:bg-[#292929] active:bg-[#141414] rounded-full transition-all duration-200"
+                        >
+                            <AddIcon className='size-6' color="#fafafa"/>
+
+                            <div className="opacity-0 group-hover:opacity-100 flex items-center transition-all duration-200">
+                                <span className="hidden  group-hover:flex group-hover:px-[0.5rem] text-md text-[#fafafa] text-nowrap font-bold">Upload file</span>
+                            </div>
+
+                        </label>
+                    </div>
+
+                    <button 
+                        onClick={handleRemoveAllFiles} 
+                        title="Remove all file/s"
+                        className="relative group flex items-center p-[0.75rem] cursor-pointer bg-[#292929] hover:bg-[#b90000] active:bg-transparent rounded-full transition-all duration-100"
                     >
-                        <AddIcon className='size-6' color="#fafafa"/>
-                    </label>
+                        <Delete className="size-6" color="#fafafa"/>
+                        <div className="opacity-0 group-hover:opacity-100 flex items-center transition-all duration-200">
+                            <span className="hidden  group-hover:flex group-hover:px-[0.5rem] text-md text-[#fafafa] text-nowrap font-bold">Remove all files</span>
+                        </div>
+                    </button>
+
+                    <button onClick={()=>handleAddToCart()} disabled={isAddToCartDisabled} className={`relative group flex items-center p-[0.75rem] ${isAddToCartDisabled ? 'cursor-not-allowed bg-[#B1B2B5]' : 'bg-[#498d49] hover:bg-[#325e32] active:bg-[#498d49] cursor-pointer'} rounded-full transition-all duration-100`}>
+                        <CartIcon className={`size-6 ${isAddToCartDisabled && ''} transition-all duration-200`} color="#fff" />
+
+                        <div className="opacity-0 group-hover:opacity-100 flex items-center ">
+                            <span className="hidden  group-hover:flex group-hover:px-[0.5rem] text-md text-[#fafafa] text-nowrap font-bold">Add to cart</span>
+                        </div>
+                    </button>
                 </div>
 
-                <button onClick={handleRemoveAllFiles} className="flex items-center gap-[0.3rem] p-[0.75rem] cursor-pointer bg-[#292929] hover:bg-[#b90000]/65 active:bg-transparent rounded-full transition-all duration-100">
-                    <Delete className="size-6" color="#fafafa"/>
-                </button>
-
-                {/* <button onClick={()=>handleAddToCart()} disabled={!shouldBlock || AddToCartPending} className={`group flex items-center gap-[0.3rem] p-[0.75rem] px-[1rem] ${!shouldBlock || AddToCartPending ? 'cursor-not-allowed bg-[#9a3902]' : 'bg-[#292929] hover:bg-[#cc4c02] active:bg-[#ffc36d] cursor-pointer'} rounded-full transition-all duration-100`}>
-                    <span className="text-[14px] text-[#fff] group-hover:text-[#fff] font-bold leading-none">
-                        {AddToCartPending
-                            ? 'Adding to Cart'
-                            : 'Add to Cart'
-                        }
-                    </span>
-                    <ArrowWithTail className={`size-4 ${AddToCartPending && 'group-hover:translate-x-1'} transition-all duration-200`} color="#fff" />
-                </button> */}
             </div>  
 
             
             <div onDragOver={handleDragOver} onDrop={handleDrop} onDragEnd={()=>setDragOver(false)}
-                className={`flex w-full h-full
+                className={`sticky top-[5rem] flex flex-col w-full h-[calc(100vh-6rem)] overflow-y-auto thin-scrollbar rounded-[15px] mb-[1rem]
                     ${ dragOver && files.length > 0 
-                        ? 'bg-[#fafafa]'  // when dragging file
+                        ? 'bg-[#ffdca3] blur-[5px]'  // when dragging file
                         : files.length === 0 
                             ? 'bg-transparent'
-                            : 'bg-transparent'  // default
+                            : 'bg-[#ffdca3]'  // default
                     } 
                 `}
             >   
+                
+                
+
                 {files.length > 0 
-                    ? <div className={`grid grid-cols-1 w-full h-fit gap-[0.5rem] thin-scrollbar transition-all duration-400`}>
+                    ? <div className={`grid grid-cols-1 w-full min-h-0 h-fit`}>
+                        <div className="flex w-full px-[1rem] py-[0.75rem]">
+                            <span className="text-sm font-bold text-[#404040]">Total files: {files.length}</span>
+                        </div>
+
                         {files.map((file, index) => {
                             if (file.slug === slug) {
                                 return (
@@ -232,7 +291,7 @@ function DisplayFiles ({
                             }
                         )}
                     </div>
-                    : <div className="flex flex-1 justify-center items-center ">
+                    : <div className="flex flex-1 justify-center items-center bg-[#e6e6e6]">
                         <span className="text-md text-[#404040] font-bold">No files uploaded yet</span>
                     </div>
                 }

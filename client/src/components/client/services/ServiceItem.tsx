@@ -25,7 +25,7 @@ function ServiceItem ({ service }: ServiceItemProp) {
                 <ArrowDiagonal className={'size-7'} color="#FFF"/>
             </div>
 
-            <div className="flex w-full h-[275px] bg-[#fff] border border-[#292929] group-hover:rotate-1 rounded-[10px] overflow-hidden transition-all duration-200">
+            <div className="flex w-full h-[275px] bg-[#fff] group-hover:rotate-1 rounded-[10px] overflow-hidden transition-all duration-200">
                 <img src={`${cloudflare_url}${service?.thumbnail_url}`} alt="" className="object-cover w-full h-full transition-all duration-300"/>
             </div>
 

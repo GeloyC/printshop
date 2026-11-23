@@ -23,6 +23,7 @@ export type fileItem = {
     additional_instruction?: string,
     unit_price?: number,
     total_price?: number
+    pageCount?: number
 }
 
 export type CartItemType = { // use for items that are on cart
