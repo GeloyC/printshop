@@ -43,6 +43,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     const navigate = useNavigate();
 
     const [selectedFile, setSelectedFile] = useState<fileItem|null>(null);
+    const [isAddingToCard, setIsAddingToCart] = useState<boolean>(false);
     const [files, setFiles] = useState<fileItem[]>([]);
     const [error, setError] = useState<string>('');
 
@@ -55,21 +56,34 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
 
 
     const currentServiceFiles = files.filter(file => file.slug === slug);
+    const allFilesConfigured = currentServiceFiles.every(
+        file => (file.configuration?.length ?? 0) > 0
+    );
     const hasCurrentServiceFiles = currentServiceFiles.length > 0;
+
+    const shouldBlock = hasCurrentServiceFiles && !allFilesConfigured;
 
     const shouldBlockNavigation = useCallback<BlockerFunction> (
         ({ currentLocation, nextLocation }) =>
             currentLocation.pathname.startsWith('/service/') &&
-            hasCurrentServiceFiles &&
+            shouldBlock &&
+            !isAddingToCard && 
             currentLocation.pathname !== nextLocation.pathname,
             
-        [hasCurrentServiceFiles]
+        [shouldBlock, hasCurrentServiceFiles]
     );
     
     const blocker = useBlocker(shouldBlockNavigation);
 
     const proceedToCheckOut = () => {
+        setIsAddingToCart(true)
         setFiles([]);
+
+        if (blocker.state === 'blocked') {
+            blocker.proceed();
+            return;
+        }
+
         navigate('/cart');
     } 
 

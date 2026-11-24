@@ -78,7 +78,10 @@ function ConfigurationSetupModal ({
         if (!selectedFile || !isConfigurationComplete) return;
 
         const formattedConfiguration = Object.values(configuration).flat();
-        const totalPricePerItem = formattedConfiguration.reduce((acc, config) => acc + config.price, 0) * Number(selectedFile?.pageCount);
+
+        const totalPricePerItem = Number(selectedFile?.pageCount) > 0
+            ? formattedConfiguration.reduce((acc, config) => acc + config.price, 0) * Number(selectedFile?.pageCount)
+            : formattedConfiguration.reduce((acc, config) => acc + config.price, 0);
 
 
         const updatedFile: fileItem = {

@@ -135,8 +135,8 @@ function DocumentItem ({
                         <div className='flex items-center jsutify-end w-full gap-[0.3rem]'>
                             <span className={`text-sm ${isSelected ? 'text-[#fafafa]' : isConfigured ? 'text-[#498d49]' : 'text-[#292929]'} leading-none`}>{(file.file.size / 1024).toFixed(2)} kB</span>
                             
-                            {file?.pageCount && (
-                                <span className={`text-sm ${isSelected ? 'text-[#fafafa]' : isConfigured ? 'text-[#498d49]' : 'text-[#292929]'} leading-none`}>({file?.pageCount} {file.pageCount > 1 ? 'pages' : 'page'})</span>
+                            {file?.pageCount !== 0 && (
+                                <span className={`text-sm ${isSelected ? 'text-[#fafafa]' : isConfigured ? 'text-[#498d49]' : 'text-[#292929]'} leading-none`}>({file?.pageCount} {Number(file.pageCount )> 1 ? 'pages' : 'page'})</span>
                             )}
                         </div>
                     </div>
