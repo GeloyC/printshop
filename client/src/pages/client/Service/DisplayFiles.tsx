@@ -14,6 +14,7 @@ import CartIcon from '/src/assets/icon/cart.svg?react'
 import type { fileItem } from "../../../types/file.type";
 import type { UseMutateFunction, UseMutationResult } from "@tanstack/react-query";
 import { getDocxPageCount } from "../../../utils/getDocxPageCount";
+import { getPdfPageCount } from "../../../utils/getPdfPageCount";
 
 // services
 
@@ -74,25 +75,15 @@ function DisplayFiles ({
             if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                 count = await getDocxPageCount(file);
             } else if (file.type === 'application/pdf') {
-                count = null;
+                count = await getPdfPageCount(file);
             }
 
-            let newFile: fileItem;
-            if (Number(count) > 0) {
-                newFile = {
-                    id:  crypto.randomUUID(),
-                    file: file,
-                    quantity: 1,
-                    slug: String(slug),
-                    pageCount: Number(count)
-                }
-            } else {
-                newFile = {
-                    id:  crypto.randomUUID(),
-                    file: file,
-                    quantity: 1,
-                    slug: String(slug),
-                }
+            const newFile: fileItem = {
+                id:  crypto.randomUUID(),
+                file: file,
+                quantity: 1,
+                slug: String(slug),
+                pageCount: Number(count)
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
@@ -141,25 +132,15 @@ function DisplayFiles ({
             if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                 count = await getDocxPageCount(file);
             } else if (file.type === 'application/pdf') {
-                count = null;
+                count = count = await getPdfPageCount(file);
             }
 
-            let newFile: fileItem;
-            if (Number(count) > 0) {
-                newFile = {
-                    id:  crypto.randomUUID(),
-                    file: file,
-                    quantity: 1,
-                    slug: String(slug),
-                    pageCount: Number(count)
-                }
-            } else {
-                newFile = {
-                    id:  crypto.randomUUID(),
-                    file: file,
-                    quantity: 1,
-                    slug: String(slug),
-                }
+            const newFile: fileItem = {
+                id:  crypto.randomUUID(),
+                file: file,
+                quantity: 1,
+                slug: String(slug),
+                pageCount: Number(count)
             }
 
             if(!allowedExtension.includes(String(fileExtension))) {
@@ -291,7 +272,7 @@ function DisplayFiles ({
                             }
                         )}
                     </div>
-                    : <div className="flex flex-1 justify-center items-center bg-[#e6e6e6]">
+                    : <div className="flex flex-1 justify-center items-center bg-[#ffdca3]">
                         <span className="text-md text-[#404040] font-bold">No files uploaded yet</span>
                     </div>
                 }
