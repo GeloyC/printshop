@@ -54,28 +54,22 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
     ) ?? [];
 
 
-    const hasCurrentServiceFiles = files.some(file => file.slug === slug); 
-    const checkFile = files.map(file => (file.configuration?.length ?? 0) >= 0);
-    const checkFileAllTrue = checkFile.every(file => file === true)
-
-    const shouldBlock = checkFileAllTrue && hasCurrentServiceFiles; 
+    const currentServiceFiles = files.filter(file => file.slug === slug);
+    const hasCurrentServiceFiles = currentServiceFiles.length > 0;
 
     const shouldBlockNavigation = useCallback<BlockerFunction> (
         ({ currentLocation, nextLocation }) =>
             currentLocation.pathname.startsWith('/service/') &&
-            shouldBlock &&
-            files.length > 0 &&
+            hasCurrentServiceFiles &&
             currentLocation.pathname !== nextLocation.pathname,
             
-        [shouldBlock, files.length]
+        [hasCurrentServiceFiles]
     );
     
     const blocker = useBlocker(shouldBlockNavigation);
 
     const proceedToCheckOut = () => {
-        if (shouldBlock) {
-            setFiles([]);
-        }
+        setFiles([]);
         navigate('/cart');
     } 
 
@@ -92,7 +86,6 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
         handleOpenLogin
     );
 
-    
     
 
 
@@ -111,9 +104,6 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
                     handleAddToCart={handleAddToCart}
                     AddToCartPending={AddToCartPending}
                     setFileSetupModalOpen={setFileSetupModalOpen}
-                    serviceName={service?.name}
-                    serviceDescription={service?.description}
-                    shouldBlock={shouldBlock}
                 />
             
                 {service  &&  (

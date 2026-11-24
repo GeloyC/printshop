@@ -29,9 +29,6 @@ type DisplayFilesProp =  {
     handleAddToCart: UseMutateFunction<any[], Error, void, unknown>
     AddToCartPending: boolean,
     setFileSetupModalOpen: React.Dispatch<SetStateAction<boolean>>,
-    serviceName: string
-    serviceDescription: string
-    shouldBlock: boolean
 }
 
 function DisplayFiles ({
@@ -45,9 +42,6 @@ function DisplayFiles ({
     handleAddToCart,
     AddToCartPending,
     setFileSetupModalOpen,
-    serviceName,
-    serviceDescription,
-    shouldBlock,
 }:DisplayFilesProp) {
 
     // ----------------------------------  ---------------------------------- //

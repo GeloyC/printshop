@@ -38,8 +38,11 @@ export function useAddToCart (
                 formData.append('slug', file.slug);
                 formData.append('service_slug', file.slug);
                 formData.append('quantity', String(file.quantity));
+
+
                 formData.append('unit_price', String(file.unit_price));
                 formData.append('total_price', String(file.total_price));
+                formData.append('page_count', String(file?.pageCount));
 
                 responses.push(await AddItemToCart(formData, user.id));
             }

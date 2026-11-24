@@ -2,8 +2,8 @@
 
 #fff8ec // background
 #fff0d3
-#ffdca5
-#ffc36d
+#ffdca3
+#ffc16b
 #ff6b00
 #cc4c02
 #9a3902

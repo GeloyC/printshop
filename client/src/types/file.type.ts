@@ -10,6 +10,7 @@ export type Metadata = {
     file_name: string,
     file_size: number,
     file_type: string,
+    num_pages: number,
     last_modified: string
 }
 
@@ -22,7 +23,7 @@ export type fileItem = {
     configuration?: SelectedOption[],
     additional_instruction?: string,
     unit_price?: number,
-    total_price?: number
+    total_price?: number,
     pageCount?: number
 }
 
@@ -35,7 +36,8 @@ export type CartItemType = { // use for items that are on cart
     additional_instruction?: string,
     quantity: number,
     unit_price: number,
-    total_price: number
+    total_price: number,
+    pageCount: number
 }
 
 export type SelectedOption = { // for confiugred file

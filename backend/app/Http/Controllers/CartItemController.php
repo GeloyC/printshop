@@ -46,7 +46,8 @@ class CartItemController extends Controller
             'slug' => ['required', 'string'],
             'quantity' => ['required', 'integer', 'min:1'],
             'unit_price' => ['required', 'numeric' ,'decimal:0,2', 'min:1'],
-            'total_price' => ['required', 'numeric', 'decimal:0,2']
+            'total_price' => ['required', 'numeric', 'decimal:0,2'],
+            'page_count' => ['sometimes', 'nullable', 'integer'] 
         ]);
 
         $file = $validated['file'];
@@ -67,6 +68,7 @@ class CartItemController extends Controller
                 'file_name' => $file->getClientOriginalName(),
                 'file_size' => $file->getSize(),
                 'file_type' => $file->getMimeType(),
+                'num_pages' => $validated['page_count'],
                 'last_modified' => now()->toISOString(), 
             ],
             'configuration' => $validated['configuration'],

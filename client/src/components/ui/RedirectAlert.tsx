@@ -13,11 +13,11 @@ function RedirectAlert ({
 }: RedirectAlertProp) {
 
     return (
-        <div className="flex flex-col items-center w-[400px] bg-[#fff] rounded-[10px] p-[2rem] gap-[2rem]">
+        <div className="flex flex-col items-start w-[400px] bg-[#fff] rounded-[10px] p-[2rem] gap-[2rem]">
             <span className="text-[24px] text-[#292929] font-bold leading-none">Leaving already?</span>
 
-            <p className="text-[16px] font-bold leading-tight text-[#292929] opacity-75">
-                Some files are still not configured, the files you uploaded will be erased once you leave this page. Are you sure you want to leave?
+            <p className="text-md leading-tight text-[#292929]">
+                Files are not yet added to the cart, are you sure you want to leave?
             </p>
 
             <div className="flex items-center gap-[0.3rem] w-full">
