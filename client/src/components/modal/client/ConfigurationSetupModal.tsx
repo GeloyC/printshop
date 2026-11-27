@@ -113,8 +113,6 @@ function ConfigurationSetupModal ({
 
                 <div className={`relative flex flex-col w-full gap-[1rem] px-[1rem]`}>
 
-                    {/* <div className="absolute top-0 left-0 bg-[#fff8ec] size-8 rounded-br-[50px]" />
-                    <div className="absolute top-0 right-0 bg-[#fff8ec] size-8 rounded-bl-[50px]" /> */}
                         
 
                     <div className='flex items-center gap-[0.5rem]'>
@@ -130,16 +128,13 @@ function ConfigurationSetupModal ({
                     className={`relative flex flex-col w-full gap-[1rem] px-[1rem] ${selectedFile ? 'opacity-100' : 'opacity-75'}`}
                 >
                     
-                    
-                    {/* <div className="absolute bottom-0 left-0 bg-[#fff8ec] size-8 rounded-tr-[50px]" />
-                    <div className="absolute bottom-0 right-0 bg-[#fff8ec] size-8 rounded-tl-[50px]" /> */}
 
                     <span className='text-xl text-[#292929] font-bold leading-none'>Specification</span>
 
                     <div className='flex items-center w-full gap-[0.5rem] opacity-75'>
                         <ExclamationMark className="size-5 bg-[#292929] p-[0.2rem] rounded-full" color="#fafafa" />
                         <p className='text-sm text-[#292929] font-bold leading-none'>
-                            Select from each specification below according to how you want your files printed
+                            Click a file to configure its print setup. Select from each specification below according to how you want your file to be printed.
                         </p>
                     </div>
 

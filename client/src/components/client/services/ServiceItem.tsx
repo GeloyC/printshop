@@ -31,7 +31,7 @@ function ServiceItem ({ service }: ServiceItemProp) {
 
             <span className="text-[18px] text-[#292929] text-wrap font-bold leading-none transition-all duration-100">{service.name}</span>
 
-            <span className="text-sm text-[#292929] leading-none opacity-75">{service.description}</span>
+            <span className="text-md text-[#292929] leading-none opacity-75 line-clamp-2">{service.description}</span>
         </Link>
     )
 }

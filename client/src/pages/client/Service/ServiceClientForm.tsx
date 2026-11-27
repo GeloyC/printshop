@@ -117,7 +117,6 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
                     slug={String(slug)}
                     handleAddToCart={handleAddToCart}
                     AddToCartPending={AddToCartPending}
-                    setFileSetupModalOpen={setFileSetupModalOpen}
                 />
             
                 {service  &&  (
@@ -142,6 +141,7 @@ function ServiceClientForm ({ service, configurations }: ServiceClientFormProp) 
                         stayPage={() => blocker.reset()}
                         leavePage={() =>  {
                             setFiles(prev => prev.filter(file => file.slug !== slug));
+                            setSelectedFile(null);
                             blocker.proceed()
                         }}
                     />

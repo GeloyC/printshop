@@ -62,9 +62,6 @@ function RadioType ({ id, selectedFileId, option, price, onSelect, selected, lab
                                     />     
                                 }
                                 
-
-                                
-
                                 <span className={`text-[14px] ${selected && !isDisabled ? 'text-[#fafafa]' : 'text-[#292929]'} text-wrap font-bold leading-none`}>{option}</span>
                             </div>
 
